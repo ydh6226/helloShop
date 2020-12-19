@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 
@@ -29,9 +30,12 @@ public class Member {
     @Embedded
     private Address address;
 
+    private LocalDateTime joinDate;
+
     public void createInfo(String name, String email, Address address) {
         this.name = name;
         this.email = email;
         this.address = address;
+        joinDate = LocalDateTime.now();
     }
 }

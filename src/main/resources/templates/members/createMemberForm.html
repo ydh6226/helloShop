@@ -4,7 +4,7 @@
 <body>
     <div>
         <div th:replace="fragments/bodyHeader :: bodyHeader"/>
-<!--        미해결 role="form" 역할 무엇?-->
+<!--        [미해결] role="form" 역할 무엇?-->
         <form role="form" action="/members/new" th:object="${memberForm}" method="post">
             <div>
                 <label th:for="name">이름</label>
