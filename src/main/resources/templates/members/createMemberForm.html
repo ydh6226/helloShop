@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:replace="fragments/header :: header"/>
+<body>
+    <div>
+        <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+<!--        미해결 role="form" 역할 무엇?-->
+        <form role="form" action="/members/new" th:object="${memberForm}" method="post">
+            <div>
+                <label th:for="name">이름</label>
+                <input type="text" th:field="*{name}" placeholder="이름을 입력하세요"
+                       th:class="${#fields.hasErrors('name')} ? 'form-control fieldError' : 'form-control'">
+                <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}">incorrect data</p>
+            </div>
+            <div>
+                <label th:for="email">이메일</label>
+                <input type="text" th:field="*{email}" placeholder="이메일을 입력하세요"
+                       th:class="${#fields.hasErrors('email')} ? 'form-control fieldError' : 'form-control'">
+                <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}">incorrect data</p>
+            </div>
+            <div>
+                <label th:for="city">도시</label>
+                <input type="text" th:field="*{city}" placeholder="도시를 입력하세요">
+            </div>
+            <div>
+                <label th:for="street">거리</label>
+                <input type="text" th:field="*{street}" placeholder="거리를 입력하세요">
+            </div>
+            <div>
+                <label th:for="zipcode">우편번호</label>
+                <input type="text" th:field="*{zipcode}" placeholder="도시를 입력하세요">
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+        <div th:replace="fragments/footer :: footer"/>
+    </div>
+</body>
+</html>

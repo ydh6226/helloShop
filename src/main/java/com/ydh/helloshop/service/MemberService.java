@@ -17,8 +17,8 @@ public class MemberService {
 
     //회원 가입
     @Transactional
-    public Long save(Member member) {
-//        validateDuplicateMember(member);
+    public Long join(Member member) {
+        validateDuplicateMember(member);
         return memberRepository.save(member);
     }
 
@@ -35,7 +35,9 @@ public class MemberService {
 
     //중복 회원 검증(중복된 이메일 사용 불가)
     private void validateDuplicateMember(Member member) {
-        memberRepository.findByEmail(member.getEmail());
-
+        List<Member> findMember = memberRepository.findByEmail(member.getEmail());
+        if(findMember.size() == 1){
+            throw new IllegalStateException("이미 존재하는 회원입니다.");
+        }
     }
 }
