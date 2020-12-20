@@ -19,7 +19,7 @@ spring:
 
 logging:
   level:
-    #   로거를 통해 출력
+#       로거를 통해 출력
     org.hibernate.SQL: trace
 #   sql 파리미터 출력
 #    org.hibernate.type: trace

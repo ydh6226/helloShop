@@ -7,6 +7,16 @@
 <!--        [미해결] role="form" 역할 무엇?-->
         <form role="form" action="/members/new" th:object="${memberForm}" method="post">
             <div>
+                <p>회원 구분</p>
+                <label th:for="${#ids.next('memberStatus')}">구매 회원</label>
+                <input type="radio" th:field="*{memberStatus}" th:value="${T(com.ydh.helloshop.domain.MemberStatus).CUSTOMER}">
+
+                <label th:for="${#ids.next('memberStatus')}">판매 회원</label>
+                <input type="radio" th:field="*{memberStatus}" th:value="${T(com.ydh.helloshop.domain.MemberStatus).SELLER}">
+
+                <p th:if="${#fields.hasErrors('memberStatus')}" th:errors="*{memberStatus}">incorrect data</p>
+            </div>
+            <div>
                 <label th:for="name">이름</label>
                 <input type="text" th:field="*{name}" placeholder="이름을 입력하세요"
                        th:class="${#fields.hasErrors('name')} ? 'form-control fieldError' : 'form-control'">

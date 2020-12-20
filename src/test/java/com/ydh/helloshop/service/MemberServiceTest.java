@@ -2,6 +2,7 @@ package com.ydh.helloshop.service;
 
 import com.ydh.helloshop.domain.Address;
 import com.ydh.helloshop.domain.Member;
+import com.ydh.helloshop.domain.MemberStatus;
 import com.ydh.helloshop.repository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,11 +31,8 @@ class MemberServiceTest {
 //    @Rollback(value = false)
     public void signUp() throws Exception {
         //given
-        Member member1 = new Member();
-        member1.createInfo("userA", "abc123@naver.com", new Address());
-
-        Member member2 = new Member();
-        member2.createInfo("userA", "abc456@naver.com", new Address());
+        Member member1 = createMember("userA", "abc123@naver.com");
+        Member member2 = createMember("userB", "abc456@naver.com");
 
         //when
         Long id1 = memberService.join(member1);
@@ -49,11 +47,8 @@ class MemberServiceTest {
     @DisplayName("중복 회원 검증")
     public void duplicateSingUp() throws Exception {
         //given
-        Member member1 = new Member();
-        member1.createInfo("userA", "abc123@naver.com", new Address());
-
-        Member member2 = new Member();
-        member2.createInfo("userA", "abc123@naver.com", new Address());
+        Member member1 = createMember("userA", "abc123@naver.com");
+        Member member2 = createMember("userB", "abc123@naver.com");
 
         //when
         memberService.join(member1);
@@ -61,5 +56,11 @@ class MemberServiceTest {
         //then
         IllegalStateException exception1 = assertThrows(IllegalStateException.class, () -> memberService.join(member2));
         assertEquals("이미 존재하는 회원입니다.", exception1.getMessage());
+    }
+
+    private Member createMember(String userA, String s) {
+        Member member1 = new Member();
+        member1.createInfo(userA, s, new Address(), MemberStatus.CUSTOMER);
+        return member1;
     }
 }

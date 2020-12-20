@@ -34,9 +34,14 @@ public class MemberController {
         Address address = new Address(form.getCity(), form.getStreet(), form.getZipcode());
 
         Member member = new Member();
-        member.createInfo(form.getName(), form.getEmail(), address);
+        member.createInfo(form.getName(), form.getEmail(), address, form.getMemberStatus());
         memberService.join(member);
-        return "redirect:/";
+        return "redirect:/members/welcome";
+    }
+
+    @GetMapping("/members/welcome")
+    public String welcome() {
+        return "members/welcome";
     }
 
 }
