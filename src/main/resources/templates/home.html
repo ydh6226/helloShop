@@ -1,11 +1,33 @@
 <!DOCTYPE html>
-<html  xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="fragments/header :: header"/>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:include="fragments/header :: header"/>
 <body>
+<div class="container-md">
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
-    <div>
-        <a href="/members/new">회원 가입</a>
+    <div class="row">
+        <div class="col-9">
+            <p class="align-self-center">안녕하세요</p>
+        </div>
+        <div class="col-3">
+            <div class="container bg-light border border-dark">
+                <div class="row p-2">
+                    <div class="container text-center">
+                        <a class="btn btn-success px-4" href="/members/login">로그인</a>
+                    </div>
+                </div>
+                <div class="row pb-2" style="font-size: x-small">
+                    <div class="col container">
+                        <a class="text-dark" href="/members/findId">아이디</a>
+                        <a class="text-dark" href="/members/findPwd">/비밀번호 찾기</a>
+                    </div>
+                    <div class="col-4 container text-right">
+                        <a class="text-dark" href="/members/new" >회원가입</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div th:replace="fragments/footer :: footer"/>
+</div>
 </body>
 </html>
