@@ -44,4 +44,19 @@ public class MemberController {
         return "members/welcome";
     }
 
+    @GetMapping("members/login")
+    public String login() {
+        return "a";
+    }
+
+    @GetMapping("members/findId")
+    public String findId() {
+        return "a";
+    }
+
+    @GetMapping("members/findPwd")
+    public String findPwd() {
+        return "a";
+    }
+
 }

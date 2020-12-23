@@ -2,45 +2,65 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head th:replace="fragments/header :: header"/>
 <body>
-    <div>
+    <div class="container">
         <div th:replace="fragments/bodyHeader :: bodyHeader"/>
-<!--        [미해결] role="form" 역할 무엇?-->
-        <form role="form" action="/members/new" th:object="${memberForm}" method="post">
-            <div>
-                <p>회원 구분</p>
-                <label th:for="${#ids.next('memberStatus')}">구매 회원</label>
-                <input type="radio" th:field="*{memberStatus}" th:value="${T(com.ydh.helloshop.domain.MemberStatus).CUSTOMER}">
+        <!-- [미해결] role="form" 역할 무엇?-->
+        <form class="container" role="form" action="/members/new" th:object="${memberForm}" method="post">
+            <fieldset class="form-group">
+                <div class="row">
 
-                <label th:for="${#ids.next('memberStatus')}">판매 회원</label>
-                <input type="radio" th:field="*{memberStatus}" th:value="${T(com.ydh.helloshop.domain.MemberStatus).SELLER}">
-
-                <p th:if="${#fields.hasErrors('memberStatus')}" th:errors="*{memberStatus}">incorrect data</p>
+                    <legend class="col-form-label col-2"><span style="color: red">*</span> 회원 구분</legend>
+                    <div class="col-10">
+                        <div class="form-check pl-0">
+                            <label th:for="${#ids.next('memberStatus')}">구매 회원 </label>
+                            <input type="radio" th:field="*{memberStatus}" th:value="${T(com.ydh.helloshop.domain.MemberStatus).CUSTOMER}">
+                        </div>
+                        <div class="form-check pl-0">
+                            <label th:for="${#ids.next('memberStatus')}">판매 회원 </label>
+                            <input type="radio" th:field="*{memberStatus}" th:value="${T(com.ydh.helloshop.domain.MemberStatus).SELLER}">
+                        </div>
+                        <p class="invalid-feedback d-block mb-0"
+                           th:if="${#fields.hasErrors('memberStatus')}" th:errors="*{memberStatus}">incorrect data</p>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="form-group row">
+                <label class="col-2 col-form-label" th:for="name"><span style="color: red">*</span> 이름</label>
+                <div class="col-10">
+                    <input type="text" class="form-control" th:field="*{name}" placeholder="이름을 입력하세요"
+                           th:class="${#fields.hasErrors('name')} ? 'form-control is-invalid' : 'form-control'">
+                    <p class="invalid-feedback d-block mb-0" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">incorrect data</p>
+                </div>
             </div>
-            <div>
-                <label th:for="name">이름</label>
-                <input type="text" th:field="*{name}" placeholder="이름을 입력하세요"
-                       th:class="${#fields.hasErrors('name')} ? 'form-control fieldError' : 'form-control'">
-                <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}">incorrect data</p>
+            <div class="form-group row">
+                <label class="col-2 col-form-label" th:for="email"><span style="color: red">*</span> 이메일</label>
+                <div class="col-10">
+                    <input type="text" class="form-control" th:field="*{email}" placeholder="이메일을 입력하세요"
+                           th:class="${#fields.hasErrors('email')} ? 'form-control is-invalid' : 'form-control'">
+                    <p class="invalid-feedback d-block mb-0" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">incorrect data</p>
+                </div>
             </div>
-            <div>
-                <label th:for="email">이메일</label>
-                <input type="text" th:field="*{email}" placeholder="이메일을 입력하세요"
-                       th:class="${#fields.hasErrors('email')} ? 'form-control fieldError' : 'form-control'">
-                <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}">incorrect data</p>
+            <div class="form-group row">
+                <label class="col-2 col-form-label" th:for="city">도시</label>
+                <div class="col-10">
+                    <input type="text" class="form-control" th:field="*{city}" placeholder="도시를 입력하세요">
+                </div>
             </div>
-            <div>
-                <label th:for="city">도시</label>
-                <input type="text" th:field="*{city}" placeholder="도시를 입력하세요">
+            <div class="form-group row">
+                <label class="col-2 col-form-label" th:for="street">거리</label>
+                <div class="col-10">
+                    <input type="text" class="form-control" th:field="*{street}" placeholder="거리를 입력하세요">
+                </div>
             </div>
-            <div>
-                <label th:for="street">거리</label>
-                <input type="text" th:field="*{street}" placeholder="거리를 입력하세요">
+            <div class="form-group row">
+                <label class="col-2 col-form-label" th:for="zipcode">우편번호</label>
+                <div class="col-10">
+                    <input type="text" class="form-control" th:field="*{zipcode}" placeholder="도시를 입력하세요">
+                </div>
             </div>
-            <div>
-                <label th:for="zipcode">우편번호</label>
-                <input type="text" th:field="*{zipcode}" placeholder="도시를 입력하세요">
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
             </div>
-            <button type="submit">Submit</button>
         </form>
         <div th:replace="fragments/footer :: footer"/>
     </div>
