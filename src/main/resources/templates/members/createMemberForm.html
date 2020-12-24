@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
-<head th:replace="fragments/header :: header"/>
+<head th:include="fragments/header :: header"/>
 <body>
     <div class="container">
         <div th:replace="fragments/bodyHeader :: bodyHeader"/>
@@ -8,7 +8,6 @@
         <form class="container" role="form" action="/members/new" th:object="${memberForm}" method="post">
             <fieldset class="form-group">
                 <div class="row">
-
                     <legend class="col-form-label col-2"><span style="color: red">*</span> 회원 구분</legend>
                     <div class="col-10">
                         <div class="form-check pl-0">
@@ -38,6 +37,14 @@
                     <input type="text" class="form-control" th:field="*{email}" placeholder="이메일을 입력하세요"
                            th:class="${#fields.hasErrors('email')} ? 'form-control is-invalid' : 'form-control'">
                     <p class="invalid-feedback d-block mb-0" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">incorrect data</p>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-2 col-form-label" th:for="password"><span style="color: red">*</span> 비밀번호</label>
+                <div class="col-10">
+                    <input type="password" class="form-control" th:field="*{password}" placeholder="비밀번호를 입력하세요"
+                           th:class="${#fields.hasErrors('password')} ? 'form-control is-invalid' : 'form-control'">
+                    <p class="invalid-feedback d-block mb-0" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">incorrect data</p>
                 </div>
             </div>
             <div class="form-group row">

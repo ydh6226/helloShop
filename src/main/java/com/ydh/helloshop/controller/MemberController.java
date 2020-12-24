@@ -34,11 +34,12 @@ public class MemberController {
         Address address = new Address(form.getCity(), form.getStreet(), form.getZipcode());
 
         Member member = new Member();
-        member.createInfo(form.getName(), form.getEmail(), address, form.getMemberStatus());
+        member.createInfo(form.getName(), form.getEmail(), form.getPassword(), address, form.getMemberStatus());
         memberService.join(member);
         return "redirect:/members/welcome";
     }
 
+    //control uri 최대한 사용 자제
     @GetMapping("/members/welcome")
     public String welcome() {
         return "members/welcome";
@@ -46,17 +47,17 @@ public class MemberController {
 
     @GetMapping("members/login")
     public String login() {
-        return "a";
+        return "members/welcome";
     }
 
     @GetMapping("members/findId")
     public String findId() {
-        return "a";
+        return "members/welcome";
     }
 
     @GetMapping("members/findPwd")
     public String findPwd() {
-        return "a";
+        return "members/welcome";
     }
 
 }

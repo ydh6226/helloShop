@@ -20,6 +20,6 @@ spring:
 logging:
   level:
 #       로거를 통해 출력
-    org.hibernate.SQL: trace
+    org.hibernate.SQL: debug
 #   sql 파리미터 출력
 #    org.hibernate.type: trace
