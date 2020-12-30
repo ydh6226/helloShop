@@ -1,10 +1,6 @@
 package com.ydh.helloshop.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,10 +9,9 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
-import static javax.persistence.EnumType.*;
+import static javax.persistence.EnumType.STRING;
 
 
 /**
@@ -47,8 +42,6 @@ public class Member implements UserDetails {
 
     private LocalDateTime joinDate;
 
-    private String auth;
-
     public void createInfo(String name, String email, String password, Address address, MemberStatus memberStatus) {
         this.name = name;
         this.email = email;
@@ -62,9 +55,7 @@ public class Member implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> roles = new HashSet<>();
-        for (String role : auth.split(",")) {
-            roles.add(new SimpleGrantedAuthority(role));
-        }
+        roles.add(new SimpleGrantedAuthority(memberStatus.toString()));
         return roles;
     }
 

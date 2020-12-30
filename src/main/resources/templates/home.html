@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 <head th:include="fragments/header :: header"/>
 <body>
 <div class="container-md">
@@ -9,7 +10,7 @@
             <p class="align-self-center">안녕하세요</p>
         </div>
         <div class="col-3">
-            <div class="container bg-light border border-dark">
+            <div class="container bg-light border border-dark" sec:authorize="isAnonymous()">
                 <div class="row p-2">
                     <div class="container text-center">
                         <a class="btn btn-success px-4" href="/members/login">로그인</a>
@@ -25,6 +26,25 @@
                     </div>
                 </div>
             </div>
+            <div class="container bg-light border border-dark" sec:authorize="isAuthenticated()">
+                <div class="row p-2" th:object="${memberInfo}">
+                    <div class="container text-center">
+                        <p th:text="|*{name} 님 안녕하세요|">회원 이름</p>
+                        <p th:text="*{email}">회원 이메일</p>
+                    </div>
+                </div>
+                <div class="row p-2">
+                    <div class="col text-center">
+                        <form th:action="@{/logout}" method="post">
+                            <button class="btn btn-warning" style="font-size: xx-small" type="submit" value="logout">로그아웃</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+
+
         </div>
     </div>
     <div th:replace="fragments/footer :: footer"/>

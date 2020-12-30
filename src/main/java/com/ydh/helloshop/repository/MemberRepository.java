@@ -26,7 +26,7 @@ public class MemberRepository {
         return em.createQuery("select m from Member m", Member.class).getResultList();
     }
 
-    //[미해결] getsingleresult vs getresultlist
+    //[미해결] getsingleresult(Optional) vs getresultlist
     public List<Member> findByEmail(String email){
         return em.createQuery("select m from Member m where m.email=:email", Member.class)
                 .setParameter("email", email)
