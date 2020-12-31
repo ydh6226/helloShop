@@ -43,7 +43,7 @@ public class MemberController {
         Member member = new Member();
         member.createInfo(form.getName(), form.getEmail(),
                 new BCryptPasswordEncoder().encode(form.getPassword()),
-                address, form.getMemberStatus());
+                address, form.getStatus());
         memberService.join(member);
 
         return "redirect:/members/welcome";

@@ -16,15 +16,15 @@
                     <legend class="col-form-label col-2"><span style="color: red">*</span> 회원 구분</legend>
                     <div class="col-10">
                         <div class="form-check pl-0">
-                            <label th:for="${#ids.next('memberStatus')}">구매 회원 </label>
-                            <input type="radio" th:field="*{memberStatus}" th:value="${T(com.ydh.helloshop.domain.MemberStatus).CUSTOMER}">
+                            <label th:for="${#ids.next('status')}">구매 회원 </label>
+                            <input type="radio" th:field="*{status}" th:value="${T(com.ydh.helloshop.domain.MemberStatus).CUSTOMER}">
                         </div>
                         <div class="form-check pl-0">
-                            <label th:for="${#ids.next('memberStatus')}">판매 회원 </label>
-                            <input type="radio" th:field="*{memberStatus}" th:value="${T(com.ydh.helloshop.domain.MemberStatus).SELLER}">
+                            <label th:for="${#ids.next('status')}">판매 회원 </label>
+                            <input type="radio" th:field="*{status}" th:value="${T(com.ydh.helloshop.domain.MemberStatus).SELLER}">
                         </div>
                         <p class="invalid-feedback d-block mb-0"
-                           th:if="${#fields.hasErrors('memberStatus')}" th:errors="*{memberStatus}">incorrect data</p>
+                           th:if="${#fields.hasErrors('status')}" th:errors="*{status}">incorrect data</p>
                     </div>
                 </div>
             </fieldset>

@@ -15,8 +15,8 @@ import static javax.persistence.EnumType.STRING;
 
 
 /**
- * primary key = id
- * alternate key = email
+ * primary key = member_id
+ * unique key = email
  */
 @Entity
 @Getter
@@ -35,7 +35,7 @@ public class Member implements UserDetails {
     private String password;
 
     @Enumerated(STRING)
-    private MemberStatus memberStatus;
+    private MemberStatus status;
 
     @Embedded
     private Address address;
@@ -47,7 +47,7 @@ public class Member implements UserDetails {
         this.email = email;
         this.password = password;
         this.address = address;
-        this.memberStatus = memberStatus;
+        this.status = memberStatus;
         joinDate = LocalDateTime.now();
     }
 
@@ -55,7 +55,7 @@ public class Member implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> roles = new HashSet<>();
-        roles.add(new SimpleGrantedAuthority(memberStatus.toString()));
+        roles.add(new SimpleGrantedAuthority(status.toString()));
         return roles;
     }
 

@@ -23,7 +23,7 @@ public class MemberForm {
     private String password;
 
     @NotNull(message = "회원종류 선택은 필수입니다.")
-    private MemberStatus memberStatus;
+    private MemberStatus status;
 
     private String city;
     private String street;
