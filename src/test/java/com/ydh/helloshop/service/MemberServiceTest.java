@@ -60,7 +60,7 @@ class MemberServiceTest {
 
     private Member createMember(String userA, String s) {
         Member member1 = new Member();
-        member1.createInfo(userA, s, "123456", new Address(), MemberStatus.CUSTOMER);
+        member1.createInfo(userA, s, "123456", null, MemberStatus.CUSTOMER);
         return member1;
     }
 }
