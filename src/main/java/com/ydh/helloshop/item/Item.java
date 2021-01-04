@@ -1,6 +1,7 @@
 package com.ydh.helloshop.item;
 
 import com.ydh.helloshop.domain.ItemCategory;
+import com.ydh.helloshop.exception.NotEnoughStockException;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -29,4 +30,25 @@ public abstract class Item {
 
     @OneToMany(mappedBy = "item", cascade = ALL)
     private List<ItemCategory> itemCategory;
+
+    //상품 정보 수정
+    public void setInfo(String name, int price, int stockQuantity) {
+        this.name = name;
+        this.price = price;
+        this.stockQuantity = stockQuantity;
+    }
+
+    //재고 증가
+    public void addStock(int count) {
+        stockQuantity += count;
+    }
+
+    //재고 감소
+    public void removeStock(int count) {
+        int restStock = stockQuantity - count;
+        if (restStock < 0) {
+            throw new NotEnoughStockException("need more stock");
+        }
+        stockQuantity = restStock;
+    }
 }

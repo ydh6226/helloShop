@@ -1,9 +1,11 @@
 package com.ydh.helloshop.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import javax.persistence.*;
 
+import static com.ydh.helloshop.domain.DeliveryStatus.*;
 import static javax.persistence.EnumType.*;
 import static javax.persistence.FetchType.*;
 
@@ -24,4 +26,17 @@ public class Delivery {
 
     @Enumerated(STRING)
     private DeliveryStatus status;
+
+    //생성자
+    public Delivery(Address address) {
+        this.address = address;
+        this.status = READY;
+    }
+
+    //setter
+    public void initOrder(Order order) {
+        this.order = order;
+    }
+
+
 }
