@@ -30,4 +30,10 @@ public class ItemRepository {
         return em.createQuery("select i from Item i", Item.class)
                 .getResultList();
     }
+
+    public List<Item> findSelectedItem(List<Long> itemIds) {
+        return em.createQuery("select i from Item i where i in :items", Item.class)
+                .setParameter("items", itemIds)
+                .getResultList();
+    }
 }

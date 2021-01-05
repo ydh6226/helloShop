@@ -1,6 +1,5 @@
 package com.ydh.helloshop.service;
 
-import com.ydh.helloshop.domain.Address;
 import com.ydh.helloshop.domain.Member;
 import com.ydh.helloshop.domain.MemberStatus;
 import com.ydh.helloshop.repository.MemberRepository;
@@ -24,7 +23,6 @@ class MemberServiceTest {
     MemberRepository memberRepository;
     @Autowired
     MemberService memberService;
-
 
     @Test
     @DisplayName("회원가입")

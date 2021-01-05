@@ -1,0 +1,28 @@
+server:
+  port: 8081
+
+
+spring:
+  #db 설정 주석시 memory db로 동작
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/helloshop
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        #        sout를 통해 출력
+        #        show_sql: true
+        format_sql: true
+        default_batch_fetch_size: 100 # IN 쿼리의 개수
+
+logging:
+  level:
+#       로거를 통해 출력
+    org.hibernate.SQL: debug
+#   sql 파리미터 출력
+#    org.hibernate.type: trace

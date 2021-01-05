@@ -13,6 +13,7 @@ import java.util.List;
 
 import static com.ydh.helloshop.domain.QOrder.order;
 import static com.ydh.helloshop.domain.QOrderItem.orderItem;
+import static com.ydh.helloshop.item.QItem.item;
 
 @Repository
 public class OrderRepository {
@@ -36,20 +37,29 @@ public class OrderRepository {
 
     public List<Order> findAll(OrderSearch orderSearch) {
         return query.select(order)
+                .distinct()
                 .from(order)
                 .join(order.orderItems, orderItem)
-                .where(order.member.id.eq(orderSearch.getMemberId()),
+                .join(orderItem.item, item)
+                .where(memberEq(orderSearch.getMemberId()),
                         statusEq(orderSearch.getOrderStatus()),
                         itemNameLike(orderSearch.getItemName()))
                 .limit(1000)
                 .fetch();
     }
 
+    private BooleanExpression memberEq(Long memberId) {
+        if(memberId == null){
+            return null;
+        }
+        return order.member.id.eq(memberId);
+    }
+
     private BooleanExpression itemNameLike(String itemName) {
         if (!StringUtils.hasText(itemName)) {
             return null;
         }
-        return QItem.item.name.eq(itemName);
+        return orderItem.item.name.contains(itemName);
     }
 
     private BooleanExpression statusEq(OrderStatus statusCond) {
