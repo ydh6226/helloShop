@@ -31,9 +31,9 @@ public class ItemRepository {
                 .getResultList();
     }
 
-    public List<Item> findSelectedItem(List<Long> itemIds) {
-        return em.createQuery("select i from Item i where i in :items", Item.class)
-                .setParameter("items", itemIds)
+    public List<Item> findMultiple(List<Long> itemIds) {
+        return em.createQuery("select i from Item i where i.id in :itemIds", Item.class)
+                .setParameter("itemIds", itemIds)
                 .getResultList();
     }
 }

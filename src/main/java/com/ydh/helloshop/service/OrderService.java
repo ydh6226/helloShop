@@ -10,18 +10,19 @@ import com.ydh.helloshop.repository.MemberRepository;
 import com.ydh.helloshop.repository.OrderRepository;
 import com.ydh.helloshop.repository.OrderSearch;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.ydh.helloshop.domain.Order.createOrder;
 import static com.ydh.helloshop.domain.OrderItem.*;
+import static java.util.stream.Collectors.*;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.IntStream.range;
 
 @Service
 @RequiredArgsConstructor
@@ -50,13 +51,25 @@ public class OrderService {
     @Transactional
     public Long orderMultiple(Long memberId, List<Long> itemIds, List<Integer> counts) {
         Member member = memberRepository.findOne(memberId);
-        List<OrderItem> orderItems = new ArrayList<>();
 
-        int size = itemIds.size();
-        for (int index = 0; index < size; index++) {
-            Item item = itemRepository.findOne(itemIds.get(index));
-            orderItems.add(createOrderItem(item, item.getPrice(), counts.get(index)));
-        }
+        //iterator 사용
+/*
+        Iterator<Long> idItr = itemIds.iterator();
+        Iterator<Integer> countItr = counts.iterator();
+
+        Map<Long, Integer> itemCountMap = range(0, itemIds.size()).boxed()
+                .collect(toMap(i -> idItr.next(), i -> countItr.next()));
+*/
+
+        //get 사용
+        Map<Long, Integer> itemCountMap = range(0, itemIds.size()).boxed()
+                .collect(toMap(itemIds::get, counts::get));
+
+        List<Item> items = itemRepository.findMultiple(itemIds);
+
+        List<OrderItem> orderItems = items.stream()
+                .map(o -> createOrderItem(o, o.getPrice(), itemCountMap.get(o.getId())))
+                .collect(toList());
 
         Delivery delivery = new Delivery(member.getAddress());
 
