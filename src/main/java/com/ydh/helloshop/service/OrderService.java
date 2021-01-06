@@ -65,16 +65,13 @@ public class OrderService {
         Map<Long, Integer> itemCountMap = range(0, itemIds.size()).boxed()
                 .collect(toMap(itemIds::get, counts::get));
 
-        List<Item> items = itemRepository.findMultiple(itemIds);
-
-        List<OrderItem> orderItems = items.stream()
+        List<OrderItem> orderItems = itemRepository.findMultiple(itemIds).stream()
                 .map(o -> createOrderItem(o, o.getPrice(), itemCountMap.get(o.getId())))
                 .collect(toList());
 
         Delivery delivery = new Delivery(member.getAddress());
 
-        Order order = createOrder(member, delivery, orderItems);
-        return orderRepository.save(order);
+        return orderRepository.save(createOrder(member, delivery, orderItems));
     }
 
     //주문 취소
