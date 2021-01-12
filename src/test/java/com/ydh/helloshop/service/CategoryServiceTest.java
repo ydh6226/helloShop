@@ -23,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @Transactional
-@Rollback(value = false)
 class CategoryServiceTest {
 
     @Autowired

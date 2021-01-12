@@ -23,8 +23,8 @@ public class CategoryService {
     }
 
     @Transactional
-    public Long update(Long categoryId, String name, Long parentId) {
-        return categoryRepository.update(categoryId, name, parentId);
+    public void update(Long categoryId, String name, Long parentId) {
+        categoryRepository.update(categoryId, name, parentId);
     }
 
     @Transactional

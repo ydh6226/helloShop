@@ -40,7 +40,7 @@ public class Category {
         }
     }
 
-    //== 연관관계 메서드 ==//
+    //== 연관 관계 메서드 ==/
     private void setParent(Category parent){
         this.parent = parent;
         parent.getChildren().add(this);

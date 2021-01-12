@@ -4,19 +4,17 @@ import com.ydh.helloshop.domain.Delivery;
 import com.ydh.helloshop.domain.Member;
 import com.ydh.helloshop.domain.Order;
 import com.ydh.helloshop.domain.OrderItem;
+import com.ydh.helloshop.exception.NoSuchItem;
 import com.ydh.helloshop.item.Item;
-import com.ydh.helloshop.repository.ItemRepository;
+import com.ydh.helloshop.repository.item.ItemRepository;
 import com.ydh.helloshop.repository.MemberRepository;
 import com.ydh.helloshop.repository.OrderRepository;
 import com.ydh.helloshop.repository.OrderSearch;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static com.ydh.helloshop.domain.Order.createOrder;
 import static com.ydh.helloshop.domain.OrderItem.*;
@@ -37,7 +35,7 @@ public class OrderService {
     @Transactional
     public Long orderOne(Long memberId, Long itemId, int count) {
         Member member = memberRepository.findOne(memberId);
-        Item item = itemRepository.findOne(itemId);
+        Item item = itemRepository.findById(itemId).orElseThrow(() -> new NoSuchItem("Register the Item!!"));
         Delivery delivery = new Delivery(member.getAddress());
 
         List<OrderItem> orderItems = new ArrayList<>();

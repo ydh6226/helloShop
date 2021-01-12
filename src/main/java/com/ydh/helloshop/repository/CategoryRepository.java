@@ -23,10 +23,9 @@ public class CategoryRepository {
         return category.getId();
     }
 
-    public Long update(Long categoryId, String name, Long parentId){
+    public void update(Long categoryId, String name, Long parentId){
         Category category = em.find(Category.class, categoryId);
         category.setInfo(name, em.find(Category.class, parentId));
-        return category.getId();
     }
 
     public Category findOne(Long id){

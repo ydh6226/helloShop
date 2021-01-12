@@ -4,21 +4,20 @@ import com.ydh.helloshop.domain.Address;
 import com.ydh.helloshop.domain.Member;
 import com.ydh.helloshop.domain.Order;
 import com.ydh.helloshop.domain.OrderStatus;
+import com.ydh.helloshop.exception.NoSuchItem;
 import com.ydh.helloshop.exception.NotEnoughStockException;
 import com.ydh.helloshop.item.Album;
 import com.ydh.helloshop.item.Book;
 import com.ydh.helloshop.item.Item;
-import com.ydh.helloshop.repository.ItemRepository;
+import com.ydh.helloshop.repository.item.ItemRepository;
 import com.ydh.helloshop.repository.MemberRepository;
 import com.ydh.helloshop.repository.OrderRepository;
 import com.ydh.helloshop.repository.OrderSearch;
-import org.junit.Assert;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,7 +57,7 @@ class OrderServiceTest {
         Long orderId = orderService.orderOne(ids.get(0), ids.get(2), orderCount);
 
         Order findOrder = orderRepository.findOne(orderId);
-        Item findItem = itemRepository.findOne(ids.get(2));
+        Item findItem = itemRepository.findById(ids.get(2)).orElseThrow(() -> new NoSuchItem("Register the Item!!"));
 
         //then
         //org.junit.Assert.assertEquals
@@ -87,8 +86,8 @@ class OrderServiceTest {
         Long orderId = orderService.orderMultiple(ids.get(0), itemIds, counts);
 
         Order order = orderRepository.findOne(orderId);
-        Item item1 = itemRepository.findOne(ids.get(3));
-        Item item2 = itemRepository.findOne(ids.get(4));
+        Item item1 = itemRepository.findById(ids.get(3)).orElseThrow(() -> new NoSuchItem("Register the Item!!"));
+        Item item2 = itemRepository.findById(ids.get(4)).orElseThrow(() -> new NoSuchItem("Register the Item!!"));
 
         //then
         assertEquals("주문한 상품 종류 수는 정확해야 한다.", 2, order.getOrderItems().size());
@@ -143,7 +142,7 @@ class OrderServiceTest {
         //then
         NotEnoughStockException exception = assertThrows(NotEnoughStockException.class,
                         () -> orderService.orderOne(ids.get(0), ids.get(2), orderCount));
-        assertEquals("need more stock", exception.getMessage());
+        assertEquals("need more stock!!", exception.getMessage());
     }
 
     @Test
@@ -159,7 +158,7 @@ class OrderServiceTest {
 
         //then
         Order findOrder = orderRepository.findOne(orderId);
-        Item findItem = itemRepository.findOne(ids.get(2));
+        Item findItem = itemRepository.findById(ids.get(2)).orElseThrow(() -> new NoSuchItem("Register the Item!!"));
 
         assertEquals("취소된 주문의 상태는 CANCEL이다", OrderStatus.CANCEL, findOrder.getStatus());
         assertEquals("주문 취소된 상품의 재고수량이 원복되어야 한다.", 1000, findItem.getStockQuantity());
