@@ -43,7 +43,6 @@ public class Member implements UserDetails {
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<>();
 
-
     public void createInfo(String name, String email, String password, Address address, MemberStatus memberStatus) {
         this.name = name;
         this.email = email;

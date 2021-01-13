@@ -1,6 +1,5 @@
 package com.ydh.helloshop.item;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +18,6 @@ public class Book extends Item{
     public Book(String author, String isbn, String name, int price, int stockQuantity) {
         this.author = author;
         this.isbn = isbn;
-        super.setInfo(name, price, stockQuantity);
+        super.changeInfo(name, price, stockQuantity);
     }
 }

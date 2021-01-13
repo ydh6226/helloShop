@@ -3,13 +3,11 @@ package com.ydh.helloshop.domain;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.sql.Delete;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
@@ -33,14 +31,14 @@ public class Category {
 
 
     //setter
-    public void setInfo(String name, Category parent) {
+    public void changeInfo(String name, Category parent) {
         this.name = name;
         if (parent != null) {
             this.setParent(parent);
         }
     }
 
-    //== 연관관계 메서드 ==//
+    //== 연관 관계 메서드 ==/
     private void setParent(Category parent){
         this.parent = parent;
         parent.getChildren().add(this);
@@ -49,7 +47,7 @@ public class Category {
     //카테고리 생성 메서드
     public static Category createCategory(String name, Category parent) {
         Category category = new Category();
-        category.setInfo(name, parent);
+        category.changeInfo(name, parent);
         return category;
     }
 }

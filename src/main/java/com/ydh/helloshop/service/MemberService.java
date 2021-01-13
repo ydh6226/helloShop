@@ -1,6 +1,7 @@
 package com.ydh.helloshop.service;
 
 import com.ydh.helloshop.domain.Member;
+import com.ydh.helloshop.exception.NoSuchMember;
 import com.ydh.helloshop.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,12 +22,14 @@ public class MemberService implements UserDetailsService {
     @Transactional
     public Long join(Member member) {
         validateDuplicateMember(member);
-        return memberRepository.save(member);
+        memberRepository.save(member);
+        return member.getId();
     }
 
     //단일 회원 조회
     public Member findOne(Long id) {
-        return memberRepository.findOne(id);
+        return memberRepository.findById(id)
+                .orElseThrow(() -> new NoSuchMember("The member could not be found."));
     }
 
     //모든 회원 조회
@@ -54,7 +57,8 @@ public class MemberService implements UserDetailsService {
         else {
             throw new UsernameNotFoundException(email);
         }
-
-
     }
+
+
+
 }

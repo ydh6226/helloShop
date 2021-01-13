@@ -4,19 +4,18 @@ import com.ydh.helloshop.domain.Delivery;
 import com.ydh.helloshop.domain.Member;
 import com.ydh.helloshop.domain.Order;
 import com.ydh.helloshop.domain.OrderItem;
+import com.ydh.helloshop.exception.NoSuchItem;
+import com.ydh.helloshop.exception.NoSuchMember;
 import com.ydh.helloshop.item.Item;
-import com.ydh.helloshop.repository.ItemRepository;
+import com.ydh.helloshop.repository.item.ItemRepository;
 import com.ydh.helloshop.repository.MemberRepository;
 import com.ydh.helloshop.repository.OrderRepository;
 import com.ydh.helloshop.repository.OrderSearch;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static com.ydh.helloshop.domain.Order.createOrder;
 import static com.ydh.helloshop.domain.OrderItem.*;
@@ -36,8 +35,9 @@ public class OrderService {
     //단일주문
     @Transactional
     public Long orderOne(Long memberId, Long itemId, int count) {
-        Member member = memberRepository.findOne(memberId);
-        Item item = itemRepository.findOne(itemId);
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NoSuchMember("The member could not be found."));
+        Item item = itemRepository.findById(itemId).orElseThrow(() -> new NoSuchItem("The Item could not be found."));
         Delivery delivery = new Delivery(member.getAddress());
 
         List<OrderItem> orderItems = new ArrayList<>();
@@ -50,7 +50,8 @@ public class OrderService {
     //복수주문
     @Transactional
     public Long orderMultiple(Long memberId, List<Long> itemIds, List<Integer> counts) {
-        Member member = memberRepository.findOne(memberId);
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NoSuchMember("The member could not be found."));
 
         //iterator 사용
 /*
