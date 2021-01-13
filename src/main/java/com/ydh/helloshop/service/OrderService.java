@@ -5,6 +5,7 @@ import com.ydh.helloshop.domain.Member;
 import com.ydh.helloshop.domain.Order;
 import com.ydh.helloshop.domain.OrderItem;
 import com.ydh.helloshop.exception.NoSuchItem;
+import com.ydh.helloshop.exception.NoSuchMember;
 import com.ydh.helloshop.item.Item;
 import com.ydh.helloshop.repository.item.ItemRepository;
 import com.ydh.helloshop.repository.MemberRepository;
@@ -34,8 +35,9 @@ public class OrderService {
     //단일주문
     @Transactional
     public Long orderOne(Long memberId, Long itemId, int count) {
-        Member member = memberRepository.findOne(memberId);
-        Item item = itemRepository.findById(itemId).orElseThrow(() -> new NoSuchItem("Register the Item!!"));
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NoSuchMember("The member could not be found."));
+        Item item = itemRepository.findById(itemId).orElseThrow(() -> new NoSuchItem("The Item could not be found."));
         Delivery delivery = new Delivery(member.getAddress());
 
         List<OrderItem> orderItems = new ArrayList<>();
@@ -48,7 +50,8 @@ public class OrderService {
     //복수주문
     @Transactional
     public Long orderMultiple(Long memberId, List<Long> itemIds, List<Integer> counts) {
-        Member member = memberRepository.findOne(memberId);
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NoSuchMember("The member could not be found."));
 
         //iterator 사용
 /*

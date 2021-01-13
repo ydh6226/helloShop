@@ -57,7 +57,7 @@ class OrderServiceTest {
         Long orderId = orderService.orderOne(ids.get(0), ids.get(2), orderCount);
 
         Order findOrder = orderRepository.findOne(orderId);
-        Item findItem = itemRepository.findById(ids.get(2)).orElseThrow(() -> new NoSuchItem("Register the Item!!"));
+        Item findItem = itemRepository.findById(ids.get(2)).orElseThrow(() -> new NoSuchItem("The Item could not be found."));
 
         //then
         //org.junit.Assert.assertEquals
@@ -86,8 +86,8 @@ class OrderServiceTest {
         Long orderId = orderService.orderMultiple(ids.get(0), itemIds, counts);
 
         Order order = orderRepository.findOne(orderId);
-        Item item1 = itemRepository.findById(ids.get(3)).orElseThrow(() -> new NoSuchItem("Register the Item!!"));
-        Item item2 = itemRepository.findById(ids.get(4)).orElseThrow(() -> new NoSuchItem("Register the Item!!"));
+        Item item1 = itemRepository.findById(ids.get(3)).orElseThrow(() -> new NoSuchItem("The Item could not be found."));
+        Item item2 = itemRepository.findById(ids.get(4)).orElseThrow(() -> new NoSuchItem("The Item could not be found."));
 
         //then
         assertEquals("주문한 상품 종류 수는 정확해야 한다.", 2, order.getOrderItems().size());
@@ -158,7 +158,7 @@ class OrderServiceTest {
 
         //then
         Order findOrder = orderRepository.findOne(orderId);
-        Item findItem = itemRepository.findById(ids.get(2)).orElseThrow(() -> new NoSuchItem("Register the Item!!"));
+        Item findItem = itemRepository.findById(ids.get(2)).orElseThrow(() -> new NoSuchItem("The Item could not be found."));
 
         assertEquals("취소된 주문의 상태는 CANCEL이다", OrderStatus.CANCEL, findOrder.getStatus());
         assertEquals("주문 취소된 상품의 재고수량이 원복되어야 한다.", 1000, findItem.getStockQuantity());

@@ -30,7 +30,7 @@ public class ItemServiceImpl implements ItemService<Item> {
 
     @Override
     public Item findOne(Long id) {
-        return itemRepository.findById(id).orElseThrow(() -> new NoSuchItem("Register the Item!!"));
+        return itemRepository.findById(id).orElseThrow(() -> new NoSuchItem("The Item could not be found."));
     }
 
     @Override
@@ -40,7 +40,7 @@ public class ItemServiceImpl implements ItemService<Item> {
 
     @Transactional
     public void update(Long id, String name, int price, int stockQuantity) {
-        Item item = itemRepository.findById(id).orElseThrow(() -> new NoSuchItem("Register the Item!!"));
+        Item item = itemRepository.findById(id).orElseThrow(() -> new NoSuchItem("The Item could not be found."));
         item.changeInfo(name, price, stockQuantity);
     }
 }

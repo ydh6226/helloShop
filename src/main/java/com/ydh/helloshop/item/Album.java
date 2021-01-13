@@ -1,15 +1,21 @@
 package com.ydh.helloshop.item;
 
+import com.ydh.helloshop.controller.item.AlbumForm;
+import com.ydh.helloshop.domain.Category;
+import com.ydh.helloshop.domain.ItemCategory;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import java.util.List;
+
+import static lombok.AccessLevel.*;
 
 @Entity
 @DiscriminatorValue("A")
-@NoArgsConstructor
+@NoArgsConstructor(access = PROTECTED)
 @Getter
 public class Album extends Item {
 
@@ -30,7 +36,9 @@ public class Album extends Item {
     }
 
     //생성 메서드
-    public static Album createAlbum(String artist, String etc, String name, int price, int stockQuantity) {
-        return new Album(artist, etc, name, price, stockQuantity);
+    public static Album createAlbum(AlbumForm form, List<ItemCategory> itemCategories) {
+        Album album = new Album(form.getArtist(), form.getEtc(), form.getName(), form.getPrice(), form.getStockQuantity());
+        itemCategories.forEach(album::addItemCategory);
+        return album;
     }
 }

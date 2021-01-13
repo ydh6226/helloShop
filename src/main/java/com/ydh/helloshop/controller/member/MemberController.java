@@ -1,4 +1,4 @@
-package com.ydh.helloshop.controller;
+package com.ydh.helloshop.controller.member;
 
 import com.ydh.helloshop.domain.Address;
 import com.ydh.helloshop.domain.Member;

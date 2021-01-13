@@ -1,4 +1,4 @@
-package com.ydh.helloshop.controller;
+package com.ydh.helloshop.controller.member;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,6 +1,5 @@
 package com.ydh.helloshop.item;
 
-import com.ydh.helloshop.domain.Category;
 import com.ydh.helloshop.domain.ItemCategory;
 import com.ydh.helloshop.exception.NotEnoughStockException;
 import lombok.Getter;
@@ -8,18 +7,17 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.InheritanceType.SINGLE_TABLE;
+import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Inheritance(strategy = SINGLE_TABLE)
 @DiscriminatorColumn(name = "dtype")
-@NoArgsConstructor
+@NoArgsConstructor(access = PROTECTED)
 @Getter
-@Setter
 public abstract class Item {
 
     @Id
@@ -44,9 +42,9 @@ public abstract class Item {
     }
 
     //== 연관 관계 메서드 ==/
-    private void setItemCategory(ItemCategory itemCategory) {
+    protected void addItemCategory(ItemCategory itemCategory) {
         itemCategories.add(itemCategory);
-        itemCategory.initItem(this);
+        itemCategory.changeItem(this);
     }
 
     //== 비즈니스 로직 ==/
@@ -63,6 +61,4 @@ public abstract class Item {
         }
         stockQuantity = restStock;
     }
-
-
 }

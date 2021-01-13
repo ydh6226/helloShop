@@ -1,15 +1,17 @@
 package com.ydh.helloshop.domain;
 
 import com.ydh.helloshop.item.Item;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 import static javax.persistence.FetchType.*;
+import static lombok.AccessLevel.*;
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = PROTECTED)
 @Getter
 public class ItemCategory {
 
@@ -27,18 +29,17 @@ public class ItemCategory {
     private Category category;
 
     //생성자
-    protected ItemCategory(Item item, Category category) {
-        this.item = item;
+    protected ItemCategory(Category category) {
         this.category = category;
     }
 
     //setter
-    public void initItem(Item item) {
+    public void changeItem(Item item) {
         this.item = item;
     }
 
     //생성 메서드
-    public static ItemCategory createItemCategory(Item item, Category category) {
-        return new ItemCategory(item, category);
+    public static ItemCategory createItemCategory(Category category) {
+        return new ItemCategory(category);
     }
 }

@@ -46,9 +46,9 @@ class AlbumServiceTest {
         em.clear();
 
         //then
-        Album findAlbum = albumRepository.findById(albumId).orElseThrow(() -> new NoSuchItem("Register the Item!!"));
+        Album findAlbum = albumRepository.findById(albumId).orElseThrow(() -> new NoSuchItem("The Item could not be found."));
         assertThat(findAlbum.getEtc()).isEqualTo("흠집있음");
-        assertThrows(NoSuchItem.class, () -> albumRepository.findById(10L).orElseThrow(() -> new NoSuchItem("Register the Item!!")));
+        assertThrows(NoSuchItem.class, () -> albumRepository.findById(10L).orElseThrow(() -> new NoSuchItem("The Item could not be found.")));
     }
 
     @Test
