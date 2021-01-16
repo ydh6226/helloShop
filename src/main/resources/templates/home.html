@@ -30,7 +30,9 @@
                 <div class="row p-2" th:object="${memberInfo}">
                     <div class="container text-center">
                         <p th:text="|*{name} 님 안녕하세요|">회원 이름</p>
-                        <p th:text="*{email}">회원 이메일</p>
+                        <p sec:authorize="!hasAuthority('ADMIN')" th:text="*{email}">회원 이메일</p>
+                        <a sec:authorize="hasAuthority('ADMIN')" href="/admin"
+                           class="btn btn-outline-danger btn-sm">ADMIN</a>
                     </div>
                 </div>
                 <div class="row p-2">

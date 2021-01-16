@@ -68,7 +68,7 @@ class mockTest {
         @Override
         public Void answer(InvocationOnMock invocation) throws Throwable {
             Album argument = (Album) invocation.getArguments()[0];
-            argument.setId(++id);
+//            argument.setId(++id);
             return null;
         }
     }

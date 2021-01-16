@@ -5,6 +5,7 @@ import com.ydh.helloshop.domain.Member;
 import com.ydh.helloshop.domain.Order;
 import com.ydh.helloshop.domain.OrderStatus;
 import com.ydh.helloshop.exception.NoSuchItem;
+import com.ydh.helloshop.exception.NoSuchMember;
 import com.ydh.helloshop.exception.NotEnoughStockException;
 import com.ydh.helloshop.item.Album;
 import com.ydh.helloshop.item.Book;
@@ -101,7 +102,7 @@ class OrderServiceTest {
     public void searchMultipleOrder() throws Exception {
         //given
         List<Long> ids = dbInit();
-        Member member1 = memberRepository.findOne(ids.get(0));
+        Member member1 = memberRepository.findById(ids.get(0)).orElseThrow(() -> new NoSuchMember("The member could not be found."));;
 
         List<Long> itemIds = new ArrayList<>();
         List<Integer> counts = new ArrayList<>();
