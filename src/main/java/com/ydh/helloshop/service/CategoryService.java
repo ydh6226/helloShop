@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.concurrent.CancellationException;
 
 import static com.ydh.helloshop.domain.Category.createCategory;
 
@@ -57,6 +58,17 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
+    public List<Category> findAllByKind() {
+        Category root = categoryRepository.findByName("root");
+        List<Category> list = categoryRepository.findByParent(root);
+
+        list.forEach(p -> p.getChildren()
+                .forEach(c -> c.getChildren()
+                        .forEach(Category::getName)));
+
+        return list;
+    }
+
     @Transactional
     public void create(CategoryForm form) {
         Category parentCategory = categoryRepository.findById(form.getParentId())
@@ -64,4 +76,6 @@ public class CategoryService {
 
         categoryRepository.save(createCategory(form.getName(), parentCategory));
     }
+
+
 }
