@@ -39,6 +39,11 @@ public class ItemServiceImpl implements ItemService<Item> {
     }
 
     @Transactional
+    public List<Item> findAllBySellerId(Long id) {
+        return itemRepository.findAllBySellerId(id);
+    }
+
+    @Transactional
     public void update(Long id, String name, int price, int stockQuantity) {
         Item item = itemRepository.findById(id).orElseThrow(() -> new NoSuchItem("The Item could not be found."));
         item.changeInfo(name, price, stockQuantity);

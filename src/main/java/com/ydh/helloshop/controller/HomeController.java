@@ -1,5 +1,6 @@
 package com.ydh.helloshop.controller;
 
+import com.ydh.helloshop.controller.member.MemberForm;
 import com.ydh.helloshop.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,15 +15,11 @@ public class HomeController {
     @RequestMapping("/")
     public String home(Model model, @AuthenticationPrincipal Member member) {
         if(member != null) {
-            model.addAttribute("memberInfo", new memberSimpleInfo(member.getName(), member.getEmail()));
+            model.addAttribute("memberInfo",
+                    MemberForm.builder()
+                            .name(member.getName())
+                            .id(member.getId()).build());
         }
         return "home";
-    }
-
-    @AllArgsConstructor
-    @Getter
-    private static class memberSimpleInfo {
-        private final String name;
-        private final String email;
     }
 }

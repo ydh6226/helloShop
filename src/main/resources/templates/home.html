@@ -33,6 +33,8 @@
                         <p sec:authorize="!hasAuthority('ADMIN')" th:text="*{email}">회원 이메일</p>
                         <a sec:authorize="hasAuthority('ADMIN')" href="/admin"
                            class="btn btn-outline-danger btn-sm">ADMIN</a>
+                        <a sec:authorize="hasAuthority('SELLER')" href="/seller"
+                           class="btn btn-outline-danger btn-sm">판매자 메뉴</a>
                     </div>
                 </div>
                 <div class="row p-2">

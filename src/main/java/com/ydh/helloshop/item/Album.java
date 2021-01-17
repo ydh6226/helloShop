@@ -29,6 +29,13 @@ public class Album extends Item {
         super.changeInfo(name, price, stockQuantity);
     }
 
+    public Album(Long sellerId ,String artist, String etc, String name, int price, int stockQuantity) {
+        super(sellerId);
+        this.artist = artist;
+        this.etc = etc;
+        super.changeInfo(name, price, stockQuantity);
+    }
+
     //setter
     public void changeAlbumInfo(String artist, String etc){
         this.artist = artist;
@@ -37,7 +44,8 @@ public class Album extends Item {
 
     //생성 메서드
     public static Album createAlbum(AlbumForm form, List<ItemCategory> itemCategories) {
-        Album album = new Album(form.getArtist(), form.getEtc(), form.getName(), form.getPrice(), form.getStockQuantity());
+        Album album = new Album(form.getSellerId(), form.getArtist(),
+                form.getEtc(), form.getName(), form.getPrice(), form.getStockQuantity());
         itemCategories.forEach(album::addItemCategory);
         return album;
     }

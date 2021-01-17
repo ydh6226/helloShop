@@ -1,27 +1,29 @@
 package com.ydh.helloshop.controller.item;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter @Setter
+@Builder
 public class AlbumForm {
 
-    String artist;
-    String etc;
+    private String artist;
+    private String etc;
 
-    String name;
-    int price;
-    int stockQuantity;
+    private String name;
+    private int price;
+    private int stockQuantity;
 
-    List<Long> categoryIds;
+    private Long sellerId;
 
-    public AlbumForm(String artist, String etc, String name, int price, int stockQuantity) {
+    private List<Long> categoryIds = new ArrayList<>();
+
+    public AlbumForm(Long sellerId, String artist, String etc, String name, int price, int stockQuantity) {
+        this.sellerId = sellerId;
         this.artist = artist;
         this.etc = etc;
         this.name = name;
