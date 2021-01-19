@@ -34,7 +34,7 @@ public class CategoryController {
     }
 
     @PostMapping("/category/new")
-    public String create(@Valid CategoryForm form, BindingResult result) {
+    public String createCategory(@Valid CategoryForm form, BindingResult result) {
         if (result.hasErrors()) {
             //[미해결] popover에서 name을 공백으로 제출할 때 에러 처리 못했음.
            return "redirect:/admin/category";

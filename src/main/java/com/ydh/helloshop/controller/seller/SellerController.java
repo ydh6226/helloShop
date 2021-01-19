@@ -6,11 +6,21 @@ import com.ydh.helloshop.domain.Member;
 import com.ydh.helloshop.repository.item.ItemRepository;
 import com.ydh.helloshop.service.item.ItemServiceImpl;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.Arrays.asList;
+import static java.util.Arrays.stream;
+import static java.util.stream.Collectors.*;
 
 @Controller
 @AllArgsConstructor
@@ -39,4 +49,17 @@ public class SellerController {
 
         return "/seller/itemList";
     }
+
+
+    @ResponseBody
+    @PostMapping("/seller/item/delete")
+    public void deleteItem(@RequestBody SimpleItemDto itemDto) {
+        itemDto.getIds().forEach(itemService::delete);
+    }
+
+    @Data
+    static class SimpleItemDto {
+        List<Long> ids = new ArrayList<>();
+    }
+
 }

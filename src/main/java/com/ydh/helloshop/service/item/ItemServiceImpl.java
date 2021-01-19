@@ -24,6 +24,7 @@ public class ItemServiceImpl implements ItemService<Item> {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         itemRepository.deleteById(id);
     }
