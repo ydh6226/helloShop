@@ -3,6 +3,7 @@ package com.ydh.helloshop.controller.seller;
 import com.ydh.helloshop.controller.HomeController;
 import com.ydh.helloshop.controller.member.MemberForm;
 import com.ydh.helloshop.domain.Member;
+import com.ydh.helloshop.repository.ItemCategoryRepository;
 import com.ydh.helloshop.repository.item.ItemRepository;
 import com.ydh.helloshop.service.item.ItemServiceImpl;
 import lombok.AllArgsConstructor;
@@ -27,6 +28,9 @@ import static java.util.stream.Collectors.*;
 public class SellerController {
 
     ItemServiceImpl itemService;
+
+    //Repository 직접 사용
+    ItemCategoryRepository itemCategoryRepository;
 
     @GetMapping("/seller")
     public String sellerMenu() {
@@ -54,12 +58,13 @@ public class SellerController {
     @ResponseBody
     @PostMapping("/seller/item/delete")
     public void deleteItem(@RequestBody SimpleItemDto itemDto) {
-        itemDto.getIds().forEach(itemService::delete);
+        List<Long> ids = itemDto.getIds();
+        itemCategoryRepository.deleteItemCategoryByIdInQuery(ids);
+        itemService.deleteItemsByIdsQuery(ids);
     }
 
     @Data
     static class SimpleItemDto {
         List<Long> ids = new ArrayList<>();
     }
-
 }

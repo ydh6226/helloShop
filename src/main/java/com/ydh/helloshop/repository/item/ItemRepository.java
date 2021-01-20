@@ -4,6 +4,7 @@ import com.ydh.helloshop.item.Item;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -16,4 +17,8 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     List<Item> findMultiple(List<Long> itemIds);
 
     List<Item> findAllBySellerId(Long id);
+
+    @Modifying(clearAutomatically = true)
+    @Query("delete from Item i where i.id in :itemIds")
+    void deleteItemsByIdIn(List<Long> itemIds);
 }

@@ -112,13 +112,15 @@ public class InitDb {
             Category c1 = categoryRepository.findById(3L).get();
             Category c2 = categoryRepository.findById(4L).get();
             Category c3 = categoryRepository.findById(6L).get();
+            Category c4 = categoryRepository.findById(4L).get();
 
             ItemCategory ic1 = createItemCategory(c1);
             ItemCategory ic2 = createItemCategory(c2);
             ItemCategory ic3 = createItemCategory(c3);
+            ItemCategory ic4 = createItemCategory(c4);
 
             Album album1 = createAlbum(form1, Arrays.asList(ic1, ic2));
-            Album album2 = createAlbum(form2, Arrays.asList(ic2, ic3));
+            Album album2 = createAlbum(form2, Arrays.asList(ic3, ic4));
 
             albumRepository.save(album1);
             albumRepository.save(album2);

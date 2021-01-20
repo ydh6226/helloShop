@@ -29,6 +29,12 @@ public class ItemServiceImpl implements ItemService<Item> {
         itemRepository.deleteById(id);
     }
 
+    @Transactional
+    public void deleteItemsByIdsQuery(List<Long> ids) {
+        itemRepository.deleteItemsByIdIn(ids);
+
+    }
+
     @Override
     public Item findOne(Long id) {
         return itemRepository.findById(id).orElseThrow(() -> new NoSuchItem("The Item could not be found."));
