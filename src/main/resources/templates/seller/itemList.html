@@ -61,8 +61,6 @@
 </body>
 </html>
 
-
-
 <script>
     $('#itemAll').change(function () {
         let checked = $(this).prop('checked')
@@ -90,7 +88,7 @@
             let itemInfo = {ids:checkList}
 
             $.ajax({
-                url: "/seller/item/delete",
+                url: "/seller/items/delete",
                 type: "post",
                 data: JSON.stringify(itemInfo),
                 dateType: "json",

@@ -8,12 +8,11 @@
 <body>
     <div class="container">
         <div th:replace="fragments/bodyHeader :: bodyHeader"/>
-        <!-- [미해결] role="form" 역할 무엇?-->
         <form class="container" role="form" action="/members/new" th:object="${memberForm}" method="post">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
             <fieldset class="form-group">
                 <div class="row">
-                    <legend class="col-form-label col-2"><span style="color: red">*</span> 회원 구분</legend>
+                    <legend class="col-form-label col-2"><span style="color: #ff0000">*</span> 회원 구분</legend>
                     <div class="col-10">
                         <div class="form-check pl-0">
                             <label th:for="${#ids.next('status')}">구매 회원 </label>

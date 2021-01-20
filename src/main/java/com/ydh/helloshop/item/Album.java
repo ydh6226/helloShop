@@ -1,9 +1,7 @@
 package com.ydh.helloshop.item;
 
 import com.ydh.helloshop.controller.item.AlbumForm;
-import com.ydh.helloshop.domain.Category;
 import com.ydh.helloshop.domain.ItemCategory;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +9,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import java.util.List;
 
-import static lombok.AccessLevel.*;
+import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @DiscriminatorValue("A")
@@ -19,8 +17,8 @@ import static lombok.AccessLevel.*;
 @Getter
 public class Album extends Item {
 
-    String artist;
-    String etc;
+    private String artist;
+    private String etc;
 
     //생성자
     public Album(String artist, String etc, String name, int price, int stockQuantity) {
