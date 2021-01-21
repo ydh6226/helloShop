@@ -1,22 +1,17 @@
 package com.ydh.helloshop.item;
 
 import com.ydh.helloshop.domain.ItemCategory;
-import com.ydh.helloshop.exception.CannotChangeSellerId;
 import com.ydh.helloshop.exception.NotEnoughStockException;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ydh.helloshop.item.ItemStatus.*;
+import static com.ydh.helloshop.item.ItemStatus.SALE;
 import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.EnumType.*;
+import static javax.persistence.EnumType.STRING;
 import static javax.persistence.InheritanceType.SINGLE_TABLE;
-import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Inheritance(strategy = SINGLE_TABLE)

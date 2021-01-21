@@ -2,8 +2,6 @@ package com.ydh.helloshop.controller;
 
 import com.ydh.helloshop.controller.member.MemberForm;
 import com.ydh.helloshop.domain.Member;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

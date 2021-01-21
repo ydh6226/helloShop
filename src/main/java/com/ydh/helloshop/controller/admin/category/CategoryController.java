@@ -1,6 +1,5 @@
-package com.ydh.helloshop.controller;
+package com.ydh.helloshop.controller.admin.category;
 
-import com.ydh.helloshop.domain.Category;
 import com.ydh.helloshop.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 @RequestMapping(path = "/admin")
@@ -25,12 +23,6 @@ public class CategoryController {
         model.addAttribute("categories", categoryService.findAllByKind());
         model.addAttribute("form", new CategoryForm());
         return "/admin/category/categoryList";
-    }
-
-    @GetMapping("/category/new")
-    public String createForm(Model model) {
-        model.addAttribute("categoryForm", new CategoryForm());
-        return "/admin/category/createCategoryForm";
     }
 
     @PostMapping("/category/new")

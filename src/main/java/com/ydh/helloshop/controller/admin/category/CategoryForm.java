@@ -1,4 +1,4 @@
-package com.ydh.helloshop.controller;
+package com.ydh.helloshop.controller.admin.category;
 
 import lombok.Data;
 

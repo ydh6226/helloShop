@@ -1,29 +1,23 @@
 package com.ydh.helloshop;
 
-import com.ydh.helloshop.controller.item.AlbumForm;
-import com.ydh.helloshop.controller.member.MemberForm;
+import com.ydh.helloshop.controller.seller.item.AlbumForm;
 import com.ydh.helloshop.domain.Category;
 import com.ydh.helloshop.domain.ItemCategory;
 import com.ydh.helloshop.domain.Member;
-import com.ydh.helloshop.domain.MemberStatus;
 import com.ydh.helloshop.item.Album;
 import com.ydh.helloshop.repository.CategoryRepository;
 import com.ydh.helloshop.repository.MemberRepository;
 import com.ydh.helloshop.repository.item.AlbumRepository;
-import com.ydh.helloshop.service.CategoryService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import javax.validation.constraints.Null;
-
 import java.util.Arrays;
 
 import static com.ydh.helloshop.domain.Category.createCategory;
-import static com.ydh.helloshop.domain.ItemCategory.*;
+import static com.ydh.helloshop.domain.ItemCategory.createItemCategory;
 import static com.ydh.helloshop.domain.MemberStatus.*;
 import static com.ydh.helloshop.item.Album.createAlbum;
 

@@ -13,30 +13,84 @@
     <form class="container" action="/seller/items/new" th:object="${albumForm}" method="post">
         <div class="form-group"></div>
 
-        <div class="row justify-content-around" id="category-select">
-            <select class="custom-select test-d0 col-3" id="category-d0">
-                <option selected th:index="-1">선택 1</option>
-                <option th:each="category, iter : ${categories}" th:value="${category.id}"
-                        th:text="${category.name}" th:index="${iter.index}"></option>
-            </select>
+        <div class="form-group row" id="category-select">
+            <p class="col-2 align-self-center m-0">카테고리</p>
+            <div class="col-10">
+                <select class="custom-select test-d0 col-3" id="category-d0">
+                    <option selected th:index="-1">선택 1</option>
+                    <option th:each="category, iter : ${categories}" th:value="${category.id}"
+                            th:text="${category.name}" th:index="${iter.index}"></option>
+                </select>
 
-            <select class="custom-select test-d1 col-3" id="category-d1" disabled="disabled">
-                <option selected th:index="-1">선택 2</option>
-            </select>
+                <select class="custom-select test-d1 col-3" id="category-d1" disabled="disabled">
+                    <option selected th:index="-1">선택 2</option>
+                </select>
 
-            <select class="custom-select test-d2 col-3" id="category-d2" disabled="disabled" name="name">
-                <option selected th:index="-1">선택 3</option>
-            </select>
-            <!-- [미해결] : 카테고리 여러개 선택할 수 있게 변경 필요 -->
-            <a type="button" class="col-2 text-center align-self-center" id="add-categoryForm">
-                <span class="pr-1">옵션추가</span>
-                <i class="fas fa-plus-square"></i>
-            </a>
+                <select class="custom-select test-d2 col-3" id="category-d2" disabled="disabled" name="categoryIds">
+                    <option selected th:index="-1">선택 3</option>
+                </select>
+<!--                 [미해결] : 카테고리 여러개 선택할 수 있게 변경 필요 -->
+                <a type="button" class="col-2 text-center align-self-center" id="add-categoryForm">
+                    <span class="pr-1">추가</span>
+                    <i class="fas fa-plus-square"></i>
+                </a>
+                <p class="invalid-feedback d-block mb-0" th:if="${#fields.hasErrors('categoryIds')}" th:errors="*{categoryIds}"></p>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-2 col-form-label" th:for="name">상품 이름</label>
+            <div class="col-10">
+                <input type="text" class="form-control" th:field="*{name}" placeholder="상품 이름을 입력하세요"
+                       th:class="${#fields.hasErrors('name')} ? 'form-control is-invalid' : 'form-control'">
+                <p class="invalid-feedback d-block mb-0" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">incorrect data</p>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-2 col-form-label" th:for="price">상품 가격</label>
+            <div class="col-10">
+                <input type="number" class="form-control" th:field="*{price}"
+                       th:class="${#fields.hasErrors('price')} ? 'form-control is-invalid' : 'form-control'">
+                <p class="invalid-feedback d-block mb-0" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">incorrect data</p>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-2 col-form-label" th:for="stockQuantity">재고 수량</label>
+            <div class="col-10">
+                <input type="number" class="form-control" th:field="*{stockQuantity}"
+                       th:class="${#fields.hasErrors('stockQuantity')} ? 'form-control is-invalid' : 'form-control'">
+                <p class="invalid-feedback d-block mb-0" th:if="${#fields.hasErrors('stockQuantity')}"
+                   th:errors="*{stockQuantity}">incorrect data</p>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-2 col-form-label" th:for="artist">가수 이름</label>
+            <div class="col-10">
+                <input type="text" class="form-control" th:field="*{artist}" placeholder="가수 이름을 입력하세요"
+                       th:class="${#fields.hasErrors('artist')} ? 'form-control is-invalid' : 'form-control'">
+                <p class="invalid-feedback d-block mb-0" th:if="${#fields.hasErrors('artist')}" th:errors="*{artist}">incorrect data</p>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-2 col-form-label" th:for="etc">기타 사항</label>
+            <div class="col-10">
+                <input type="text" class="form-control" th:field="*{etc}" placeholder="기타 사항을 입력하세요"
+                       th:class="${#fields.hasErrors('etc')} ? 'form-control is-invalid' : 'form-control'">
+                <p class="invalid-feedback d-block mb-0" th:if="${#fields.hasErrors('etc')}" th:errors="*{etc}">incorrect data</p>
+            </div>
         </div>
 
 
-        <p th:onclick="'javascript:function1'"></p>
+        <input type="hidden" th:name="sellerId" th:value="${memberForm.id}">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">등록</button>
+        </div>
     </form>
 
     <div th:replace="fragments/footer :: footer"/>

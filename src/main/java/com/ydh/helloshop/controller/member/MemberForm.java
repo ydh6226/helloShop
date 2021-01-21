@@ -1,7 +1,10 @@
 package com.ydh.helloshop.controller.member;
 
 import com.ydh.helloshop.domain.MemberStatus;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;

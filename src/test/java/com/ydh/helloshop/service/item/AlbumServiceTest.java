@@ -1,6 +1,6 @@
 package com.ydh.helloshop.service.item;
 
-import com.ydh.helloshop.controller.item.AlbumForm;
+import com.ydh.helloshop.controller.seller.item.AlbumForm;
 import com.ydh.helloshop.exception.NoSuchItem;
 import com.ydh.helloshop.item.Album;
 import com.ydh.helloshop.repository.item.AlbumRepository;
