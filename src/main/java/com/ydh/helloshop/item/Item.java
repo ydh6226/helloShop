@@ -5,6 +5,7 @@ import com.ydh.helloshop.exception.NotEnoughStockException;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +34,8 @@ public abstract class Item {
     @Enumerated(STRING)
     private ItemStatus status;
 
+    private LocalDateTime createTime;
+
     //불변 값 설정: 판매자 아이디는 바꿀 수 없다.
     private final Long sellerId;
 
@@ -47,6 +50,7 @@ public abstract class Item {
     public Item(Long sellerId) {
         this.status = SALE;
         this.sellerId = sellerId;
+        this.createTime = LocalDateTime.now();
     }
 
     //== 상품 정보 수정 ==//

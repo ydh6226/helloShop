@@ -103,6 +103,41 @@ public class InitDb {
                     .price(20000)
                     .stockQuantity(500).build();
 
+            AlbumForm form3 = AlbumForm.builder()
+                    .sellerId(3L)
+                    .artist("천인국")
+                    .name("어서와 c++은 처음이지")
+                    .price(5000)
+                    .stockQuantity(100).build();
+
+            AlbumForm form4 = AlbumForm.builder()
+                    .sellerId(3L)
+                    .artist("임채윤")
+                    .name("오빠의 옷빨")
+                    .price(16000)
+                    .stockQuantity(1100).build();
+
+            AlbumForm form5 = AlbumForm.builder()
+                    .sellerId(3L)
+                    .artist("호아킴")
+                    .name("99C")
+                    .price(20000)
+                    .stockQuantity(500).build();
+
+            AlbumForm form6 = AlbumForm.builder()
+                    .sellerId(3L)
+                    .artist("이일선")
+                    .name("톨스토이")
+                    .price(20000)
+                    .stockQuantity(500).build();
+
+            AlbumForm form7 = AlbumForm.builder()
+                    .sellerId(3L)
+                    .artist("조영호")
+                    .name("객체지향의 사실과 오헤")
+                    .price(20000)
+                    .stockQuantity(500).build();
+
             Category c1 = categoryRepository.findById(3L).get();
             Category c2 = categoryRepository.findById(4L).get();
             Category c3 = categoryRepository.findById(6L).get();
@@ -115,9 +150,17 @@ public class InitDb {
 
             Album album1 = createAlbum(form1, Arrays.asList(ic1, ic2));
             Album album2 = createAlbum(form2, Arrays.asList(ic3, ic4));
+            Album album3 = createAlbum(form3, Arrays.asList(ic3, ic4));
+            Album album4 = createAlbum(form4, Arrays.asList(ic3, ic4));
+            Album album6 = createAlbum(form6, Arrays.asList(ic3, ic4));
+            Album album7 = createAlbum(form7, Arrays.asList(ic3, ic4));
 
             albumRepository.save(album1);
             albumRepository.save(album2);
+            albumRepository.save(album3);
+            albumRepository.save(album4);
+            albumRepository.save(album6);
+            albumRepository.save(album7);
         }
 
     }

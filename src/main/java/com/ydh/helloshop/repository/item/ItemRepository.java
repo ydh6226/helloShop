@@ -1,6 +1,8 @@
 package com.ydh.helloshop.repository.item;
 
 import com.ydh.helloshop.item.Item;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -17,4 +19,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     @Modifying(clearAutomatically = true)
     @Query("delete from Item i where i.id in :itemIds")
     void deleteItemsByIdIn(List<Long> itemIds);
+
+    @Query("select i from Item i")
+    Page<Item> findAllWithPaging(Pageable pageable);
 }

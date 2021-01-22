@@ -7,7 +7,15 @@
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
     <div class="row">
         <div class="col-9">
-            <p class="align-self-center">안녕하세요</p>
+            <div class="container text-center">
+                <p>최근 등록된 상품</p>
+                <ul class="list-group">
+                    <li class="list-group-item" th:each="item : ${items}">
+                        <a href="#"><span th:text="|${item.name}    ${item.price}원|"></span></a>
+                    </li>
+
+                </ul>
+            </div>
         </div>
         <div class="col-3">
             <div class="container bg-light border border-dark" sec:authorize="isAnonymous()">
