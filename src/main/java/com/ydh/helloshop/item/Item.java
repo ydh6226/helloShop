@@ -37,6 +37,7 @@ public abstract class Item {
     private LocalDateTime createTime;
 
     //불변 값 설정: 판매자 아이디는 바꿀 수 없다.
+//    @JoinColumn(foreignKey = )
     private final Long sellerId;
 
     @OneToMany(mappedBy = "item", cascade = ALL)

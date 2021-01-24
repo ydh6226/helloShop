@@ -37,7 +37,6 @@ public class MemberService implements UserDetailsService {
         return memberRepository.findAll();
     }
 
-
     //중복 회원 검증(중복된 이메일 사용 불가)
     //[미해결] 예외 처리
     private void validateDuplicateMember(Member member) {

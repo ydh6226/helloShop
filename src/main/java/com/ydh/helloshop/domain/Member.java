@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.EnumType.STRING;
 
 
@@ -43,6 +44,15 @@ public class Member implements UserDetails {
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<>();
 
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "member", cascade = ALL)
+    private Cart cart;
+
+    //연관관계 메서드
+    protected void initCart() {
+        this.cart = new Cart(this);
+    }
+
+    //setter
     public void createInfo(String name, String email, String password, Address address, MemberStatus memberStatus) {
         this.name = name;
         this.email = email;
@@ -50,6 +60,7 @@ public class Member implements UserDetails {
         this.address = address;
         this.status = memberStatus;
         joinDate = LocalDateTime.now();
+        initCart();
     }
 
     //UserDetails overide method

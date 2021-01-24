@@ -134,7 +134,7 @@ public class InitDb {
             AlbumForm form7 = AlbumForm.builder()
                     .sellerId(3L)
                     .artist("조영호")
-                    .name("객체지향의 사실과 오헤")
+                    .name("객체지향의 사실과 오해")
                     .price(20000)
                     .stockQuantity(500).build();
 
