@@ -38,9 +38,13 @@
                 <div class="row p-2" th:object="${memberInfo}">
                     <div class="container text-center">
                         <p th:text="|*{name} 님 안녕하세요|">회원 이름</p>
+
+                        <!-- 특정 권한 종속적 -->
                         <p sec:authorize="!hasAuthority('ADMIN')" th:text="*{email}">회원 이메일</p>
                         <a sec:authorize="hasAuthority('ADMIN')" href="/admin"
                            class="btn btn-outline-danger btn-sm">ADMIN</a>
+                        <a sec:authorize="hasAuthority('CUSTOMER')" href="/cart"
+                           class="btn btn-success btn-sm">장바구니</a>
                         <a sec:authorize="hasAuthority('SELLER')" href="/seller"
                            class="btn btn-outline-danger btn-sm">판매자 메뉴</a>
                     </div>

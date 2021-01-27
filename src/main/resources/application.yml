@@ -8,6 +8,13 @@ spring:
     password:
     driver-class-name: org.h2.Driver
 
+#HotSwap
+  devtools:
+    livereload:
+      enabled: true
+  thymeleaf:
+    cache: false
+
   jpa:
     hibernate:
       ddl-auto: create

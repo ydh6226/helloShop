@@ -5,9 +5,12 @@ import com.ydh.helloshop.domain.Category;
 import com.ydh.helloshop.domain.ItemCategory;
 import com.ydh.helloshop.domain.Member;
 import com.ydh.helloshop.item.Album;
+import com.ydh.helloshop.item.Item;
 import com.ydh.helloshop.repository.CategoryRepository;
 import com.ydh.helloshop.repository.MemberRepository;
 import com.ydh.helloshop.repository.item.AlbumRepository;
+import com.ydh.helloshop.service.CartService;
+import com.ydh.helloshop.service.item.ItemServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -34,6 +37,7 @@ public class InitDb {
         initService.createCustomerMember();
         initService.createSellerMember();
         initService.createItems();
+        initService.createCartItem();
     }
 
     @Component
@@ -46,6 +50,10 @@ public class InitDb {
         private final CategoryRepository categoryRepository;
 
         private final AlbumRepository albumRepository;
+
+        private final ItemServiceImpl itemService;
+
+        private final CartService cartService;
 
         public void createRootCategory() {
             Category root = createCategory("root", null);
@@ -134,7 +142,7 @@ public class InitDb {
             AlbumForm form7 = AlbumForm.builder()
                     .sellerId(3L)
                     .artist("조영호")
-                    .name("객체지향의 사실과 오헤")
+                    .name("객체지향의 사실과 오해")
                     .price(20000)
                     .stockQuantity(500).build();
 
@@ -147,13 +155,17 @@ public class InitDb {
             ItemCategory ic2 = createItemCategory(c2);
             ItemCategory ic3 = createItemCategory(c3);
             ItemCategory ic4 = createItemCategory(c4);
+            ItemCategory ic5 = createItemCategory(c4);
+            ItemCategory ic6 = createItemCategory(c4);
+            ItemCategory ic7 = createItemCategory(c4);
+            ItemCategory ic8 = createItemCategory(c4);
 
             Album album1 = createAlbum(form1, Arrays.asList(ic1, ic2));
             Album album2 = createAlbum(form2, Arrays.asList(ic3, ic4));
-            Album album3 = createAlbum(form3, Arrays.asList(ic3, ic4));
-            Album album4 = createAlbum(form4, Arrays.asList(ic3, ic4));
-            Album album6 = createAlbum(form6, Arrays.asList(ic3, ic4));
-            Album album7 = createAlbum(form7, Arrays.asList(ic3, ic4));
+            Album album3 = createAlbum(form3, Arrays.asList(ic5));
+            Album album4 = createAlbum(form4, Arrays.asList(ic6));
+            Album album6 = createAlbum(form6, Arrays.asList(ic7));
+            Album album7 = createAlbum(form7, Arrays.asList(ic8));
 
             albumRepository.save(album1);
             albumRepository.save(album2);
@@ -161,6 +173,14 @@ public class InitDb {
             albumRepository.save(album4);
             albumRepository.save(album6);
             albumRepository.save(album7);
+        }
+
+        public void createCartItem() {
+            Item item1 = itemService.findOne(1L);
+            Item item2 = itemService.findOne(2L);
+
+            cartService.addToCart(2L, item1, 2);
+            cartService.addToCart(2L, item2, 2);
         }
 
     }

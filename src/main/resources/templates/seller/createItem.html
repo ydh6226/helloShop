@@ -106,8 +106,6 @@
         $(target).children().slice(1).remove()
         $(target).removeAttr('disabled')
 
-        console.log(index)
-
         if (index === -1) {
             $(target).attr('disabled', 'disabled')
 
@@ -119,6 +117,8 @@
         }
 
         let children = categories[index]['children']
+        console.log(categories)
+        // console.log(children)
 
         for (let i=0; i<children.length; i++) {
             let child = children[i]
