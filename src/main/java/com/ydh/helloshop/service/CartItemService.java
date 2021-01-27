@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -16,13 +18,33 @@ public class CartItemService {
 
     private final CartItemRepository cartItemRepository;
 
-    @Transactional
-    public int changeCartItemCount(Long cartItemId, int count) {
-        CartItem cartItem = cartItemRepository.findById(cartItemId)
-                .orElseThrow(() -> new NoSuchCartItem("The category could not be found."));
+    private static NoSuchCartItem exception() {
+        return new NoSuchCartItem("The category could not be found.");
+    }
 
-        cartItem.changeItemCount(count);
-        return cartItem.getTotalPrice();
+    public CartItem findOne(Long cartItemId) {
+        return cartItemRepository.findById(cartItemId)
+                .orElseThrow(CartItemService::exception);
+    }
+
+    /**
+     * @return List[0] = CartItem: totalPrice,
+     * List[1] = Cart: totalPrice
+     */
+    @Transactional
+    public List<Integer> changeCartItemCount(Long cartItemId, int count) {
+        CartItem cartItem = cartItemRepository.findByIdWithCartAndItem(cartItemId);
+
+        int preTotalPrice = cartItem.getTotalPrice();
+        int newTotalPrice = cartItem.changeItemCount(count);
+
+        int orderTotalPrice = cartItem.getCart().reComputeTotalPrice(preTotalPrice, newTotalPrice);
+
+        ArrayList<Integer> result = new ArrayList<>();
+        result.add(cartItem.getTotalPrice());
+        result.add(orderTotalPrice);
+
+        return result;
     }
 
     @Transactional

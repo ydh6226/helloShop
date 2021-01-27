@@ -1,6 +1,5 @@
 package com.ydh.helloshop.controller;
 
-import com.ydh.helloshop.domain.Cart;
 import com.ydh.helloshop.domain.Member;
 import com.ydh.helloshop.service.CartItemService;
 import com.ydh.helloshop.service.CartService;
@@ -10,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +33,12 @@ public class CartController {
         return "/cartView";
     }
 
+    @ResponseBody
+    @PostMapping("/cart/add")
+    public void addToCart(@RequestBody SimpleItemDto itemDto, @AuthenticationPrincipal Member member) {
+        cartService.addToCart(member.getId(), itemService.findOne(itemDto.getItemId()), itemDto.count);
+    }
+
     @PostMapping("/cart/checkout")
     public String CartOrder() {
         return "";
@@ -46,17 +48,18 @@ public class CartController {
     @PostMapping("/cart/delete")
     public String deleteFromCart(@RequestBody HashMap<String, List<Long>> mapDto, @AuthenticationPrincipal Member member) {
         List<Long> ids = mapDto.get("ids");
-        cartService.deleteItemsFormCart(member.getId(), ids);
 
+        cartService.deleteItemsFrommCart(member.getId(), ids);
         return "/cart";
     }
 
     @ResponseBody
     @PostMapping("/cart/change")
     public SimpleCartItemDto changeCartItemCount(@RequestBody SimpleCartItemDto dto) {
-        int totalPrice = cartItemService.changeCartItemCount(dto.getCartItemId(), dto.getCount());
+        List<Integer> result = cartItemService.changeCartItemCount(dto.getCartItemId(), dto.getCount());
 
-        dto.setTotalPrice(totalPrice);
+        dto.setTotalPrice(result.get(0));
+        dto.setOrderTotalPrice(result.get(1));
         return dto;
     }
 
@@ -65,5 +68,12 @@ public class CartController {
         Long cartItemId;
         int count;
         int totalPrice;
+        int orderTotalPrice;
+    }
+
+    @Data
+    private static class SimpleItemDto {
+        Long itemId;
+        int count;
     }
 }

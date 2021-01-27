@@ -11,9 +11,8 @@
                 <p>최근 등록된 상품</p>
                 <ul class="list-group">
                     <li class="list-group-item" th:each="item : ${items}">
-                        <a href="#"><span th:text="|${item.name}    ${item.price}원|"></span></a>
+                        <a th:href="|/items/${item.getId()}|"><span th:text="|${item.name}    ${item.price}원|"></span></a>
                     </li>
-
                 </ul>
             </div>
         </div>
@@ -43,8 +42,8 @@
                         <p sec:authorize="!hasAuthority('ADMIN')" th:text="*{email}">회원 이메일</p>
                         <a sec:authorize="hasAuthority('ADMIN')" href="/admin"
                            class="btn btn-outline-danger btn-sm">ADMIN</a>
-                        <a sec:authorize="hasAuthority('CUSTOMER')" href="/cart"
-                           class="btn btn-success btn-sm">장바구니</a>
+<!--                        <a sec:authorize="hasAuthority('CUSTOMER')" href="/cart"-->
+<!--                           class="btn btn-success btn-sm">장바구니</a>-->
                         <a sec:authorize="hasAuthority('SELLER')" href="/seller"
                            class="btn btn-outline-danger btn-sm">판매자 메뉴</a>
                     </div>
@@ -56,11 +55,7 @@
                         </form>
                     </div>
                 </div>
-
             </div>
-
-
-
         </div>
     </div>
     <div th:replace="fragments/footer :: footer"/>

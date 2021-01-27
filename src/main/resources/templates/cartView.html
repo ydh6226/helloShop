@@ -9,7 +9,7 @@
 <body>
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
-
+    <button type="button" class="btn-sm btn-warning select-delete mb-2">선택삭제</button>
     <table class="table table-striped">
         <thead>
         <th><input type="checkbox" id="cartItemAll"></th>
@@ -17,7 +17,6 @@
         <th>수량</th>
         <th>상품금액</th>
         </thead>
-
         <tbody>
         <tr th:each="cartItem : ${cart.getCartItems()}">
             <td><input type="checkbox" name="cartItem-checkbox" th:cartItemId="${cartItem.id}"></td>
@@ -32,9 +31,14 @@
         </tr>
         </tbody>
     </table>
-    <button type="button" class="btn-sm btn-warning select-delete">선택삭제</button>
-
-
+    <div class="text-center">
+        <div class="container border border-dark">
+            <p class="m-sm-2">
+                총 상품가격 <span class="font-weight-bold order-total-price" th:text="| ${cart.totalPrice} |"></span>원
+            </p>
+        </div>
+        <button type="button" class="btn btn-primary mt-2">선택 상품 구매</button>
+    </div>
 
     <!--    form: post 사용시 추가 시켜야함-->
     <!--    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />-->
@@ -107,8 +111,11 @@
             success: function (data) {
                 let totalPrice = data['totalPrice']
                 let cartItemId = data['cartItemId']
+                let orderTotalPrice = data['orderTotalPrice'];
 
                 $('#totalPrice-' + cartItemId).text(totalPrice)
+                console.log(orderTotalPrice)
+                $('.order-total-price').text(orderTotalPrice)
             },
             error: function () {
                 alert("상품 수량 변경을 실패했습니다.")

@@ -60,4 +60,19 @@ public class Cart {
 
         totalPrice -= price * count;
     }
+
+    public int changeItemCount(CartItem cartItem, int count) {
+        CartItem findCartItem = cartItems.get(cartItems.indexOf(cartItem));
+        totalPrice -= findCartItem.getTotalPrice();
+        findCartItem.changeItemCount(count);
+        totalPrice += findCartItem.getTotalPrice();
+
+        return totalPrice;
+    }
+
+    //CartItem 수량 변경으로 인해 CartItem의 totalPrice가 변경될 때 Cart의 totalPrice도 반영한다
+    public int reComputeTotalPrice(int preItemTotalPrice, int newItemTotalPrice){
+        totalPrice = totalPrice - preItemTotalPrice + newItemTotalPrice;
+        return totalPrice;
+    }
 }

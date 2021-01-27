@@ -52,11 +52,12 @@ public class CartItem {
     }
 
     //== 비즈니스 로직 ==//
-    public void changeItemCount(int count) {
+    public int changeItemCount(int count) {
         if (count > 10) {
             throw new ExceedMaximumQuantity("The maximum number of items is 10.");
         }
         this.count = count;
         totalPrice = item.getPrice() * count;
+        return totalPrice;
     }
 }

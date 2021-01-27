@@ -1,7 +1,6 @@
 package com.ydh.helloshop.service;
 
 import com.ydh.helloshop.domain.Cart;
-import com.ydh.helloshop.domain.CartItem;
 import com.ydh.helloshop.item.Item;
 import com.ydh.helloshop.repository.CartItemRepository;
 import com.ydh.helloshop.service.item.ItemServiceImpl;
@@ -64,7 +63,7 @@ class CartServiceTest {
         em.clear();
 
         //when
-        Long cartId = cartService.deleteItemsFormCart(2L, Arrays.asList(1L, 2L));
+        Long cartId = cartService.deleteItemsFrommCart(2L, Arrays.asList(1L, 2L));
 
         em.flush();
         em.clear();
