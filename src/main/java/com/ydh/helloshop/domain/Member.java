@@ -1,5 +1,6 @@
 package com.ydh.helloshop.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -44,6 +45,7 @@ public class Member implements UserDetails {
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<>();
 
+    @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "member", cascade = ALL)
     private Cart cart;
 

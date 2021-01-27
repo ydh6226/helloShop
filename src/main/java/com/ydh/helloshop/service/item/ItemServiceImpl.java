@@ -50,7 +50,7 @@ public class ItemServiceImpl implements ItemService<Item> {
 
     @Transactional
     public List<Item> findAllBySellerId(Long id) {
-        return itemRepository.findAllBySellerId(id);
+        return itemRepository.findAllBySellerIdWithItemCategory(id);
     }
 
     @Transactional

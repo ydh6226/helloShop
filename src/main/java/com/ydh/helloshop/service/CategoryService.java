@@ -65,6 +65,7 @@ public class CategoryService {
                 .forEach(c -> c.getChildren()
                         .forEach(Category::getName)));
 
+
         return list;
     }
 

@@ -4,9 +4,7 @@ import com.ydh.helloshop.domain.Cart;
 import com.ydh.helloshop.domain.CartItem;
 import com.ydh.helloshop.item.Item;
 import com.ydh.helloshop.repository.CartItemRepository;
-import com.ydh.helloshop.service.item.ItemService;
 import com.ydh.helloshop.service.item.ItemServiceImpl;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
+import java.util.Arrays;
+
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -55,15 +54,17 @@ class CartServiceTest {
     @Rollback(value = false)
     public void deleteFormCart() throws Exception {
         //given
-        Item item = itemService.findOne(1L);
-        cartService.addToCart(2L, item, 2);
+        Item item1 = itemService.findOne(1L);
+        Item item2 = itemService.findOne(2L);
+
+        cartService.addToCart(2L, item1, 2);
+        cartService.addToCart(2L, item2, 2);
 
         em.flush();
         em.clear();
 
         //when
-        CartItem cartItem = cartItemRepository.findByItemId(1L);
-        Long cartId = cartService.deleteFromCart(2L, cartItem);
+        Long cartId = cartService.deleteItemsFormCart(2L, Arrays.asList(1L, 2L));
 
         em.flush();
         em.clear();

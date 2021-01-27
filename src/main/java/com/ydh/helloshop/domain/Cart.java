@@ -1,5 +1,6 @@
 package com.ydh.helloshop.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +26,7 @@ public class Cart {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "cart", cascade = ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "cart", cascade = ALL)
     private List<CartItem> cartItems = new ArrayList<>();
 
     private int totalPrice;

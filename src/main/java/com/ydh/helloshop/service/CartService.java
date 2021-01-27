@@ -3,8 +3,8 @@ package com.ydh.helloshop.service;
 import com.ydh.helloshop.domain.Cart;
 import com.ydh.helloshop.domain.CartItem;
 import com.ydh.helloshop.item.Item;
+import com.ydh.helloshop.repository.CartItemRepository;
 import com.ydh.helloshop.repository.CartRepository;
-import com.ydh.helloshop.repository.item.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,10 +17,11 @@ import java.util.List;
 public class CartService {
 
     private final CartRepository cartRepository;
+    private final CartItemRepository cartItemRepository;
 
     //장바구니 조회
     public Cart findOneByMemberId(Long memberId) {
-        return cartRepository.findOneByMemberId(memberId);
+        return cartRepository.findOneByMemberIdWithItem(memberId);
     }
 
     public Cart findOne(Long cartId) {
@@ -38,11 +39,12 @@ public class CartService {
 
     //장바구니에서 삭제
     @Transactional(readOnly = false)
-    public Long deleteFromCart(Long memberId, CartItem cartItem) {
+    public Long deleteItemsFormCart(Long memberId, List<Long> cartItemIds) {
         Cart cart = cartRepository.findOneByMemberId(memberId);
-        cart.deleteItem(cartItem);
+        List<CartItem> cartItems = cartItemRepository.findAllById(cartItemIds);
+        cartItems.forEach(cart::deleteItem);
+
+        cartItemRepository.deleteByIdInQuery(cartItemIds);
         return cart.getId();
     }
-
-
 }

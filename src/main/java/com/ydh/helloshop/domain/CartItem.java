@@ -1,5 +1,7 @@
 package com.ydh.helloshop.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ydh.helloshop.exception.ExceedMaximumQuantity;
 import com.ydh.helloshop.item.Item;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -19,6 +21,7 @@ public class CartItem {
     @Column(name = "cart_item_id")
     private Long id;
 
+    @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "cart_id")
     private Cart cart;
@@ -29,10 +32,13 @@ public class CartItem {
 
     private int count;
 
+    private int totalPrice;
+
     //생성자
     protected CartItem(Item item, int count) {
         this.item = item;
         this.count = count;
+        totalPrice = item.getPrice() * count;
     }
 
     //setter
@@ -43,5 +49,14 @@ public class CartItem {
     //생성 메소드
     public static CartItem createCartItem(Item item, int count) {
         return new CartItem(item, count);
+    }
+
+    //== 비즈니스 로직 ==//
+    public void changeItemCount(int count) {
+        if (count > 10) {
+            throw new ExceedMaximumQuantity("The maximum number of items is 10.");
+        }
+        this.count = count;
+        totalPrice = item.getPrice() * count;
     }
 }
