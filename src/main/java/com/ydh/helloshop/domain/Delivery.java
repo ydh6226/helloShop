@@ -1,14 +1,13 @@
 package com.ydh.helloshop.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-import static com.ydh.helloshop.domain.DeliveryStatus.*;
-import static javax.persistence.EnumType.*;
-import static javax.persistence.FetchType.*;
+import static com.ydh.helloshop.domain.DeliveryStatus.READY;
+import static javax.persistence.EnumType.STRING;
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter

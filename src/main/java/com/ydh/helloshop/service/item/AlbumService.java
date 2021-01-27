@@ -1,6 +1,6 @@
 package com.ydh.helloshop.service.item;
 
-import com.ydh.helloshop.controller.item.AlbumForm;
+import com.ydh.helloshop.controller.seller.item.AlbumForm;
 import com.ydh.helloshop.domain.Category;
 import com.ydh.helloshop.domain.ItemCategory;
 import com.ydh.helloshop.exception.NoSuchItem;
@@ -12,12 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import static com.ydh.helloshop.domain.ItemCategory.createItemCategory;
 import static com.ydh.helloshop.item.Album.createAlbum;
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional(readOnly = true)

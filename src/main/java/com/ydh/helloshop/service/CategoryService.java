@@ -1,6 +1,6 @@
 package com.ydh.helloshop.service;
 
-import com.ydh.helloshop.controller.CategoryForm;
+import com.ydh.helloshop.controller.admin.category.CategoryForm;
 import com.ydh.helloshop.domain.Category;
 import com.ydh.helloshop.exception.NoSuchCategory;
 import com.ydh.helloshop.exception.NotEmptySubCategory;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.concurrent.CancellationException;
 
 import static com.ydh.helloshop.domain.Category.createCategory;
 
@@ -65,6 +64,7 @@ public class CategoryService {
         list.forEach(p -> p.getChildren()
                 .forEach(c -> c.getChildren()
                         .forEach(Category::getName)));
+
 
         return list;
     }

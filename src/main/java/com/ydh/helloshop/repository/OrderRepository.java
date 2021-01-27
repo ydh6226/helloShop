@@ -2,9 +2,8 @@ package com.ydh.helloshop.repository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ydh.helloshop.domain.*;
-import com.ydh.helloshop.item.QItem;
-import lombok.RequiredArgsConstructor;
+import com.ydh.helloshop.domain.Order;
+import com.ydh.helloshop.domain.OrderStatus;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 

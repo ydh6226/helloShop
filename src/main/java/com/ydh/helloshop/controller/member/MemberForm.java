@@ -1,9 +1,10 @@
 package com.ydh.helloshop.controller.member;
 
 import com.ydh.helloshop.domain.MemberStatus;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
@@ -11,6 +12,9 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class MemberForm {
 
     @NotEmpty(message = "회원 이름은 필수입니다.")
@@ -25,6 +29,8 @@ public class MemberForm {
 
     @NotNull(message = "회원종류 선택은 필수입니다.")
     private MemberStatus status;
+
+    private Long id;
 
     private String city;
     private String street;

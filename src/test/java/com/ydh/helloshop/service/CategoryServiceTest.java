@@ -4,13 +4,11 @@ import com.ydh.helloshop.domain.Category;
 import com.ydh.helloshop.exception.NoSuchCategory;
 import com.ydh.helloshop.exception.NotEmptySubCategory;
 import com.ydh.helloshop.repository.CategoryRepository;
-import org.junit.Assert;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +17,6 @@ import javax.persistence.EntityManager;
 import static com.ydh.helloshop.domain.Category.createCategory;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
