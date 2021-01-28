@@ -65,5 +65,4 @@ class CategoryRepositoryTest {
                 children1.forEach(o -> System.out.println("-- " + o.getName())); });
         });
     }
-
 }

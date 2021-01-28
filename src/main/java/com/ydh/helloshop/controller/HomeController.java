@@ -2,6 +2,7 @@ package com.ydh.helloshop.controller;
 
 import com.ydh.helloshop.controller.member.MemberForm;
 import com.ydh.helloshop.domain.Member;
+import com.ydh.helloshop.service.CategoryService;
 import com.ydh.helloshop.service.item.ItemService;
 import com.ydh.helloshop.service.item.ItemServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.List;
 public class HomeController {
 
     private final ItemServiceImpl itemService;
+    private final CategoryService categoryService;
 
     @RequestMapping("/")
     public String home(Model model, @AuthenticationPrincipal Member member) {
@@ -31,6 +33,8 @@ public class HomeController {
 
         PageRequest pageRequest = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "createTime"));
         model.addAttribute("items", itemService.findItemsWithPaging(pageRequest));
+        model.addAttribute("itemSearch", new ItemSearch());
+        model.addAttribute("leafCategories", categoryService.findLeafCategories());
 
         return "/home";
     }

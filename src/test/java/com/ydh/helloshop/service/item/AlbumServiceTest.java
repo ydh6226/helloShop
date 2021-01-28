@@ -1,6 +1,8 @@
 package com.ydh.helloshop.service.item;
 
+import com.ydh.helloshop.controller.ItemSearch;
 import com.ydh.helloshop.controller.seller.item.AlbumForm;
+import com.ydh.helloshop.domain.ItemCategory;
 import com.ydh.helloshop.exception.NoSuchItem;
 import com.ydh.helloshop.item.Album;
 import com.ydh.helloshop.repository.item.AlbumRepository;
@@ -67,6 +69,19 @@ class AlbumServiceTest {
         List<Album> result = albumRepository.findAll();
 
         assertThat(result.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void test() throws Exception {
+        ItemSearch itemSearch = new ItemSearch();
+        itemSearch.setCategoryName("만화");
+        itemSearch.setItemName("타입");
+
+        List<Album> albums = albumService.findAlbums(itemSearch);
+        for (Album album : albums) {
+            System.out.println("album.getName() = " + album.getName());
+
+        }
     }
 
 }

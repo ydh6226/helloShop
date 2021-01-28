@@ -4,14 +4,14 @@
 <head th:include="fragments/header :: header"/>
 <body>
 <div class="container-md">
-    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <div th:replace="fragments/bodyHeaderWithItemSearch :: bodyHeader(${itemSearch}, ${leafCategories})"/>
     <div class="row">
         <div class="col-9">
             <div class="container text-center">
                 <p>최근 등록된 상품</p>
                 <ul class="list-group">
                     <li class="list-group-item" th:each="item : ${items}">
-                        <a th:href="|/items/${item.getId()}|"><span th:text="|${item.name}    ${item.price}원|"></span></a>
+                        <a th:href="|/items/${item.getId()}|"><span th:text="|${item.name} ${item.price}원|"></span></a>
                     </li>
                 </ul>
             </div>

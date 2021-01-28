@@ -20,6 +20,10 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
+    public List<Category> findLeafCategories() {
+        return categoryRepository.findLeafCategories();
+    }
+
     @Transactional
     public Long save(Category category) {
         categoryRepository.save(category);
@@ -64,7 +68,6 @@ public class CategoryService {
         list.forEach(p -> p.getChildren()
                 .forEach(c -> c.getChildren()
                         .forEach(Category::getName)));
-
 
         return list;
     }

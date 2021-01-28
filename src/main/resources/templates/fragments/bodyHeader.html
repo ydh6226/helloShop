@@ -5,7 +5,6 @@
 <div class="header" th:fragment="bodyHeader">
     <div class="row justify-content-between">
         <div><a href="/"><h3>Hello Shop</h3></a></div>
-        <div><a sec:authorize="hasAuthority('CUSTOMER')" href="/cart"
-                class="btn btn-success">장바구니</a></div>
+        <div><a href="/cart" class="btn btn-success">장바구니</a></div>
     </div>
 </div>

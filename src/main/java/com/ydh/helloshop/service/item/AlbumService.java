@@ -1,5 +1,6 @@
 package com.ydh.helloshop.service.item;
 
+import com.ydh.helloshop.controller.ItemSearch;
 import com.ydh.helloshop.controller.seller.item.AlbumForm;
 import com.ydh.helloshop.domain.Category;
 import com.ydh.helloshop.domain.ItemCategory;
@@ -44,6 +45,10 @@ public class AlbumService implements ItemService<Album> {
     @Override
     public List<Album> findAll() {
         return albumRepository.findAll();
+    }
+
+    public List<Album> findAlbums(ItemSearch itemSearch) {
+        return albumRepository.findAlbumWihSearch(itemSearch);
     }
 
     @Transactional

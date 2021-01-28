@@ -66,6 +66,9 @@ public class InitDb {
             Category c12 = createCategory("하의", c1);
             Category c21 = createCategory("만화", c2);
             Category c111 = createCategory("반팔", c11);
+            Category c112 = createCategory("나시", c11);
+            Category c121 = createCategory("반바지", c12);
+            Category c211 = createCategory("코믹스", c21);
 
             categoryRepository.save(c1);
             categoryRepository.save(c2);
@@ -73,6 +76,9 @@ public class InitDb {
             categoryRepository.save(c12);
             categoryRepository.save(c21);
             categoryRepository.save(c111);
+            categoryRepository.save(c112);
+            categoryRepository.save(c121);
+            categoryRepository.save(c211);
         }
 
         public void createAdminMember() {
