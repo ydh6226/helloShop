@@ -27,6 +27,11 @@ public class CartItemService {
                 .orElseThrow(CartItemService::exception);
     }
 
+
+    public List<CartItem> findAllByItemIdIn(List<Long> itemIds) {
+        return cartItemRepository.findAllByItemIdIn(itemIds);
+    }
+
     /**
      * @return List[0] = CartItem: totalPrice,
      * List[1] = Cart: totalPrice

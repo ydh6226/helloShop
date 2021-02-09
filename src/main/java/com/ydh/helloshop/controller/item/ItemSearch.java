@@ -1,4 +1,4 @@
-package com.ydh.helloshop.controller;
+package com.ydh.helloshop.controller.item;
 
 import com.ydh.helloshop.domain.Category;
 import lombok.Data;

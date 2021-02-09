@@ -21,8 +21,8 @@ import static lombok.AccessLevel.PROTECTED;
 public class OrderItem {
 
     @Id
-    @GeneratedValue(generator = "order_intem_id")
-    @Column(name = "orderItem_id")
+    @GeneratedValue(generator = "order_item_id")
+    @Column(name = "order_item_id")
     private Long id;
 
     @ManyToOne(fetch = LAZY)

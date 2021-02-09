@@ -1,6 +1,6 @@
 package com.ydh.helloshop.service.item;
 
-import com.ydh.helloshop.controller.ItemSearch;
+import com.ydh.helloshop.controller.item.ItemSearch;
 import com.ydh.helloshop.controller.seller.item.AlbumForm;
 import com.ydh.helloshop.domain.Category;
 import com.ydh.helloshop.domain.ItemCategory;

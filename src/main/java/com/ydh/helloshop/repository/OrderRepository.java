@@ -34,6 +34,16 @@ public class OrderRepository {
         return em.find(Order.class, id);
     }
 
+    public Order findOneWithDeliveryAndItem(Long id) {
+        return em.createQuery("select o from Order o" +
+                " join fetch o.delivery" +
+                " join fetch o.orderItems oi" +
+                " join fetch oi.item" +
+                " where o.id = :id", Order.class)
+                .setParameter("id", id)
+                .getSingleResult();
+    }
+
     public List<Order> findAll(OrderSearch orderSearch) {
         return query.select(order)
                 .distinct()

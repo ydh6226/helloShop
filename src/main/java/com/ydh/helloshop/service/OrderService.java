@@ -88,4 +88,8 @@ public class OrderService {
     public List<Order> findAll(OrderSearch orderSearch) {
         return orderRepository.findAll(orderSearch);
     }
+
+    public Order findOneWithDeliveryAndItem(Long id) {
+        return orderRepository.findOneWithDeliveryAndItem(id);
+    }
 }

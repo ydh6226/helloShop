@@ -25,6 +25,11 @@ spring:
         format_sql: true
         default_batch_fetch_size: 100 # IN 쿼리의 개수
 
+  rabbitmq:
+    host: 192.168.35.199
+    username: hello-shop
+    password: hello-shop
+
 logging:
   level:
 #       로거를 통해 출력

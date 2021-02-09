@@ -1,11 +1,12 @@
 package com.ydh.helloshop.repository.item;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ydh.helloshop.controller.ItemSearch;
+import com.ydh.helloshop.controller.item.ItemSearch;
 import com.ydh.helloshop.item.Album;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -15,12 +16,21 @@ import static com.ydh.helloshop.domain.QItemCategory.itemCategory;
 import static com.ydh.helloshop.item.QAlbum.album;
 
 
-public class AlbumRepositoryImpl implements AlbumRepositoryCustom {
+public class AlbumRepositoryImpl extends QuerydslRepositorySupport implements AlbumRepositoryCustom {
 
     private final JPAQueryFactory query;
 
     public AlbumRepositoryImpl(EntityManager em) {
+        super(Album.class);
         this.query = new JPAQueryFactory(em);
+    }
+
+    public void test(Pageable pageable) {
+        JPQLQuery<Album> query;
+        query = from(album)
+                .where(album.name.eq("hello"));
+
+        getQuerydsl().applyPagination(pageable, query).fetch();
     }
 
     @Override

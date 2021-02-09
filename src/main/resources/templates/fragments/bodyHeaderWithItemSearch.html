@@ -9,12 +9,15 @@
                   method="get" th:object="${itemSearch}" onsubmit="return emptyCheck()">
                 <select class="custom-select col-3" name="categoryName">
                     <option selected value="">전체</option>
-                    <option th:each="category : ${leafCategories}" th:text="${category.name}" th:value="${category.name}"></option>
+                    <option th:each="category : ${leafCategories}"
+                            th:text="${category.name}" th:value="${category.name}"></option>
                 </select>
-                <input type="text" class="form-control col-7 input-itemName" placeholder="상품을 검색해보세요." name="itemName">
+                <input type="text" class="form-control col-7 input-itemName"
+                       placeholder="상품을 검색해보세요." name="itemName">
                 <button class="btn btn-primary col-2 btn-search" type="submit">검색</button>
             </form>
         </div>
+        <div><a href="/orderList" class="btn btn-info">주문내역</a></div>
         <div><a href="/cart" class="btn btn-warning">장바구니</a></div>
     </div>
     <script>

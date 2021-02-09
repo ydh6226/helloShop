@@ -61,4 +61,15 @@ public class CartService {
         cartItemRepository.deleteByIdInQuery(cartItemIds);
         return cart.getId();
     }
+
+    //장바구니 주문시 주문된 상품 장바구니에서 삭제
+    @Transactional(readOnly = false)
+    public void checkout(Long cartId, List<Long> itemIds) {
+        Cart cart = cartRepository.findOneById(cartId);
+
+        List<CartItem> cartItems = cartItemRepository.findAllByItemIdIn(itemIds);
+        cartItems.forEach(cart::deleteItem);
+
+        cartItemRepository.deleteByItemIdsInQuery(itemIds);
+    }
 }

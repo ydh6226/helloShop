@@ -11,17 +11,20 @@
     <button type="button" class="btn-sm btn-warning select-delete mb-2">선택삭제</button>
     <table class="table table-striped">
         <thead>
-        <th><input type="checkbox" id="cartItemAll"></th>
-        <th>상품정보</th>
-        <th>수량</th>
-        <th>상품금액</th>
+        <tr>
+            <th><input type="checkbox" id="cartItemAll"></th>
+            <th>상품정보</th>
+            <th>수량</th>
+            <th>상품금액</th>
+        </tr>
         </thead>
         <tbody>
-        <tr th:each="cartItem : ${cart.getCartItems()}">
+        <tr th:each="cartItem : ${cart.getCartItems()}" class="item-row">
             <td><input type="checkbox" name="cartItem-checkbox" th:cartItemId="${cartItem.id}"></td>
             <td th:text="${cartItem.item.name}"></td>
             <td>
-                <select class="custom-select item-count" th:cartItemId="${cartItem.id}">
+                <select class="custom-select item-count"
+                        th:cartItemId="${cartItem.id}" th:itemId="${cartItem.item.id}">
                     <option th:each="num : ${#numbers.sequence(1, 10)}" th:value="${num}" th:text="${num}"
                             th:selected="${cartItem.count} == ${num}"></option>
                 </select>
@@ -36,7 +39,7 @@
                 총 상품가격 <span class="font-weight-bold order-total-price" th:text="| ${cart.totalPrice} |"></span>원
             </p>
         </div>
-        <button type="button" class="btn btn-primary mt-2">선택 상품 구매</button>
+        <button type="button" id="checkout" class="btn btn-primary mt-2">선택 상품 구매</button>
     </div>
 
     <!--    form: post 사용시 추가 시켜야함-->
@@ -45,9 +48,7 @@
     <div th:replace="fragments/footer :: footer"/>
 </div>
 </body>
-</html>
-
-<script>
+<script th:inline="javascript">
     $('#cartItemAll').change(function () {
         let checked = $(this).prop('checked')
         $('input[name="cartItem-checkbox"]').prop('checked', checked)
@@ -113,7 +114,6 @@
                 let orderTotalPrice = data['orderTotalPrice'];
 
                 $('#totalPrice-' + cartItemId).text(totalPrice)
-                console.log(orderTotalPrice)
                 $('.order-total-price').text(orderTotalPrice)
             },
             error: function () {
@@ -121,4 +121,52 @@
             }
         })
     })
+
+
+
+    $('#checkout').click(function () {
+        let counts = []
+        let itemIds = []
+
+        $('.item-row').each(function () {
+            if ($(this).find('input[name=cartItem-checkbox]').is(':checked')) {
+                let countInfo = $(this).find('.item-count')
+                itemIds.push(countInfo.attr('itemId'))
+                counts.push(countInfo.val())
+            }
+        })
+
+        let itemInfo = {
+            counts: counts,
+            itemIds: itemIds,
+            cartId: [[${cart.id}]]
+        }
+
+        if (counts.length <= 0) {
+            alert('하나 이상의 상품을 선택하세요.')
+            return
+        }
+
+        $.ajax({
+            url: '/cart/checkout',
+            type: 'post',
+            data: JSON.stringify(itemInfo),
+            data_type: "json",
+            contentType: "application/json;",
+            beforeSend: function (xhr) {
+                let header = $("meta[name='_csrf_header']").attr('content')
+                let token = $("meta[name='_csrf']").attr('value')
+                xhr.setRequestHeader(header, token)
+            },
+            success: function () {
+                alert("구매를 완료하였습니다.")
+                location.href = '/orderList'
+            },
+            error: function () {
+                alert("구매를 실패했습니다.")
+            }
+        })
+    })
 </script>
+</html>
+

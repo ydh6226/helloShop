@@ -14,6 +14,8 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
 
     List<CartItem> findByItemId(Long itemId);
 
+    List<CartItem> findAllByItemIdIn(@Param("itemIds") List<Long> itemIds);
+
     @EntityGraph(attributePaths = {"item"})
     List<CartItem> findAllWithItemByIdIn(List<Long> ids);
 
@@ -28,6 +30,7 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
     @Modifying(clearAutomatically = true)
     @Query("delete from CartItem ci where ci.item.id in :itemIds")
     void deleteByItemIdsInQuery(@Param("itemIds") List<Long> itemIds);
+
 
 
 }

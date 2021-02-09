@@ -12,9 +12,11 @@
     <div class="container">
         <table class="table table-striped">
             <thead>
-            <th>상품명</th>
-            <th>가격</th>
-            <th>아티스트</th>
+            <tr>
+                <th>상품명</th>
+                <th>가격</th>
+                <th>아티스트</th>
+            </tr>
             </thead>
             <tbody>
             <tr th:object="${album}">
@@ -35,7 +37,7 @@
                 <input type="number" id="item-count" class="form-control col-6" min="1" max="10" value="1">
             </div>
             <button type="button" id="cart-btn" class="btn btn-outline-success col-3">장바구니 담기</button>
-            <button type="button" class="btn btn-outline-primary col-3">바로구매</button>
+            <button type="button" id="order-btn" class="btn btn-outline-primary col-3">바로구매</button>
         </div>
 
     </div>
@@ -47,9 +49,10 @@
 </div>
 </body>
 <script th:inline="javascript">
+    let itemId = [[${album.id}]]
+
     $('#cart-btn').click(function () {
         let count = $('#item-count').val()
-        let itemId = [[${album.id}]]
 
         let itemInfo = {
             count: count,
@@ -67,15 +70,43 @@
                 let token = $("meta[name='_csrf']").attr('value')
                 xhr.setRequestHeader(header, token)
             },
+
             success: function () {
                 alert("장바구니에 추가되었습니다.")
             },
             error: function () {
                 alert("장바구니 추가에 실패했습니다.")
             }
-
         })
+    })
 
+    $('#order-btn').click(function () {
+        let count = $('#item-count').val()
+
+        let itemInfo = {
+            count: count,
+            itemId: itemId
+        }
+
+        $.ajax({
+            url: '/order',
+            type: 'post',
+            data: JSON.stringify(itemInfo),
+            data_type: "json",
+            contentType: "application/json;",
+            beforeSend: function (xhr) {
+                let header = $("meta[name='_csrf_header']").attr('content')
+                let token = $("meta[name='_csrf']").attr('value')
+                xhr.setRequestHeader(header, token)
+            },
+            success: function () {
+                alert("구매를 완료하였습니다.")
+                location.href = '/orderList'
+            },
+            error: function () {
+                alert("구매를 실패했습니다.")
+            }
+        })
     })
 </script>
 </html>

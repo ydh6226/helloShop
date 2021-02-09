@@ -1,8 +1,9 @@
-package com.ydh.helloshop.controller;
+package com.ydh.helloshop.controller.member;
 
 import com.ydh.helloshop.domain.Member;
 import com.ydh.helloshop.service.CartItemService;
 import com.ydh.helloshop.service.CartService;
+import com.ydh.helloshop.service.OrderService;
 import com.ydh.helloshop.service.item.ItemServiceImpl;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ public class CartController {
     private final CartService cartService;
     private final CartItemService cartItemService;
     private final ItemServiceImpl itemService;
+    private final OrderService orderService;
 
     @GetMapping("/cart")
     public String cartView(Model model, @AuthenticationPrincipal Member member) {
@@ -33,15 +35,19 @@ public class CartController {
         return "/cartView";
     }
 
+    @PostMapping("/cart/checkout")
+    @ResponseBody
+    public void cartCheckout(@RequestBody OrderInfoDto orderInfoDto, @AuthenticationPrincipal Member member) {
+        orderService.orderMultiple(member.getId(), orderInfoDto.getItemIds(), orderInfoDto.getCounts());
+        cartService.checkout(orderInfoDto.getCartId(), orderInfoDto.getItemIds());
+
+        //amqp send()
+    }
+
     @ResponseBody
     @PostMapping("/cart/add")
     public void addToCart(@RequestBody SimpleItemDto itemDto, @AuthenticationPrincipal Member member) {
         cartService.addToCart(member.getId(), itemService.findOne(itemDto.getItemId()), itemDto.count);
-    }
-
-    @PostMapping("/cart/checkout")
-    public String CartOrder() {
-        return "";
     }
 
     @ResponseBody
@@ -75,5 +81,12 @@ public class CartController {
     private static class SimpleItemDto {
         Long itemId;
         int count;
+    }
+
+    @Data
+    static class OrderInfoDto {
+        List<Integer> counts;
+        List<Long> itemIds;
+        Long cartId;
     }
 }

@@ -1,4 +1,4 @@
-package com.ydh.helloshop.controller;
+package com.ydh.helloshop.controller.item;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,6 +1,6 @@
 package com.ydh.helloshop.service.item;
 
-import com.ydh.helloshop.controller.ItemDto;
+import com.ydh.helloshop.controller.item.ItemDto;
 import com.ydh.helloshop.exception.NoSuchItem;
 import com.ydh.helloshop.item.Item;
 import com.ydh.helloshop.repository.item.ItemRepository;

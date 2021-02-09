@@ -13,4 +13,8 @@ public class OrderSearch {
     private Long memberId;
     private String itemName;
     private OrderStatus orderStatus;
+
+    public OrderSearch(Long memberId) {
+        this.memberId = memberId;
+    }
 }
