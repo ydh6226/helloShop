@@ -20,7 +20,7 @@ public class Delivery {
     private Long id;
 
     @OneToOne(mappedBy = "delivery", fetch = LAZY)
-    Order order;
+    private OrderItem orderItem;
 
     @Embedded
     private Address address;
@@ -35,8 +35,8 @@ public class Delivery {
     }
 
     //setter
-    public void initOrder(Order order) {
-        this.order = order;
+    public void changeOrderItem(OrderItem orderItem) {
+        this.orderItem = orderItem;
     }
 
 

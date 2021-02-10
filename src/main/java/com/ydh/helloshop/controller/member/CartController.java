@@ -5,19 +5,24 @@ import com.ydh.helloshop.amqp.sender.DeliverySender;
 import com.ydh.helloshop.domain.Delivery;
 import com.ydh.helloshop.domain.Member;
 import com.ydh.helloshop.domain.Order;
+import com.ydh.helloshop.domain.OrderItem;
 import com.ydh.helloshop.service.CartItemService;
 import com.ydh.helloshop.service.CartService;
 import com.ydh.helloshop.service.OrderService;
 import com.ydh.helloshop.service.item.ItemServiceImpl;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -42,18 +47,26 @@ public class CartController {
 
     @PostMapping("/cart/checkout")
     @ResponseBody
-    public void cartCheckout(@RequestBody OrderInfoDto orderInfoDto, @AuthenticationPrincipal Member member) {
+    public ResponseEntity<String> cartCheckout(@RequestBody OrderInfoDto orderInfoDto, @AuthenticationPrincipal Member member) {
         Long orderId = orderService.orderMultiple(member.getId(), orderInfoDto.getItemIds(), orderInfoDto.getCounts());
 
-        cartService.checkout(orderInfoDto.getCartId(), orderInfoDto.getItemIds());
+        Order findOrder = orderService.findOneWithDeliveryAndItem(orderId);
+        List<OrderItem> orderItems = findOrder.getOrderItems();
 
-//        Order findOrder = orderService.findOneWithDeliveryAndItem(orderId);
-//
-//
-//        new DeliveryDelegateDto();
-//
-//        //rabbitMQ send
-//        deliverySender.sendAll();
+        List<DeliveryDelegateDto> dtos = orderItems.stream().map(oi ->
+                new DeliveryDelegateDto(oi.getDelivery().getId(),
+                        member.getName(), oi.getItem().getName(), oi.getDelivery().getAddress()))
+                .collect(Collectors.toList());
+
+        //rabbitMQ send
+        try {
+            deliverySender.sendAll(dtos);
+            cartService.checkout(orderInfoDto.getCartId(), orderInfoDto.getItemIds());
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            orderService.cancelByRabbitMQError(findOrder);
+            return new ResponseEntity<>("rabbitMQ send error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @ResponseBody

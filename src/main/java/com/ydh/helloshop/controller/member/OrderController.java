@@ -10,6 +10,8 @@ import com.ydh.helloshop.repository.OrderSearch;
 import com.ydh.helloshop.service.OrderService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,11 +35,11 @@ public class OrderController {
 
     @PostMapping("/order")
     @ResponseBody
-    public void orderOne(@RequestBody OrderInfoDto orderInfoDto, @AuthenticationPrincipal Member member) {
+    public ResponseEntity<String> orderOne(@RequestBody OrderInfoDto orderInfoDto, @AuthenticationPrincipal Member member) {
         Long orderId = orderService.orderOne(member.getId(), orderInfoDto.getItemId(), orderInfoDto.getCount());
 
         Order findOrder = orderService.findOneWithDeliveryAndItem(orderId);
-        Delivery delivery = findOrder.getDelivery();
+        Delivery delivery = findOrder.getOrderItems().get(0).getDelivery();
 
         DeliveryDelegateDto dto = new DeliveryDelegateDto(delivery.getId(),
                 member.getName(),
@@ -45,7 +47,13 @@ public class OrderController {
                 delivery.getAddress());
 
         //rabbitMQ send
-        deliverySender.sendOne(dto);
+        try {
+            deliverySender.sendOne(dto);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            orderService.cancelByRabbitMQError(findOrder);
+            return new ResponseEntity<>("rabbitMQ send error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/orderList")
@@ -59,7 +67,7 @@ public class OrderController {
                     .map(oi -> new OrderListDto(
                             oi.getItem().getId(),
                             oi.getItem().getName(), oi.getOrder().getOrderDate(),
-                            oi.getTotalPrice(), oi.getOrder().getDelivery().getStatus())).collect(Collectors.toList());
+                            oi.getTotalPrice(), oi.getDelivery().getStatus())).collect(Collectors.toList());
             orderListDto.addAll(result);
         });
 
