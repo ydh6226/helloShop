@@ -4,6 +4,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ydh.helloshop.domain.Order;
 import com.ydh.helloshop.domain.OrderStatus;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -36,8 +37,8 @@ public class OrderRepository {
 
     public Order findOneWithDeliveryAndItem(Long id) {
         return em.createQuery("select o from Order o" +
-                " join fetch o.delivery" +
                 " join fetch o.orderItems oi" +
+                " join fetch oi.delivery" +
                 " join fetch oi.item" +
                 " where o.id = :id", Order.class)
                 .setParameter("id", id)
@@ -55,6 +56,10 @@ public class OrderRepository {
                         itemNameLike(orderSearch.getItemName()))
                 .limit(1000)
                 .fetch();
+    }
+
+    public void deleteById(Order order) {
+        em.remove(order);
     }
 
     private BooleanExpression memberEq(Long memberId) {

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.FetchType.LAZY;
 
@@ -25,16 +26,12 @@ public class Order {
     @Column(name = "order_id")
     private Long id;
 
-    @ManyToOne(fetch = LAZY, cascade = ALL)
+    @ManyToOne(fetch = LAZY, cascade = PERSIST)
     @JoinColumn(name = "member_id")
     private Member member;
 
     @OneToMany(mappedBy = "order", cascade = ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
-
-    @OneToOne(fetch = LAZY, cascade = ALL)
-    @JoinColumn(name = "delivery_id")
-    private Delivery delivery;
 
     private LocalDateTime orderDate;
 
@@ -65,17 +62,10 @@ public class Order {
         orderItem.initOrder(this);
     }
 
-    private void setDelivery(Delivery delivery) {
-        this.delivery = delivery;
-        delivery.initOrder(this);
-    }
-
-
     //주문 생성 메서드
-    public static Order createOrder(Member member, Delivery delivery, List<OrderItem> orderItems) {
+    public static Order createOrder(Member member, List<OrderItem> orderItems) {
         Order order = new Order();
         order.setMember(member);
-        order.setDelivery(delivery);
         orderItems.forEach(order::addOrderItem);
         return order;
     }
@@ -84,12 +74,12 @@ public class Order {
     //== 비즈니스 로직 ==//
     //주문 취소
     public void cancel() {
-        if (delivery.getStatus() == DeliveryStatus.COMP) {
-            throw new IllegalStateException("이미 배송완료된 상품은 취소가 불가능합니다.");
+        try {
+            orderItems.forEach(OrderItem::cancel);
+            setStatusCancel();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
         }
-
-        setStatusCancel();
-        orderItems.forEach(OrderItem::cancel);
     }
 
     //== 조회 로직 ==//

@@ -12,6 +12,7 @@ import com.ydh.helloshop.repository.OrderRepository;
 import com.ydh.helloshop.repository.OrderSearch;
 import com.ydh.helloshop.repository.item.ItemRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,12 +41,11 @@ public class OrderService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NoSuchMember("The member could not be found."));
         Item item = itemRepository.findById(itemId).orElseThrow(() -> new NoSuchItem("The Item could not be found."));
-        Delivery delivery = new Delivery(member.getAddress());
 
         List<OrderItem> orderItems = new ArrayList<>();
-        orderItems.add(createOrderItem(item, item.getPrice(), count));
+        orderItems.add(createOrderItem(item, item.getPrice(), count, new Delivery(member.getAddress())));
 
-        Order order = createOrder(member, delivery, orderItems);
+        Order order = createOrder(member, orderItems);
         return orderRepository.save(order);
     }
 
@@ -69,12 +69,11 @@ public class OrderService {
                 .collect(toMap(itemIds::get, counts::get));
 
         List<OrderItem> orderItems = itemRepository.findMultiple(itemIds).stream()
-                .map(o -> createOrderItem(o, o.getPrice(), itemCountMap.get(o.getId())))
+                .map(o -> createOrderItem(o, o.getPrice(), itemCountMap.get(o.getId()),
+                        new Delivery(member.getAddress())))
                 .collect(toList());
 
-        Delivery delivery = new Delivery(member.getAddress());
-
-        return orderRepository.save(createOrder(member, delivery, orderItems));
+        return orderRepository.save(createOrder(member, orderItems));
     }
 
     //주문 취소
@@ -82,6 +81,14 @@ public class OrderService {
     public void cancelOrder(Long orderId) {
         Order order = orderRepository.findOne(orderId);
         order.cancel();
+    }
+
+    //rabbitMQ send 과정중 에러 발생했을 때 주문 취소
+    @Transactional
+    public void cancelByRabbitMQError(Order order) {
+        order.getMember().getOrders().remove(order);
+
+        orderRepository.deleteById(order);
     }
 
     //검색

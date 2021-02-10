@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -37,6 +38,10 @@ public class OrderItem {
 
     private int count;
 
+    @OneToOne(fetch = LAZY, cascade = ALL)
+    @JoinColumn(name = "delivery_id")
+    private Delivery delivery;
+
     //생성자
     protected OrderItem(Item item, int orderPrice, int count) {
         this.item = item;
@@ -45,9 +50,10 @@ public class OrderItem {
     }
 
     //생성 메서드
-    public static OrderItem createOrderItem(Item item, int orderPrice, int count) {
+    public static OrderItem createOrderItem(Item item, int orderPrice, int count, Delivery delivery) {
         OrderItem orderItem = new OrderItem(item, orderPrice, count);
         orderItem.item.removeStock(count);
+        orderItem.changeDelivery(delivery);
         return orderItem;
     }
 
@@ -56,10 +62,19 @@ public class OrderItem {
         this.order = order;
     }
 
-    //== 비즈니스 로직 ==//
+    //연관 관계 메서드
+    private void changeDelivery(Delivery delivery) {
+        this.delivery = delivery;
+        delivery.changeOrderItem(this);
+    }
 
+    //== 비즈니스 로직 ==//
     //주문 취소
     public void cancel() {
+        if (delivery.getStatus() == DeliveryStatus.COMP) {
+            throw new IllegalStateException("이미 배송완료된 상품은 취소가 불가능합니다.");
+        }
+
         item.addStock(count);
     }
 
