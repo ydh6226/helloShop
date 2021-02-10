@@ -22,17 +22,21 @@
 
         <table class="table table-striped">
             <thead>
-            <th><input type="checkbox" id="itemAll"></th>
-            <th>상품명</th>
-            <th>판매가</th>
-            <th>분류</th>
-            <th>상태</th>
+            <tr>
+                <th><input type="checkbox" id="itemAll"></th>
+                <th>상품명</th>
+                <th>판매가</th>
+                <th>수량</th>
+                <th>분류</th>
+                <th>상태</th>
+            </tr>
             </thead>
             <tbody>
             <tr th:each="item : ${itemList}">
                 <td><input type="checkbox" name="item-checkbox" th:category-number="${item.id}"></td>
                 <td th:text="${item.name}"></td>
                 <td th:text="${item.price}"></td>
+                <td th:text="${item.stockQuantity}"></td>
                 <td>
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownButton" data-toggle="dropdown">
