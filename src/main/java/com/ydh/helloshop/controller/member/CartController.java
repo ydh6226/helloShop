@@ -1,6 +1,10 @@
 package com.ydh.helloshop.controller.member;
 
+import com.ydh.helloshop.amqp.dto.DeliveryDelegateDto;
+import com.ydh.helloshop.amqp.sender.DeliverySender;
+import com.ydh.helloshop.domain.Delivery;
 import com.ydh.helloshop.domain.Member;
+import com.ydh.helloshop.domain.Order;
 import com.ydh.helloshop.service.CartItemService;
 import com.ydh.helloshop.service.CartService;
 import com.ydh.helloshop.service.OrderService;
@@ -23,6 +27,7 @@ public class CartController {
     private final CartItemService cartItemService;
     private final ItemServiceImpl itemService;
     private final OrderService orderService;
+    private final DeliverySender deliverySender;
 
     @GetMapping("/cart")
     public String cartView(Model model, @AuthenticationPrincipal Member member) {
@@ -38,10 +43,17 @@ public class CartController {
     @PostMapping("/cart/checkout")
     @ResponseBody
     public void cartCheckout(@RequestBody OrderInfoDto orderInfoDto, @AuthenticationPrincipal Member member) {
-        orderService.orderMultiple(member.getId(), orderInfoDto.getItemIds(), orderInfoDto.getCounts());
+        Long orderId = orderService.orderMultiple(member.getId(), orderInfoDto.getItemIds(), orderInfoDto.getCounts());
+
         cartService.checkout(orderInfoDto.getCartId(), orderInfoDto.getItemIds());
 
-        //amqp send()
+//        Order findOrder = orderService.findOneWithDeliveryAndItem(orderId);
+//
+//
+//        new DeliveryDelegateDto();
+//
+//        //rabbitMQ send
+//        deliverySender.sendAll();
     }
 
     @ResponseBody

@@ -1,6 +1,7 @@
 package com.ydh.helloshop;
 
 import com.ydh.helloshop.controller.seller.item.AlbumForm;
+import com.ydh.helloshop.domain.Address;
 import com.ydh.helloshop.domain.Category;
 import com.ydh.helloshop.domain.ItemCategory;
 import com.ydh.helloshop.domain.Member;
@@ -91,7 +92,7 @@ public class InitDb {
         public void createCustomerMember() {
             Member member = new Member();
             member.createInfo("cus", "cus", new BCryptPasswordEncoder().encode("cus"),
-                    null, CUSTOMER);
+                    new Address("경기", "행신로", "143번길"), CUSTOMER);
             memberRepository.save(member);
         }
 

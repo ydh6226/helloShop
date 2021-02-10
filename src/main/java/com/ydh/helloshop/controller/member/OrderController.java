@@ -44,7 +44,8 @@ public class OrderController {
                 findOrder.getOrderItems().get(0).getItem().getName(),
                 delivery.getAddress());
 
-        deliverySender.send(dto);
+        //rabbitMQ send
+        deliverySender.sendOne(dto);
     }
 
     @GetMapping("/orderList")
