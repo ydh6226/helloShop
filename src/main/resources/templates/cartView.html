@@ -122,9 +122,15 @@
         })
     })
 
-
+    let isRunning = false
 
     $('#checkout').click(function () {
+        if (isRunning) {
+            alert("잠시만 기다려 주세요.")
+            return
+        }
+        isRunning = true
+
         let counts = []
         let itemIds = []
 
@@ -164,6 +170,9 @@
             },
             error: function () {
                 alert("구매를 실패했습니다.")
+            },
+            complete: function () {
+                isRunning = false
             }
         })
     })

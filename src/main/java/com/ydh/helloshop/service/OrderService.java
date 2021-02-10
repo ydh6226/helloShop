@@ -12,7 +12,6 @@ import com.ydh.helloshop.repository.OrderRepository;
 import com.ydh.helloshop.repository.OrderSearch;
 import com.ydh.helloshop.repository.item.ItemRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -87,8 +86,7 @@ public class OrderService {
     @Transactional
     public void cancelByRabbitMQError(Order order) {
         order.getMember().getOrders().remove(order);
-
-        orderRepository.deleteById(order);
+        orderRepository.deleteOne(order);
     }
 
     //검색

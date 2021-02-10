@@ -58,7 +58,7 @@ public class OrderRepository {
                 .fetch();
     }
 
-    public void deleteById(Order order) {
+    public void deleteOne(Order order) {
         em.remove(order);
     }
 
