@@ -39,5 +39,12 @@ public class Delivery {
         this.orderItem = orderItem;
     }
 
+    //== 비즈니스 로직 ==//
+    public void startDelivery() {
+        status = DeliveryStatus.SHIPPED;
+    }
 
+    public void endDelivery() {
+        status = DeliveryStatus.COMP;
+    }
 }
