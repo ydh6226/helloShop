@@ -17,7 +17,8 @@ import static javax.persistence.FetchType.LAZY;
 public class Category {
 
     @Id
-    @GeneratedValue(generator = "category_id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "category_id_gen")
+    @SequenceGenerator(name = "category_id_gen", sequenceName = "category_id")
     @Column(name = "category_id")
     private Long id;
 

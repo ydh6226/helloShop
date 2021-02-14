@@ -18,12 +18,15 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
+      use-new-id-generator-mappings: true
+
     properties:
       hibernate:
         #        sout를 통해 출력
         #        show_sql: true
         format_sql: true
         default_batch_fetch_size: 100 # IN 쿼리의 개수
+
 
   rabbitmq:
     host: 192.168.35.199

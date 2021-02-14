@@ -5,6 +5,7 @@ import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ydh.helloshop.controller.item.ItemSearch;
 import com.ydh.helloshop.item.Album;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
@@ -15,7 +16,6 @@ import static com.ydh.helloshop.domain.QCategory.category;
 import static com.ydh.helloshop.domain.QItemCategory.itemCategory;
 import static com.ydh.helloshop.item.QAlbum.album;
 
-
 public class AlbumRepositoryImpl extends QuerydslRepositorySupport implements AlbumRepositoryCustom {
 
     private final JPAQueryFactory query;
@@ -23,14 +23,6 @@ public class AlbumRepositoryImpl extends QuerydslRepositorySupport implements Al
     public AlbumRepositoryImpl(EntityManager em) {
         super(Album.class);
         this.query = new JPAQueryFactory(em);
-    }
-
-    public void test(Pageable pageable) {
-        JPQLQuery<Album> query;
-        query = from(album)
-                .where(album.name.eq("hello"));
-
-        getQuerydsl().applyPagination(pageable, query).fetch();
     }
 
     @Override

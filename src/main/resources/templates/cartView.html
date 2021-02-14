@@ -123,13 +123,11 @@
     })
 
     let isRunning = false
-
     $('#checkout').click(function () {
         if (isRunning) {
             alert("잠시만 기다려 주세요.")
             return
         }
-        isRunning = true
 
         let counts = []
         let itemIds = []
@@ -152,6 +150,7 @@
             alert('하나 이상의 상품을 선택하세요.')
             return
         }
+        isRunning = true
 
         $.ajax({
             url: '/cart/checkout',
