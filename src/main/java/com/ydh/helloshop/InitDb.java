@@ -1,10 +1,10 @@
 package com.ydh.helloshop;
 
-import com.ydh.helloshop.controller.seller.item.AlbumForm;
+import com.ydh.helloshop.controller.seller.AlbumForm;
 import com.ydh.helloshop.domain.Address;
 import com.ydh.helloshop.domain.Category;
 import com.ydh.helloshop.domain.ItemCategory;
-import com.ydh.helloshop.domain.Member;
+import com.ydh.helloshop.domain.member.Member;
 import com.ydh.helloshop.item.Album;
 import com.ydh.helloshop.item.Item;
 import com.ydh.helloshop.repository.CategoryRepository;
@@ -22,7 +22,7 @@ import java.util.Arrays;
 
 import static com.ydh.helloshop.domain.Category.createCategory;
 import static com.ydh.helloshop.domain.ItemCategory.createItemCategory;
-import static com.ydh.helloshop.domain.MemberStatus.*;
+import static com.ydh.helloshop.domain.member.MemberStatus.*;
 import static com.ydh.helloshop.item.Album.createAlbum;
 
 @Component

@@ -1,7 +1,9 @@
 package com.ydh.helloshop.controller.member;
 
+import com.ydh.helloshop.controller.member.form.MemberForm;
+import com.ydh.helloshop.controller.member.form.MemberLoginForm;
 import com.ydh.helloshop.domain.Address;
-import com.ydh.helloshop.domain.Member;
+import com.ydh.helloshop.domain.member.Member;
 import com.ydh.helloshop.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -58,7 +61,7 @@ public class  MemberController {
         return "members/welcome";
     }
 
-    @GetMapping("/members/login")
+    @RequestMapping("/members/login")
     public String loginForm(Model model) {
         model.addAttribute("memberLoginForm", new MemberLoginForm());
         return "members/login";

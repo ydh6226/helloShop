@@ -1,7 +1,7 @@
 package com.ydh.helloshop.service;
 
-import com.ydh.helloshop.domain.Member;
-import com.ydh.helloshop.domain.MemberStatus;
+import com.ydh.helloshop.domain.member.Member;
+import com.ydh.helloshop.domain.member.MemberStatus;
 import com.ydh.helloshop.repository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

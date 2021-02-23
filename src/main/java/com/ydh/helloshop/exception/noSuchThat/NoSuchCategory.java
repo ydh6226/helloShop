@@ -1,4 +1,4 @@
-package com.ydh.helloshop.exception;
+package com.ydh.helloshop.exception.noSuchThat;
 
 public class NoSuchCategory extends RuntimeException {
     public NoSuchCategory() {

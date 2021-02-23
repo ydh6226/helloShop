@@ -1,6 +1,9 @@
-package com.ydh.helloshop.domain;
+package com.ydh.helloshop.domain.member;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ydh.helloshop.domain.Address;
+import com.ydh.helloshop.domain.Cart;
+import com.ydh.helloshop.domain.order.Order;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

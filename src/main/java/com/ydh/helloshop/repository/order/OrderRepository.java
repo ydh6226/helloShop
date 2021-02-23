@@ -1,10 +1,9 @@
-package com.ydh.helloshop.repository;
+package com.ydh.helloshop.repository.order;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ydh.helloshop.domain.Order;
-import com.ydh.helloshop.domain.OrderStatus;
-import org.springframework.data.jpa.repository.Modifying;
+import com.ydh.helloshop.domain.order.Order;
+import com.ydh.helloshop.domain.order.OrderStatus;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 

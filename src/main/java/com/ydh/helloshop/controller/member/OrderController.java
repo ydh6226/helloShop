@@ -2,11 +2,11 @@ package com.ydh.helloshop.controller.member;
 
 import com.ydh.helloshop.amqp.dto.DeliveryDelegateDto;
 import com.ydh.helloshop.amqp.sender.DeliverySender;
-import com.ydh.helloshop.domain.Delivery;
-import com.ydh.helloshop.domain.DeliveryStatus;
-import com.ydh.helloshop.domain.Member;
-import com.ydh.helloshop.domain.Order;
-import com.ydh.helloshop.repository.OrderSearch;
+import com.ydh.helloshop.domain.delivery.Delivery;
+import com.ydh.helloshop.domain.delivery.DeliveryStatus;
+import com.ydh.helloshop.domain.member.Member;
+import com.ydh.helloshop.domain.order.Order;
+import com.ydh.helloshop.repository.order.OrderSearch;
 import com.ydh.helloshop.service.OrderService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

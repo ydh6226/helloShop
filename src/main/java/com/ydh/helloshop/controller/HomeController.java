@@ -1,8 +1,8 @@
 package com.ydh.helloshop.controller;
 
 import com.ydh.helloshop.controller.item.ItemSearch;
-import com.ydh.helloshop.controller.member.MemberForm;
-import com.ydh.helloshop.domain.Member;
+import com.ydh.helloshop.controller.member.form.MemberForm;
+import com.ydh.helloshop.domain.member.Member;
 import com.ydh.helloshop.service.CategoryService;
 import com.ydh.helloshop.service.item.ItemServiceImpl;
 import lombok.RequiredArgsConstructor;

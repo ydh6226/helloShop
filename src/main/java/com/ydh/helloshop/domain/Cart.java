@@ -1,6 +1,6 @@
 package com.ydh.helloshop.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ydh.helloshop.domain.member.Member;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

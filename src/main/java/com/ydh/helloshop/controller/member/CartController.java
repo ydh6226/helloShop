@@ -2,9 +2,8 @@ package com.ydh.helloshop.controller.member;
 
 import com.ydh.helloshop.amqp.dto.DeliveryDelegateDto;
 import com.ydh.helloshop.amqp.sender.DeliverySender;
-import com.ydh.helloshop.domain.Delivery;
-import com.ydh.helloshop.domain.Member;
-import com.ydh.helloshop.domain.Order;
+import com.ydh.helloshop.domain.member.Member;
+import com.ydh.helloshop.domain.order.Order;
 import com.ydh.helloshop.domain.OrderItem;
 import com.ydh.helloshop.service.CartItemService;
 import com.ydh.helloshop.service.CartService;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,11 +1,13 @@
-package com.ydh.helloshop.domain;
+package com.ydh.helloshop.domain.delivery;
 
+import com.ydh.helloshop.domain.Address;
+import com.ydh.helloshop.domain.OrderItem;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-import static com.ydh.helloshop.domain.DeliveryStatus.READY;
+import static com.ydh.helloshop.domain.delivery.DeliveryStatus.READY;
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.FetchType.LAZY;
 

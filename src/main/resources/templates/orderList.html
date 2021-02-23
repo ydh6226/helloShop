@@ -20,9 +20,9 @@
             <td th:text="*{orderDto.itemName}"></td>
             <td th:text="*{orderDto.price}"></td>
             <th:block th:switch="${orderDto.deliveryStatus}">
-                <td th:case="${T(com.ydh.helloshop.domain.DeliveryStatus).READY}" th:text="|배송 준비|"></td>
-                <td th:case="${T(com.ydh.helloshop.domain.DeliveryStatus).SHIPPED}" th:text="배송중"></td>
-                <td th:case="${T(com.ydh.helloshop.domain.DeliveryStatus).COMP}" th:text="|배송 완료|"></td>
+                <td th:case="${T(com.ydh.helloshop.domain.delivery.DeliveryStatus).READY}" th:text="|배송 준비|"></td>
+                <td th:case="${T(com.ydh.helloshop.domain.delivery.DeliveryStatus).SHIPPED}" th:text="배송중"></td>
+                <td th:case="${T(com.ydh.helloshop.domain.delivery.DeliveryStatus).COMP}" th:text="|배송 완료|"></td>
             </th:block>
         </tr>
         </tbody>

@@ -1,7 +1,7 @@
 package com.ydh.helloshop.service;
 
-import com.ydh.helloshop.domain.Member;
-import com.ydh.helloshop.exception.NoSuchMember;
+import com.ydh.helloshop.domain.member.Member;
+import com.ydh.helloshop.exception.noSuchThat.NoSuchMember;
 import com.ydh.helloshop.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;

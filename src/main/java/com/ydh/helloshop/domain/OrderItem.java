@@ -1,5 +1,8 @@
 package com.ydh.helloshop.domain;
 
+import com.ydh.helloshop.domain.delivery.Delivery;
+import com.ydh.helloshop.domain.delivery.DeliveryStatus;
+import com.ydh.helloshop.domain.order.Order;
 import com.ydh.helloshop.item.Item;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

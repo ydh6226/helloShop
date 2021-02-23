@@ -1,4 +1,4 @@
-package com.ydh.helloshop.controller.seller.item;
+package com.ydh.helloshop.controller.seller;
 
 import lombok.*;
 

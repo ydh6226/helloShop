@@ -1,6 +1,6 @@
-package com.ydh.helloshop.controller.member;
+package com.ydh.helloshop.controller.member.form;
 
-import com.ydh.helloshop.domain.MemberStatus;
+import com.ydh.helloshop.domain.member.MemberStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

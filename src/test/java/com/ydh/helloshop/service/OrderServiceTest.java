@@ -1,18 +1,18 @@
 package com.ydh.helloshop.service;
 
 import com.ydh.helloshop.domain.Address;
-import com.ydh.helloshop.domain.Member;
-import com.ydh.helloshop.domain.Order;
-import com.ydh.helloshop.domain.OrderStatus;
-import com.ydh.helloshop.exception.NoSuchItem;
-import com.ydh.helloshop.exception.NoSuchMember;
+import com.ydh.helloshop.domain.member.Member;
+import com.ydh.helloshop.domain.order.Order;
+import com.ydh.helloshop.domain.order.OrderStatus;
+import com.ydh.helloshop.exception.noSuchThat.NoSuchItem;
+import com.ydh.helloshop.exception.noSuchThat.NoSuchMember;
 import com.ydh.helloshop.exception.NotEnoughStockException;
 import com.ydh.helloshop.item.Album;
 import com.ydh.helloshop.item.Book;
 import com.ydh.helloshop.item.Item;
 import com.ydh.helloshop.repository.MemberRepository;
-import com.ydh.helloshop.repository.OrderRepository;
-import com.ydh.helloshop.repository.OrderSearch;
+import com.ydh.helloshop.repository.order.OrderRepository;
+import com.ydh.helloshop.repository.order.OrderSearch;
 import com.ydh.helloshop.repository.item.ItemRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,7 @@ import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ydh.helloshop.domain.MemberStatus.CUSTOMER;
+import static com.ydh.helloshop.domain.member.MemberStatus.CUSTOMER;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 

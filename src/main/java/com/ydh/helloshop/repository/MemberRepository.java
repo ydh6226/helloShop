@@ -1,6 +1,6 @@
 package com.ydh.helloshop.repository;
 
-import com.ydh.helloshop.domain.Member;
+import com.ydh.helloshop.domain.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

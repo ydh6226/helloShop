@@ -1,7 +1,7 @@
 package com.ydh.helloshop.service;
 
 import com.ydh.helloshop.domain.Category;
-import com.ydh.helloshop.exception.NoSuchCategory;
+import com.ydh.helloshop.exception.noSuchThat.NoSuchCategory;
 import com.ydh.helloshop.exception.NotEmptySubCategory;
 import com.ydh.helloshop.repository.CategoryRepository;
 import org.junit.jupiter.api.DisplayName;

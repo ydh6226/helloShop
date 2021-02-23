@@ -1,5 +1,7 @@
-package com.ydh.helloshop.domain;
+package com.ydh.helloshop.domain.order;
 
+import com.ydh.helloshop.domain.OrderItem;
+import com.ydh.helloshop.domain.member.Member;
 import lombok.Getter;
 
 import javax.persistence.*;
