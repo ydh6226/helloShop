@@ -43,27 +43,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/admin/**").hasAuthority("ADMIN")
 //                .anyRequest().permitAll()
 ////                .anyRequest().authenticated()
+                    .and()
 
-                .and()
                 .formLogin()
-                .loginPage("/members/login")
-                .loginProcessingUrl("/authenticate")
-                .defaultSuccessUrl("/")
-                .usernameParameter("email")
-                .passwordParameter("password")
-                .failureHandler(failureHandler)
-                .permitAll()
+                    .loginPage("/members/login")
+                    .loginProcessingUrl("/members/login/authentication")
+                    .defaultSuccessUrl("/")
+                    .usernameParameter("email")
+                    .passwordParameter("password")
+                    .failureHandler(failureHandler)
+                    .permitAll()
+                    .and()
 
-                .and()
                 .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/")
-                .invalidateHttpSession(true)
-                .permitAll()
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/")
+                    .invalidateHttpSession(true)
+                    .permitAll()
+                    .and()
 
-                .and()
                 .csrf()
-                .csrfTokenRepository(new CookieCsrfTokenRepository());
+                    .csrfTokenRepository(new CookieCsrfTokenRepository());
     }
 
     @Override

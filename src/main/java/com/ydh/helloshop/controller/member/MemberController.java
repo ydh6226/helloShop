@@ -61,9 +61,20 @@ public class  MemberController {
         return "members/welcome";
     }
 
-    @RequestMapping("/members/login")
+    @GetMapping("/members/login")
     public String loginForm(Model model) {
-        model.addAttribute("memberLoginForm", new MemberLoginForm());
+        model.addAttribute("memberLoginForm", MemberLoginForm.builder().build());
+        return "members/login";
+    }
+
+    //로그인 실패 시 호출
+    @PostMapping("/members/login")
+    public String loginForm(Model model, HttpServletRequest request) {
+        model.addAttribute("errorMessage", request.getAttribute("errorMessage").toString());
+        model.addAttribute("memberLoginForm",
+                MemberLoginForm.builder()
+                .email(request.getParameter("email"))
+                .build());
         return "members/login";
     }
 

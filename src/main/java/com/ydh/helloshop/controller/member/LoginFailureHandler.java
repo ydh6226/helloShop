@@ -19,10 +19,8 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
         if(exception instanceof BadCredentialsException) {
             String errorMessage = "가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.";
             request.setAttribute("errorMessage", errorMessage);
+            request.setAttribute("email", request.getParameter("email"));
             request.getRequestDispatcher("/members/login").forward(request, response);
         }
-
-
-        System.out.println("hello");
     }
 }
