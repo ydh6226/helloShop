@@ -31,7 +31,7 @@ public class InitDb {
 
     private final InitService initService;
 
-    @PostConstruct
+//    @PostConstruct
     public void dbInit() {
         initService.createRootCategory();
         initService.createAdminMember();

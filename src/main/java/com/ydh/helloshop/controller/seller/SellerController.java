@@ -61,56 +61,6 @@ public class SellerController {
         return "seller/itemList";
     }
 
-
-    @GetMapping("/seller/items/new")
-    public String createItemForm(Model model, @AuthenticationPrincipal Member member) {
-        model.addAttribute("albumForm", new AlbumForm());
-        model.addAttribute("categories", categoryService.findAllByKind());
-
-        if (member != null) {
-            model.addAttribute("memberForm",
-                    MemberForm.builder()
-                            .name(member.getName())
-                            .id(member.getId())
-                            .build());
-        }
-        else {
-            model.addAttribute("memberForm",
-                    MemberForm.builder()
-                            .name("hong")
-                            .id(3L).build());
-        }
-
-        return "seller/createItem";
-    }
-
-    //memberId 값 유지하기 위해 memberForm 파라미터로 설정
-    @PostMapping("/seller/items/new")
-    public String createItem(@Valid AlbumForm albumForm ,BindingResult result,
-                             Model model, @AuthenticationPrincipal Member member) {
-        if (result.hasErrors()) {
-            model.addAttribute("categories", categoryService.findAllByKind());
-
-            if (member != null) {
-                model.addAttribute("memberForm",
-                        MemberForm.builder()
-                                .name(member.getName())
-                                .id(member.getId())
-                                .build());
-            }
-            else {
-                model.addAttribute("memberForm",
-                        MemberForm.builder()
-                                .name("hong")
-                                .id(3L).build());
-            }
-            return "seller/createItem";
-        }
-
-        albumService.create(albumForm);
-        return "redirect:/seller/items";
-    }
-
     @ResponseBody
     @PostMapping("/seller/items/delete")
     public void deleteItem(@RequestBody SimpleItemDto itemDto) {

@@ -1,14 +1,12 @@
-package com.ydh.helloshop.controller.seller;
+package com.ydh.helloshop.controller.seller.item;
 
 import com.ydh.helloshop.controller.member.form.MemberForm;
-import com.ydh.helloshop.controller.seller.form.AlbumForm;
 import com.ydh.helloshop.controller.seller.form.BookForm;
 import com.ydh.helloshop.domain.Category;
 import com.ydh.helloshop.domain.ItemCategory;
 import com.ydh.helloshop.domain.member.Member;
 import com.ydh.helloshop.service.CartItemService;
 import com.ydh.helloshop.service.CategoryService;
-import com.ydh.helloshop.service.item.AlbumService;
 import com.ydh.helloshop.service.item.BookDto;
 import com.ydh.helloshop.service.item.BookService;
 import com.ydh.helloshop.service.item.ItemServiceImpl;
@@ -40,13 +38,11 @@ public class BookController {
 
     @GetMapping("/seller/book/new")
     public String createItemForm(Model model, @AuthenticationPrincipal Member member) {
-        model.addAttribute("bookForm", new BookForm());
+        BookForm bookForm = new BookForm();
+        bookForm.setSellerId(member.getId());
+
+        model.addAttribute("bookForm", bookForm);
         model.addAttribute("categories", categoryService.findAllByKind());
-        model.addAttribute("memberForm",
-                MemberForm.builder()
-                        .name(member.getName())
-                        .id(member.getId())
-                        .build());
 
         return "seller/create/book";
     }
@@ -56,11 +52,8 @@ public class BookController {
                              Model model, @AuthenticationPrincipal Member member) {
         if (result.hasErrors()) {
             model.addAttribute("categories", categoryService.findAllByKind());
-            model.addAttribute("memberForm",
-                    MemberForm.builder()
-                            .name(member.getName())
-                            .id(member.getId())
-                            .build());
+
+            return "seller/create/book";
         }
 
         //조회
