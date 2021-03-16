@@ -1,6 +1,8 @@
 package com.ydh.helloshop.service.item;
 
+import com.ydh.helloshop.controller.item.ItemSearch;
 import com.ydh.helloshop.item.Item;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

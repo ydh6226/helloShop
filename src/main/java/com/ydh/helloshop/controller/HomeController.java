@@ -34,6 +34,6 @@ public class HomeController {
         model.addAttribute("itemSearch", new ItemSearch());
         model.addAttribute("leafCategories", categoryService.findLeafCategories());
 
-        return "/home";
+        return "home";
     }
 }

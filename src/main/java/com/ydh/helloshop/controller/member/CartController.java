@@ -40,7 +40,7 @@ public class CartController {
         else {
             model.addAttribute("cart", cartService.findOneByMemberId(2L));
         }
-        return "/cartView";
+        return "cartView";
     }
 
     @PostMapping("/cart/checkout")
@@ -79,7 +79,7 @@ public class CartController {
         List<Long> ids = mapDto.get("ids");
 
         cartService.deleteItemsFrommCart(member.getId(), ids);
-        return "/cart";
+        return "cart";
     }
 
     @ResponseBody

@@ -1,6 +1,6 @@
 package com.ydh.helloshop.item;
 
-import com.ydh.helloshop.controller.seller.AlbumForm;
+import com.ydh.helloshop.controller.seller.form.AlbumForm;
 import com.ydh.helloshop.domain.ItemCategory;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

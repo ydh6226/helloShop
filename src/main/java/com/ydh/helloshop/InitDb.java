@@ -1,6 +1,6 @@
 package com.ydh.helloshop;
 
-import com.ydh.helloshop.controller.seller.AlbumForm;
+import com.ydh.helloshop.controller.seller.form.AlbumForm;
 import com.ydh.helloshop.domain.Address;
 import com.ydh.helloshop.domain.Category;
 import com.ydh.helloshop.domain.ItemCategory;

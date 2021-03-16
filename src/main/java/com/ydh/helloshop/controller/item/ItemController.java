@@ -21,13 +21,13 @@ public class ItemController {
     public String itemView(@PathVariable("itemId") Long itemId, Model model) {
         Album album = albumService.findOne(itemId);
         model.addAttribute("album", album);
-        return "/itemView";
+        return "itemView";
     }
 
     @GetMapping("/items")
     public String itemList(@ModelAttribute("itemSearch") ItemSearch itemSearch, Model model) {
-        List<Album> albums = albumService.findAlbums(itemSearch);
+        List<Album> albums = albumService.findWithSearch(itemSearch);
         model.addAttribute("albums", albums);
-        return "/itemSearch";
+        return "itemSearch";
     }
 }

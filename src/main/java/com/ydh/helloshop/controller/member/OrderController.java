@@ -73,7 +73,7 @@ public class OrderController {
 
         model.addAttribute("orderListDto", orderListDto);
 
-        return "/orderList";
+        return "orderList";
     }
 
     @Data
