@@ -19,14 +19,14 @@ public class AdminController {
 
     @GetMapping("/admin")
     public String adminMenu() {
-        return "/admin/home";
+        return "admin/home";
     }
 
     @GetMapping("/admin/category")
     public String categoryList(Model model) {
         model.addAttribute("categories", categoryService.findAllByKind());
         model.addAttribute("form", new CategoryForm());
-        return "/admin/category/categoryList";
+        return "admin/category/categoryList";
     }
 
     @PostMapping("/admin/category/new")

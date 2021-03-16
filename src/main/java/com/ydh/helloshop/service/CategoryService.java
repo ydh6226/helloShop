@@ -61,6 +61,10 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
+    public List<Category> findAllById(List<Long> categoryIds) {
+        return categoryRepository.findAllById(categoryIds);
+    }
+
     public List<Category> findAllByKind() {
         Category root = categoryRepository.findByName("root");
         List<Category> list = categoryRepository.findByParent(root);

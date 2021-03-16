@@ -17,13 +17,13 @@ public class CartItemService {
 
     private final CartItemRepository cartItemRepository;
 
-    private static NoSuchCartItem exception() {
+    private NoSuchCartItem exception() {
         return new NoSuchCartItem("The category could not be found.");
     }
 
     public CartItem findOne(Long cartItemId) {
         return cartItemRepository.findById(cartItemId)
-                .orElseThrow(CartItemService::exception);
+                .orElseThrow(this::exception);
     }
 
 

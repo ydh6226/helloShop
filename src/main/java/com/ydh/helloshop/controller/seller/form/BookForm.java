@@ -1,24 +1,26 @@
-package com.ydh.helloshop.controller.seller;
+package com.ydh.helloshop.controller.seller.form;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter @Setter
-@Builder
-public class AlbumForm {
+public class BookForm {
 
-    @NotEmpty(message = "가수이름을 입력하세요.")
-    private String artist;
+    @NotEmpty(message = "작가를 입력하세요.")
+    private String author;
 
-    private String etc;
+    @NotEmpty(message = "ISBN을 입력하세요.")
+    private String isbn;
 
     @NotEmpty(message = "상품이름을 입력하세요")
     private String name;
@@ -33,13 +35,4 @@ public class AlbumForm {
 
     @Size(min = 1, message = "카테고리를 입력하세요.")
     private List<Long> categoryIds = new ArrayList<>();
-
-    public AlbumForm(Long sellerId, String artist, String etc, String name, int price, int stockQuantity) {
-        this.sellerId = sellerId;
-        this.artist = artist;
-        this.etc = etc;
-        this.name = name;
-        this.price = price;
-        this.stockQuantity = stockQuantity;
-    }
 }

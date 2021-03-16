@@ -1,7 +1,7 @@
 package com.ydh.helloshop.service.item;
 
 import com.ydh.helloshop.controller.item.ItemSearch;
-import com.ydh.helloshop.controller.seller.AlbumForm;
+import com.ydh.helloshop.controller.seller.form.AlbumForm;
 import com.ydh.helloshop.exception.noSuchThat.NoSuchItem;
 import com.ydh.helloshop.item.Album;
 import com.ydh.helloshop.repository.item.AlbumRepository;
@@ -76,7 +76,7 @@ class AlbumServiceTest {
         itemSearch.setCategoryName("만화");
         itemSearch.setItemName("타입");
 
-        List<Album> albums = albumService.findAlbums(itemSearch);
+        List<Album> albums = albumService.findWithSearch(itemSearch);
         for (Album album : albums) {
             System.out.println("album.getName() = " + album.getName());
 

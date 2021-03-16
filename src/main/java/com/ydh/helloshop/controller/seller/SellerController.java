@@ -1,6 +1,7 @@
 package com.ydh.helloshop.controller.seller;
 
 import com.ydh.helloshop.controller.member.form.MemberForm;
+import com.ydh.helloshop.controller.seller.form.AlbumForm;
 import com.ydh.helloshop.domain.member.Member;
 import com.ydh.helloshop.repository.CartRepository;
 import com.ydh.helloshop.repository.ItemCategoryRepository;
@@ -35,8 +36,6 @@ public class SellerController {
 
     private final CartItemService cartItemService;
 
-    private final CartRepository cartRepository;
-
     //Repository 직접 사용
     private final ItemCategoryRepository itemCategoryRepository;
 
@@ -59,55 +58,7 @@ public class SellerController {
             model.addAttribute("itemList", itemService.findAllBySellerId(3L));
         }
 
-        return "/seller/itemList";
-    }
-
-    @GetMapping("/seller/items/new")
-    public String createItemForm(Model model, @AuthenticationPrincipal Member member) {
-        model.addAttribute("albumForm", new AlbumForm());
-        model.addAttribute("categories", categoryService.findAllByKind());
-
-        if (member != null) {
-            model.addAttribute("memberForm",
-                    MemberForm.builder()
-                            .name(member.getName())
-                            .id(member.getId())
-                            .build());
-        }
-        else {
-            model.addAttribute("memberForm",
-                    MemberForm.builder()
-                            .name("hong")
-                            .id(3L).build());
-        }
-
-        return "/seller/createItem";
-    }
-
-    //memberId 값 유지하기 위해 memberForm 파라미터로 설정
-    @PostMapping("/seller/items/new")
-    public String createItem(@Valid AlbumForm albumForm ,BindingResult result,
-                             Model model, @AuthenticationPrincipal Member member) {
-        model.addAttribute("categories", categoryService.findAllByKind());
-        if (result.hasErrors()) {
-            if (member != null) {
-                model.addAttribute("memberForm",
-                        MemberForm.builder()
-                                .name(member.getName())
-                                .id(member.getId())
-                                .build());
-            }
-            else {
-                model.addAttribute("memberForm",
-                        MemberForm.builder()
-                                .name("hong")
-                                .id(3L).build());
-            }
-            return "/seller/createItem";
-        }
-
-        albumService.create(albumForm);
-        return "redirect:/seller/items";
+        return "seller/itemList";
     }
 
     @ResponseBody
