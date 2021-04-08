@@ -9,12 +9,15 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CartItemRepository extends JpaRepository<CartItem, Long> {
 
     List<CartItem> findByItemId(Long itemId);
 
     List<CartItem> findAllByItemIdIn(@Param("itemIds") List<Long> itemIds);
+
+    Optional<CartItem> findOneByCartIdAndItemId(Long cartId, Long itemId);
 
     @EntityGraph(attributePaths = {"item"})
     List<CartItem> findAllWithItemByIdIn(List<Long> ids);

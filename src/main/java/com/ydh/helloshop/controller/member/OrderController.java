@@ -41,7 +41,8 @@ public class OrderController {
         Order findOrder = orderService.findOneWithDeliveryAndItem(orderId);
         Delivery delivery = findOrder.getOrderItems().get(0).getDelivery();
 
-        DeliveryDelegateDto dto = new DeliveryDelegateDto(delivery.getId(),
+        DeliveryDelegateDto dto = new DeliveryDelegateDto(
+                delivery.getId(),
                 member.getName(),
                 findOrder.getOrderItems().get(0).getItem().getName(),
                 delivery.getAddress());
@@ -49,8 +50,9 @@ public class OrderController {
         //rabbitMQ send
         try {
             deliverySender.sendOne(dto);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>("ok", HttpStatus.OK);
         } catch (Exception e) {
+            // publish 실패하면 생성했던 주문 삭제
             orderService.cancelByRabbitMQError(findOrder);
             return new ResponseEntity<>("rabbitMQ send error", HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -36,17 +36,15 @@ public class  MemberController {
 
     @PostMapping("/members/new")
     public String create(@Valid MemberForm form, BindingResult result){
-
         if (result.hasErrors()){
             return "members/createMemberForm";
         }
 
-        Address address = new Address(form.getCity(), form.getStreet(), form.getZipcode());
-
         Member member = new Member();
         member.createInfo(form.getName(), form.getEmail(),
                 new BCryptPasswordEncoder().encode(form.getPassword()),
-                address, form.getStatus());
+                new Address(form.getCity(), form.getStreet(), form.getZipcode()),
+                form.getStatus());
         memberService.join(member);
 
         return "redirect:/members/welcome";

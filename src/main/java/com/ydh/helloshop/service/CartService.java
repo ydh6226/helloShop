@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -34,25 +35,25 @@ public class CartService {
     }
 
     //장바구니에 추가
-    @Transactional(readOnly = false)
+    @Transactional
     public Long addToCart(Long memberId, Item item, int count) {
         Cart cart = cartRepository.findOneByMemberId(memberId);
+        Optional<CartItem> findCartItem = cartItemRepository.findOneByCartIdAndItemId(cart.getId(), item.getId());
 
-        //장바구니에 해당 상품이 이미 존재 하는경우
-        List<CartItem> cartItems = cartItemRepository.findByItemId(item.getId());
-        if (!cartItems.isEmpty()){
-            CartItem cartItem = cartItems.get(0);
-            cartItem.changeItemCount(count);
+        //장바구니에 해당 상품이 없는 경우 장바구니에 상품 추가
+        if (findCartItem.isEmpty()) {
+            CartItem cartItem = CartItem.createCartItem(item, count);
+            cart.addItem(cartItem);
             return cart.getId();
         }
 
-        CartItem cartItem = CartItem.createCartItem(item, count);
-        cart.addItem(cartItem);
+        //장바구니에 해당 상품이 있는 경우 입력받은 개수로 상품 개수 변경
+        findCartItem.get().changeItemCount(count);
         return cart.getId();
     }
 
     //장바구니에서 삭제
-    @Transactional(readOnly = false)
+    @Transactional
     public Long deleteItemsFrommCart(Long memberId, List<Long> cartItemIds) {
         Cart cart = cartRepository.findOneByMemberId(memberId);
         List<CartItem> cartItems = cartItemRepository.findAllWithItemByIdIn(cartItemIds);
@@ -63,7 +64,7 @@ public class CartService {
     }
 
     //장바구니 주문시 주문된 상품 장바구니에서 삭제
-    @Transactional(readOnly = false)
+    @Transactional
     public void checkout(Long cartId, List<Long> itemIds) {
         Cart cart = cartRepository.findOneById(cartId);
 
