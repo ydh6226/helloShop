@@ -2,6 +2,7 @@ package com.ydh.helloshop.controller.member;
 
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +17,13 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
 
-        if(exception instanceof BadCredentialsException) {
-            String errorMessage = "가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.";
-            request.setAttribute("errorMessage", errorMessage);
-            request.setAttribute("email", request.getParameter("email"));
-            request.getRequestDispatcher("members/login").forward(request, response);
+        String error;
+        if (exception instanceof BadCredentialsException) {
+            error = "존재하지 않는 계정이거나, 비밀번호가 일치하지 않습니다.";
+        } else {
+            error = "로그인 할 수 없습니다. 관리자에게 문의하세요.";
         }
+        request.setAttribute("error", error);
+        request.getRequestDispatcher("/members/login").forward(request, response);
     }
 }

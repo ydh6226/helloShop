@@ -3,14 +3,14 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mariadb://database-shop.czv6z9c7kqi9.ap-northeast-2.rds.amazonaws.com:3306/test
+    url: jdbc:mariadb://database-shop.czv6z9c7kqi9.ap-northeast-2.rds.amazonaws.com:3306/helloshop
     username: admin
     password: springboot!
     driver-class-name: org.mariadb.jdbc.Driver
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
       use-new-id-generator-mappings: true
 
     properties:

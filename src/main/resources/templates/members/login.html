@@ -19,7 +19,7 @@
                        placeholder="비밀번호" maxlength="20">
                 <p class="col-6 offset-3" id="err_empty_pwd" style="color: red"></p>
             </div>
-            <p id="err_login" th:text="${errorMessage}" style="color: red"></p>
+            <p id="err_login" th:text="${error}" style="color: red"></p>
             <button type="submit" class="btn btn-success">로그인</button>
         </form>
     <div th:replace="fragments/footer :: footer"/>
