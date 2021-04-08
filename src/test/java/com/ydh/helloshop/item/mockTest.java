@@ -37,7 +37,6 @@ class mockTest {
         //given
         Album album = new Album("김영한", "", "jpa 정석", 10000, 100);
         given(albumService.save(album)).willReturn(1L);
-
         given(albumRepository.findAll()).willReturn(asList(album));
 
         //when
