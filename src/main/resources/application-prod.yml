@@ -14,7 +14,7 @@ spring:
       use-new-id-generator-mappings: true
 
     properties:
-        default_batch_fetch_size: 100 # IN 쿼리 개수
+        default_batch_fetch_size: 100 # IN쿼리 개수
 
   rabbitmq:
     host: 3.36.203.222
