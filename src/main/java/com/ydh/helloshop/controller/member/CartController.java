@@ -36,8 +36,7 @@ public class CartController {
     public String cartView(Model model, @AuthenticationPrincipal Member member) {
         if (member != null) {
             model.addAttribute("cart", cartService.findOneByMemberId(member.getId()));
-        }
-        else {
+        } else {
             model.addAttribute("cart", cartService.findOneByMemberId(2L));
         }
         return "cartView";
@@ -52,16 +51,17 @@ public class CartController {
         List<OrderItem> orderItems = findOrder.getOrderItems();
 
         List<DeliveryDelegateDto> dtos = orderItems.stream().map(oi ->
-                new DeliveryDelegateDto(oi.getDelivery().getId(),
-                        member.getName(), oi.getItem().getName(), oi.getDelivery().getAddress()))
+                new DeliveryDelegateDto(oi.getDelivery().getId(), member.getName(),
+                        oi.getItem().getName(), oi.getDelivery().getAddress()))
                 .collect(Collectors.toList());
 
-        //rabbitMQ send
+        //RabbitMQ send
         try {
             deliverySender.sendAll(dtos);
             cartService.checkout(orderInfoDto.getCartId(), orderInfoDto.getItemIds());
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
+            // publish 실패하면 생성했던 주문 삭제
             orderService.cancelByRabbitMQError(findOrder);
             return new ResponseEntity<>("rabbitMQ send error", HttpStatus.INTERNAL_SERVER_ERROR);
         }

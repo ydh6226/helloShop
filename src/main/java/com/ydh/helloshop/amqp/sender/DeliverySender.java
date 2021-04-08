@@ -3,10 +3,10 @@ package com.ydh.helloshop.amqp.sender;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ydh.helloshop.amqp.dto.DeliveryDelegateDto;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
@@ -18,11 +18,12 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class DeliverySender {
 
-    private final RabbitMessagingTemplate template;
+    private final RabbitMessagingTemplate rabbitMessagingTemplate;
 
     private final String queueName = "shop2delivery.queue";
     private final String exchangeName = "shop2delivery.direct";
@@ -45,35 +46,35 @@ public class DeliverySender {
 
     public void sendOne(DeliveryDelegateDto dto) {
         try {
-            DtoWrapper dtoWrapper = new DtoWrapper();
-            dtoWrapper.setCount(1);
-            dtoWrapper.getDtos().add(dto);
+            DeliveryInfoJson deliveryInfoJson = new DeliveryInfoJson();
+            deliveryInfoJson.setCount(1);
+            deliveryInfoJson.getDeliveryInfos().add(dto);
 
-            String dtoJsonString = new ObjectMapper().writeValueAsString(dtoWrapper);
-            template.convertAndSend(exchangeName, routingKey, dtoJsonString);
+            String dtoJsonString = new ObjectMapper().writeValueAsString(deliveryInfoJson);
+            rabbitMessagingTemplate.convertAndSend(exchangeName, routingKey, dtoJsonString);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
     }
 
     public void sendAll(List<DeliveryDelegateDto> dtos) {
         try {
-            DtoWrapper dtoWrapper = new DtoWrapper();
-            dtoWrapper.setCount(dtos.size());
-            dtoWrapper.getDtos().addAll(dtos);
+            DeliveryInfoJson deliveryInfoJson = new DeliveryInfoJson();
+            deliveryInfoJson.setCount(dtos.size());
+            deliveryInfoJson.getDeliveryInfos().addAll(dtos);
 
-            String dtoJsonString = new ObjectMapper().writeValueAsString(dtoWrapper);
-            template.convertAndSend(exchangeName, routingKey, dtoJsonString);
+            String jsonMessage = new ObjectMapper().writeValueAsString(deliveryInfoJson);
+            rabbitMessagingTemplate.convertAndSend(exchangeName, routingKey, jsonMessage);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
     }
 
     @Data
     @NoArgsConstructor
-    static class DtoWrapper {
+    static class DeliveryInfoJson {
         private int count;
-        private List<DeliveryDelegateDto> dtos = new ArrayList<>();
+        private List<DeliveryDelegateDto> deliveryInfos = new ArrayList<>();
     }
 
 }

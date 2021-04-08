@@ -4,10 +4,15 @@
 <head>
     <meta name="_csrf_header" th:content="${_csrf.headerName}" />
     <meta name="_csrf" th:value="${_csrf.token}" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
 </head>
 <body>
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <div class="text-center">
+        <h2><i class="fas fa-shopping-cart"></i> 장바구니</h2>
+    </div>
     <button type="button" class="btn-sm btn-warning select-delete mb-2">선택삭제</button>
     <table class="table table-striped">
         <thead>

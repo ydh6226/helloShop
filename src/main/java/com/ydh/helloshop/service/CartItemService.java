@@ -32,7 +32,8 @@ public class CartItemService {
     }
 
     /**
-     * @return List[0] = CartItem: totalPrice,
+     * @return
+     * List[0] = CartItem: totalPrice,
      * List[1] = Cart: totalPrice
      */
     @Transactional
