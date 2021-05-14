@@ -1,8 +1,8 @@
-package com.ydh.helloshop.application.domain;
+package com.ydh.helloshop.application.domain.cart;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ydh.helloshop.application.exception.ExceedMaximumQuantity;
-import com.ydh.helloshop.application.item.Item;
+import com.ydh.helloshop.application.domain.item.Item;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

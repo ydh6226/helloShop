@@ -1,6 +1,6 @@
 package com.ydh.helloshop.application.service;
 
-import com.ydh.helloshop.application.domain.CartItem;
+import com.ydh.helloshop.application.domain.cart.CartItem;
 import com.ydh.helloshop.application.exception.noSuchThat.NoSuchCartItem;
 import com.ydh.helloshop.application.repository.CartItemRepository;
 import lombok.RequiredArgsConstructor;

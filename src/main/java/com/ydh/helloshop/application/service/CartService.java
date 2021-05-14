@@ -1,8 +1,8 @@
 package com.ydh.helloshop.application.service;
 
-import com.ydh.helloshop.application.domain.Cart;
-import com.ydh.helloshop.application.domain.CartItem;
-import com.ydh.helloshop.application.item.Item;
+import com.ydh.helloshop.application.domain.cart.Cart;
+import com.ydh.helloshop.application.domain.cart.CartItem;
+import com.ydh.helloshop.application.domain.item.Item;
 import com.ydh.helloshop.application.repository.CartItemRepository;
 import com.ydh.helloshop.application.repository.CartRepository;
 import lombok.RequiredArgsConstructor;

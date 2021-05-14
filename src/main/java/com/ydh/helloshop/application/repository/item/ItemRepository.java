@@ -1,6 +1,6 @@
 package com.ydh.helloshop.application.repository.item;
 
-import com.ydh.helloshop.application.item.Item;
+import com.ydh.helloshop.application.domain.item.Item;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

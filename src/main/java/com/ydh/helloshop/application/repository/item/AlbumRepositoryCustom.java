@@ -1,7 +1,7 @@
 package com.ydh.helloshop.application.repository.item;
 
 import com.ydh.helloshop.application.controller.item.ItemSearch;
-import com.ydh.helloshop.application.item.Album;
+import com.ydh.helloshop.application.domain.item.Album;
 
 import java.util.List;
 

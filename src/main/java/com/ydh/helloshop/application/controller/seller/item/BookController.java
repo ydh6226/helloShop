@@ -2,7 +2,7 @@ package com.ydh.helloshop.application.controller.seller.item;
 
 import com.ydh.helloshop.application.controller.seller.form.BookForm;
 import com.ydh.helloshop.application.domain.Category;
-import com.ydh.helloshop.application.domain.ItemCategory;
+import com.ydh.helloshop.application.domain.item.ItemCategory;
 import com.ydh.helloshop.application.domain.member.Member;
 import com.ydh.helloshop.application.service.CartItemService;
 import com.ydh.helloshop.application.service.CategoryService;

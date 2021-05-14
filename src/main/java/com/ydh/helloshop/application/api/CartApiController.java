@@ -1,6 +1,6 @@
 package com.ydh.helloshop.application.api;
 
-import com.ydh.helloshop.application.domain.Cart;
+import com.ydh.helloshop.application.domain.cart.Cart;
 import com.ydh.helloshop.application.repository.CartRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +18,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class CartApiController {
-
+    // TODO: 2021-05-15[양동혁]  
     private final CartRepository cartRepository;
 
     @GetMapping("/api/oneCart")

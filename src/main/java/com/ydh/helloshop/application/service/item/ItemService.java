@@ -1,6 +1,6 @@
 package com.ydh.helloshop.application.service.item;
 
-import com.ydh.helloshop.application.item.Item;
+import com.ydh.helloshop.application.domain.item.Item;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
-package com.ydh.helloshop.application.repository;
+package com.ydh.helloshop.application.repository.item;
 
-import com.ydh.helloshop.application.domain.ItemCategory;
+import com.ydh.helloshop.application.domain.item.ItemCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

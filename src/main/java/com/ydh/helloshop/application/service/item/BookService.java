@@ -1,7 +1,7 @@
 package com.ydh.helloshop.application.service.item;
 
-import com.ydh.helloshop.application.domain.ItemCategory;
-import com.ydh.helloshop.application.item.Book;
+import com.ydh.helloshop.application.domain.item.ItemCategory;
+import com.ydh.helloshop.application.domain.item.Book;
 import com.ydh.helloshop.application.repository.CategoryRepository;
 import com.ydh.helloshop.application.repository.item.BookRepository;
 import lombok.RequiredArgsConstructor;

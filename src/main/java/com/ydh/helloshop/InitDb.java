@@ -3,10 +3,10 @@ package com.ydh.helloshop;
 import com.ydh.helloshop.application.controller.seller.form.AlbumForm;
 import com.ydh.helloshop.application.domain.Address;
 import com.ydh.helloshop.application.domain.Category;
-import com.ydh.helloshop.application.domain.ItemCategory;
+import com.ydh.helloshop.application.domain.item.ItemCategory;
 import com.ydh.helloshop.application.domain.member.Member;
-import com.ydh.helloshop.application.item.Album;
-import com.ydh.helloshop.application.item.Item;
+import com.ydh.helloshop.application.domain.item.Album;
+import com.ydh.helloshop.application.domain.item.Item;
 import com.ydh.helloshop.application.repository.CategoryRepository;
 import com.ydh.helloshop.application.repository.MemberRepository;
 import com.ydh.helloshop.application.repository.item.AlbumRepository;
@@ -21,9 +21,9 @@ import javax.annotation.PostConstruct;
 import java.util.Arrays;
 
 import static com.ydh.helloshop.application.domain.Category.createCategory;
-import static com.ydh.helloshop.application.domain.ItemCategory.createItemCategory;
+import static com.ydh.helloshop.application.domain.item.ItemCategory.createItemCategory;
 import static com.ydh.helloshop.application.domain.member.MemberStatus.*;
-import static com.ydh.helloshop.application.item.Album.createAlbum;
+import static com.ydh.helloshop.application.domain.item.Album.createAlbum;
 
 @Component
 @RequiredArgsConstructor

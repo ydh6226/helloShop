@@ -12,7 +12,7 @@ import java.util.List;
 
 import static com.ydh.helloshop.application.domain.QOrderItem.orderItem;
 import static com.ydh.helloshop.application.domain.order.QOrder.order;
-import static com.ydh.helloshop.application.item.QItem.item;
+import static com.ydh.helloshop.application.domain.item.QItem.item;
 
 @Repository
 public class OrderRepository {

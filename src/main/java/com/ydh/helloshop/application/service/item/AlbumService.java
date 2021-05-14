@@ -3,9 +3,9 @@ package com.ydh.helloshop.application.service.item;
 import com.ydh.helloshop.application.controller.item.ItemSearch;
 import com.ydh.helloshop.application.controller.seller.form.AlbumForm;
 import com.ydh.helloshop.application.domain.Category;
-import com.ydh.helloshop.application.domain.ItemCategory;
+import com.ydh.helloshop.application.domain.item.ItemCategory;
 import com.ydh.helloshop.application.exception.noSuchThat.NoSuchItem;
-import com.ydh.helloshop.application.item.Album;
+import com.ydh.helloshop.application.domain.item.Album;
 import com.ydh.helloshop.application.repository.CategoryRepository;
 import com.ydh.helloshop.application.repository.item.AlbumRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.ydh.helloshop.application.item.Album.createAlbum;
+import static com.ydh.helloshop.application.domain.item.Album.createAlbum;
 import static java.util.stream.Collectors.toList;
 
 @Service

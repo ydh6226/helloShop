@@ -3,7 +3,7 @@ package com.ydh.helloshop.application.repository.item;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ydh.helloshop.application.controller.item.ItemSearch;
-import com.ydh.helloshop.application.item.Album;
+import com.ydh.helloshop.application.domain.item.Album;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import javax.persistence.EntityManager;
@@ -11,7 +11,7 @@ import java.util.List;
 
 import static com.ydh.helloshop.application.domain.QCategory.category;
 import static com.ydh.helloshop.application.domain.QItemCategory.itemCategory;
-import static com.ydh.helloshop.application.item.QAlbum.album;
+import static com.ydh.helloshop.application.domain.item.QAlbum.album;
 
 public class AlbumRepositoryImpl extends QuerydslRepositorySupport implements AlbumRepositoryCustom {
 

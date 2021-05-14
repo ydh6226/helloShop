@@ -4,7 +4,7 @@ import com.ydh.helloshop.infra.amqp.dto.DeliveryDelegateDto;
 import com.ydh.helloshop.infra.amqp.sender.DeliverySender;
 import com.ydh.helloshop.application.domain.member.Member;
 import com.ydh.helloshop.application.domain.order.Order;
-import com.ydh.helloshop.application.domain.OrderItem;
+import com.ydh.helloshop.application.domain.order.OrderItem;
 import com.ydh.helloshop.application.service.CartItemService;
 import com.ydh.helloshop.application.service.CartService;
 import com.ydh.helloshop.application.service.OrderService;

@@ -1,6 +1,6 @@
 package com.ydh.helloshop.application.repository;
 
-import com.ydh.helloshop.application.domain.CartItem;
+import com.ydh.helloshop.application.domain.cart.CartItem;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

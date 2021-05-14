@@ -1,4 +1,4 @@
-package com.ydh.helloshop.application.domain;
+package com.ydh.helloshop.application.domain.cart;
 
 import com.ydh.helloshop.application.domain.member.Member;
 import lombok.AccessLevel;

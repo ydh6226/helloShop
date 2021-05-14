@@ -1,7 +1,6 @@
 package com.ydh.helloshop.application.controller.item;
 
-import com.ydh.helloshop.application.item.Album;
-import com.ydh.helloshop.application.item.Album;
+import com.ydh.helloshop.application.domain.item.Album;
 import com.ydh.helloshop.application.service.item.AlbumService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

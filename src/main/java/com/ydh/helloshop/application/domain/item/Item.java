@@ -1,6 +1,5 @@
-package com.ydh.helloshop.application.item;
+package com.ydh.helloshop.application.domain.item;
 
-import com.ydh.helloshop.application.domain.ItemCategory;
 import com.ydh.helloshop.application.exception.NotEnoughStockException;
 import lombok.Getter;
 
@@ -9,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ydh.helloshop.application.item.ItemStatus.SALE;
+import static com.ydh.helloshop.application.domain.item.ItemStatus.SALE;
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.InheritanceType.SINGLE_TABLE;

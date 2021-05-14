@@ -1,7 +1,7 @@
 package com.ydh.helloshop.application.domain.delivery;
 
 import com.ydh.helloshop.application.domain.Address;
-import com.ydh.helloshop.application.domain.OrderItem;
+import com.ydh.helloshop.application.domain.order.OrderItem;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

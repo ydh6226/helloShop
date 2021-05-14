@@ -1,6 +1,6 @@
-package com.ydh.helloshop.application.domain;
+package com.ydh.helloshop.application.domain.item;
 
-import com.ydh.helloshop.application.item.Item;
+import com.ydh.helloshop.application.domain.Category;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

@@ -1,6 +1,5 @@
 package com.ydh.helloshop.application.domain.order;
 
-import com.ydh.helloshop.application.domain.OrderItem;
 import com.ydh.helloshop.application.domain.member.Member;
 import lombok.Getter;
 
