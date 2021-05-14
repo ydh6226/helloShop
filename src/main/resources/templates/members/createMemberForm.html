@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
-<head th:include="fragments/header :: header"/>
+<head th:include="fragments/main.html :: head"/>
 <!--<head>-->
 <!--    <meta name="_csrf" th:content="${_csrf.token}">-->
 <!--    <meta name="_csrf_header" th:content="${_csrf.headerName}">-->
 <!--</head>-->
 <body>
     <div class="container">
-        <div th:replace="fragments/bodyHeader :: simpleBodyHeader"/>
+        <div th:replace="fragments/main.html :: simpleBodyHeader"/>
         <div class="text-center mb-2">
             <h2>회원가입</h2>
         </div>
@@ -76,7 +76,7 @@
                 <button type="submit" class="btn btn-primary">가입 하기</button>
             </div>
         </form>
-        <div th:replace="fragments/footer :: footer"/>
+        <div th:replace="fragments/main.html :: footer"/>
     </div>
 </body>
 </html>

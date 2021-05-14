@@ -1,17 +1,17 @@
 package com.ydh.helloshop;
 
-import com.ydh.helloshop.controller.seller.form.AlbumForm;
-import com.ydh.helloshop.domain.Address;
-import com.ydh.helloshop.domain.Category;
-import com.ydh.helloshop.domain.ItemCategory;
-import com.ydh.helloshop.domain.member.Member;
-import com.ydh.helloshop.item.Album;
-import com.ydh.helloshop.item.Item;
-import com.ydh.helloshop.repository.CategoryRepository;
-import com.ydh.helloshop.repository.MemberRepository;
-import com.ydh.helloshop.repository.item.AlbumRepository;
-import com.ydh.helloshop.service.CartService;
-import com.ydh.helloshop.service.item.ItemServiceImpl;
+import com.ydh.helloshop.application.controller.seller.form.AlbumForm;
+import com.ydh.helloshop.application.domain.Address;
+import com.ydh.helloshop.application.domain.Category;
+import com.ydh.helloshop.application.domain.ItemCategory;
+import com.ydh.helloshop.application.domain.member.Member;
+import com.ydh.helloshop.application.item.Album;
+import com.ydh.helloshop.application.item.Item;
+import com.ydh.helloshop.application.repository.CategoryRepository;
+import com.ydh.helloshop.application.repository.MemberRepository;
+import com.ydh.helloshop.application.repository.item.AlbumRepository;
+import com.ydh.helloshop.application.service.CartService;
+import com.ydh.helloshop.application.service.item.ItemServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -20,10 +20,10 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
 
-import static com.ydh.helloshop.domain.Category.createCategory;
-import static com.ydh.helloshop.domain.ItemCategory.createItemCategory;
-import static com.ydh.helloshop.domain.member.MemberStatus.*;
-import static com.ydh.helloshop.item.Album.createAlbum;
+import static com.ydh.helloshop.application.domain.Category.createCategory;
+import static com.ydh.helloshop.application.domain.ItemCategory.createItemCategory;
+import static com.ydh.helloshop.application.domain.member.MemberStatus.*;
+import static com.ydh.helloshop.application.item.Album.createAlbum;
 
 @Component
 @RequiredArgsConstructor

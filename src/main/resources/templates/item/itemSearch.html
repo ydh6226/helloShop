@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head th:include="fragments/main.html :: head" />
+<body>
+<div class="container">
+    <div th:replace="fragments/main.html :: bodyHeader"/>
+
+    <ul class="list-group text-center">
+        <li class="list-group-item" th:each="album : ${albums}">
+            <a th:href="|/items/${album.getId()}|"><span th:text="|${album.name} ${album.price}원|"></span></a>
+        </li>
+    </ul>
+
+    <div th:replace="fragments/main.html :: footer"/>
+</div>
+</body>
+</html>
