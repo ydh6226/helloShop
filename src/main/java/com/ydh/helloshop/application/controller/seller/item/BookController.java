@@ -3,14 +3,12 @@ package com.ydh.helloshop.application.controller.seller.item;
 import com.ydh.helloshop.application.controller.seller.form.BookForm;
 import com.ydh.helloshop.application.domain.Category;
 import com.ydh.helloshop.application.domain.item.ItemCategory;
+import com.ydh.helloshop.application.domain.member.CurrentMember;
 import com.ydh.helloshop.application.domain.member.Member;
-import com.ydh.helloshop.application.service.CartItemService;
 import com.ydh.helloshop.application.service.CategoryService;
 import com.ydh.helloshop.application.service.item.BookDto;
 import com.ydh.helloshop.application.service.item.BookService;
-import com.ydh.helloshop.application.service.item.ItemServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,17 +24,12 @@ import static java.util.stream.Collectors.toList;
 @RequiredArgsConstructor
 public class BookController {
 
-    private final ItemServiceImpl itemService;
-
     private final CategoryService categoryService;
 
     private final BookService albumService;
 
-    private final CartItemService cartItemService;
-
-
     @GetMapping("/seller/book/new")
-    public String createItemForm(Model model, @AuthenticationPrincipal Member member) {
+    public String createItemForm(Model model, @CurrentMember Member member) {
         BookForm bookForm = new BookForm();
         bookForm.setSellerId(member.getId());
 
@@ -48,7 +41,7 @@ public class BookController {
 
     @PostMapping("/seller/book/new")
     public String createBook(@Valid BookForm bookForm , BindingResult result,
-                             Model model, @AuthenticationPrincipal Member member) {
+                             Model model, @CurrentMember Member member) {
         if (result.hasErrors()) {
             model.addAttribute("categories", categoryService.findAllByKind());
 

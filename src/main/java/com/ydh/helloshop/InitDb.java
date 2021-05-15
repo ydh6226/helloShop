@@ -14,6 +14,7 @@ import com.ydh.helloshop.application.service.CartService;
 import com.ydh.helloshop.application.service.item.ItemServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,6 +57,8 @@ public class InitDb {
 
         private final CartService cartService;
 
+        private final PasswordEncoder passwordEncoder;
+
         public void createRootCategory() {
             Category root = createCategory("root", null);
             categoryRepository.save(root);
@@ -84,21 +87,21 @@ public class InitDb {
 
         public void createAdminMember() {
             Member member = new Member();
-            member.createInfo("admin", "admin", new BCryptPasswordEncoder().encode("admin"),
+            member.createInfo("admin", "admin", passwordEncoder.encode("admin"),
                     null, ADMIN);
             memberRepository.save(member);
         }
 
         public void createCustomerMember() {
             Member member = new Member();
-            member.createInfo("cus", "cus", new BCryptPasswordEncoder().encode("cus"),
+            member.createInfo("cus", "cus", passwordEncoder.encode("cus"),
                     new Address("경기", "행신로", "143번길"), CUSTOMER);
             memberRepository.save(member);
         }
 
         public void createSellerMember() {
             Member member = new Member();
-            member.createInfo("sel", "sel", new BCryptPasswordEncoder().encode("sel"),
+            member.createInfo("sel", "sel", passwordEncoder.encode("sel"),
                     null, SELLER);
             memberRepository.save(member);
         }
@@ -189,6 +192,5 @@ public class InitDb {
             cartService.addToCart(2L, item1, 2);
             cartService.addToCart(2L, item2, 2);
         }
-
     }
 }

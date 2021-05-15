@@ -1,6 +1,5 @@
 package com.ydh.helloshop.application.controller.item;
 
-import com.ydh.helloshop.application.domain.Category;
 import lombok.Data;
 
 @Data

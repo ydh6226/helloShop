@@ -18,7 +18,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class CartApiController {
-    // TODO: 2021-05-15[양동혁]  
     private final CartRepository cartRepository;
 
     @GetMapping("/api/oneCart")
@@ -30,6 +29,4 @@ public class CartApiController {
     List<Cart> findAllCart(@RequestParam Long memberId) {
         return cartRepository.findAllByMemberIdWithItem(memberId);
     }
-
-
 }

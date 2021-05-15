@@ -5,13 +5,11 @@ import com.ydh.helloshop.application.domain.Address;
 import com.ydh.helloshop.application.domain.cart.Cart;
 import com.ydh.helloshop.application.domain.order.Order;
 import lombok.Getter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.EnumType.STRING;
@@ -23,7 +21,7 @@ import static javax.persistence.EnumType.STRING;
  */
 @Entity
 @Getter
-public class Member implements UserDetails {
+public class Member {
 
     @Id
     @GeneratedValue(generator = "member_id")
@@ -66,43 +64,5 @@ public class Member implements UserDetails {
         this.status = memberStatus;
         joinDate = LocalDateTime.now();
         initCart();
-    }
-
-    //UserDetails overide method
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<GrantedAuthority> roles = new HashSet<>();
-        roles.add(new SimpleGrantedAuthority(status.toString()));
-        return roles;
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
     }
 }
