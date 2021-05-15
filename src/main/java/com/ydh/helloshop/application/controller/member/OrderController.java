@@ -7,8 +7,8 @@ import com.ydh.helloshop.application.domain.member.Member;
 import com.ydh.helloshop.application.domain.order.Order;
 import com.ydh.helloshop.application.repository.order.OrderSearch;
 import com.ydh.helloshop.application.service.OrderService;
-import com.ydh.helloshop.infra.amqp.dto.DeliveryDelegateDto;
-import com.ydh.helloshop.infra.amqp.sender.DeliverySender;
+import com.ydh.helloshop.infra.amqp.dto.DeliveryPublishParam;
+import com.ydh.helloshop.infra.amqp.sender.DeliveryPublisher;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 public class OrderController {
 
     private final OrderService orderService;
-    private final DeliverySender deliverySender;
+    private final DeliveryPublisher deliveryPublisher;
 
     @PostMapping("/order")
     @ResponseBody
@@ -41,7 +41,7 @@ public class OrderController {
         Order findOrder = orderService.findOneWithDeliveryAndItem(orderId);
         Delivery delivery = findOrder.getOrderItems().get(0).getDelivery();
 
-        DeliveryDelegateDto dto = new DeliveryDelegateDto(
+        DeliveryPublishParam dto = new DeliveryPublishParam(
                 delivery.getId(),
                 member.getName(),
                 findOrder.getOrderItems().get(0).getItem().getName(),
@@ -49,7 +49,7 @@ public class OrderController {
 
         //rabbitMQ send
         try {
-            deliverySender.sendOne(dto);
+            deliveryPublisher.send(List.of(dto));
             return new ResponseEntity<>("ok", HttpStatus.OK);
         } catch (Exception e) {
             // publish 실패하면 생성했던 주문 삭제

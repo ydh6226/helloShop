@@ -8,8 +8,8 @@ import com.ydh.helloshop.application.service.CartItemService;
 import com.ydh.helloshop.application.service.CartService;
 import com.ydh.helloshop.application.service.OrderService;
 import com.ydh.helloshop.application.service.item.ItemServiceImpl;
-import com.ydh.helloshop.infra.amqp.dto.DeliveryDelegateDto;
-import com.ydh.helloshop.infra.amqp.sender.DeliverySender;
+import com.ydh.helloshop.infra.amqp.dto.DeliveryPublishParam;
+import com.ydh.helloshop.infra.amqp.sender.DeliveryPublisher;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -33,7 +33,7 @@ public class CartController {
     private final CartItemService cartItemService;
     private final ItemServiceImpl itemService;
     private final OrderService orderService;
-    private final DeliverySender deliverySender;
+    private final DeliveryPublisher deliveryPublisher;
 
     @GetMapping("/cart")
     public String cartView(Model model, @CurrentMember Member member) {
@@ -49,14 +49,14 @@ public class CartController {
         Order findOrder = orderService.findOneWithDeliveryAndItem(orderId);
         List<OrderItem> orderItems = findOrder.getOrderItems();
 
-        List<DeliveryDelegateDto> dtos = orderItems.stream().map(oi ->
-                new DeliveryDelegateDto(oi.getDelivery().getId(), member.getName(),
+        List<DeliveryPublishParam> dtos = orderItems.stream().map(oi ->
+                new DeliveryPublishParam(oi.getDelivery().getId(), member.getName(),
                         oi.getItem().getName(), oi.getDelivery().getAddress()))
                 .collect(Collectors.toList());
 
         //RabbitMQ send
         try {
-            deliverySender.sendAll(dtos);
+            deliveryPublisher.send(dtos);
             cartService.checkout(orderInfoDto.getCartId(), orderInfoDto.getItemIds());
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {

@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class DeliveryDelegateDto {
+public class DeliveryPublishParam {
     private Long deliveryId;
     private String memberName;
     private String itemName;

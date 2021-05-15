@@ -9,12 +9,14 @@ import com.ydh.helloshop.application.exception.noSuchThat.NoSuchDelivery;
 import com.ydh.helloshop.application.repository.DeliveryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+@Profile(value = "prod")
 @Component
 @RequiredArgsConstructor
-public class DeliveryListener {
+public class AmqpDeliveryConsumer {
 
     private final DeliveryRepository deliveryRepository;
 
@@ -22,7 +24,7 @@ public class DeliveryListener {
 
     @RabbitListener(queues = {queueName})
     @Transactional
-    public void processMessage(String deliveryJsonString) {
+    public void consumeMessage(String deliveryJsonString) {
         try {
             DeliveryFeedbackDto dto = new ObjectMapper().readValue(deliveryJsonString, DeliveryFeedbackDto.class);
 
