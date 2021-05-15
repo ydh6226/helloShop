@@ -1,15 +1,18 @@
 package com.ydh.helloshop.application.service;
 
 import com.ydh.helloshop.application.domain.member.Member;
+import com.ydh.helloshop.application.domain.member.UserMember;
 import com.ydh.helloshop.application.exception.noSuchThat.NoSuchMember;
 import com.ydh.helloshop.application.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +24,7 @@ public class MemberService implements UserDetailsService {
     //회원 가입
     @Transactional
     public Long join(Member member) {
-        validateDuplicateMember(member);
+        validateDuplicateEmail(member.getEmail());
         memberRepository.save(member);
         return member.getId();
     }
@@ -39,25 +42,19 @@ public class MemberService implements UserDetailsService {
 
     //중복 회원 검증(중복된 이메일 사용 불가)
     //[미해결] 예외 처리
-    private void validateDuplicateMember(Member member) {
-        List<Member> findMember = memberRepository.findByEmail(member.getEmail());
-        if(findMember.size() == 1){
+    private void validateDuplicateEmail(String email) {
+        Optional<Member> member = memberRepository.findByEmail(email);
+        if(member.isPresent()){
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         }
     }
 
-    //UserDetailsService overide method
     @Override
-    public Member loadUserByUsername(String email) throws UsernameNotFoundException {
-        List<Member> findMember = memberRepository.findByEmail(email);
-        if(findMember.size() == 1) {
-            return findMember.get(0);
-        }
-        else {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Optional<Member> member = memberRepository.findByEmail(email);
+        if(member.isEmpty()) {
             throw new UsernameNotFoundException(email);
         }
+        return new UserMember(member.get());
     }
-
-
-
 }

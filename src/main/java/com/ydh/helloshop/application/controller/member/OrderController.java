@@ -1,18 +1,18 @@
 package com.ydh.helloshop.application.controller.member;
 
-import com.ydh.helloshop.infra.amqp.dto.DeliveryDelegateDto;
-import com.ydh.helloshop.infra.amqp.sender.DeliverySender;
 import com.ydh.helloshop.application.domain.delivery.Delivery;
 import com.ydh.helloshop.application.domain.delivery.DeliveryStatus;
+import com.ydh.helloshop.application.domain.member.CurrentMember;
 import com.ydh.helloshop.application.domain.member.Member;
 import com.ydh.helloshop.application.domain.order.Order;
 import com.ydh.helloshop.application.repository.order.OrderSearch;
 import com.ydh.helloshop.application.service.OrderService;
+import com.ydh.helloshop.infra.amqp.dto.DeliveryDelegateDto;
+import com.ydh.helloshop.infra.amqp.sender.DeliverySender;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,7 +35,7 @@ public class OrderController {
 
     @PostMapping("/order")
     @ResponseBody
-    public ResponseEntity<String> orderOne(@RequestBody OrderInfoDto orderInfoDto, @AuthenticationPrincipal Member member) {
+    public ResponseEntity<String> orderOne(@RequestBody OrderInfoDto orderInfoDto, @CurrentMember Member member) {
         Long orderId = orderService.orderOne(member.getId(), orderInfoDto.getItemId(), orderInfoDto.getCount());
 
         Order findOrder = orderService.findOneWithDeliveryAndItem(orderId);
@@ -58,8 +58,8 @@ public class OrderController {
         }
     }
 
-    @GetMapping("/orderList")
-    public String orderList(Model model, @AuthenticationPrincipal Member member) {
+    @GetMapping("/order/view")
+    public String orderList(Model model, @CurrentMember Member member) {
         List<Order> orders = orderService.findAll(new OrderSearch(member.getId()));
         List<OrderListDto> orderListDto = new ArrayList<>();
 

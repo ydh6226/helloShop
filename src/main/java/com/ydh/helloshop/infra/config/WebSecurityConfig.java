@@ -10,10 +10,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -22,11 +20,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final MemberService memberService;
 
-    private final AuthenticationFailureHandler failureHandler;
-
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Override
@@ -37,41 +33,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                    .antMatchers("/admin/**").hasAuthority("ADMIN")
-                    .antMatchers("/seller/**").hasAuthority("SELLER")
-                    .antMatchers("/order**").authenticated()
-                    .antMatchers("/cart/**").authenticated()
-                    .anyRequest().permitAll()
+                    .mvcMatchers("/admin").hasAnyAuthority("ADMIN")
+                    .mvcMatchers("/seller").hasAnyAuthority("SELLER")
+                    .mvcMatchers("/order").authenticated()
+                    .mvcMatchers("/cart").authenticated()
+                    .anyRequest()
+                        .permitAll()
                     .and()
 
                 .formLogin()
                     .loginPage("/members/login")
-                    .loginProcessingUrl("/members/login/authentication")
-                    .defaultSuccessUrl("/")
                     .usernameParameter("email")
                     .passwordParameter("password")
-                    .failureHandler(failureHandler)
                     .permitAll()
                     .and()
-
                 .logout()
-                    .logoutUrl("/logout")
-                    .logoutSuccessUrl("/")
-                    .invalidateHttpSession(true)
-                    .permitAll()
-                    .and()
-
-                .csrf()
-                    .csrfTokenRepository(new CookieCsrfTokenRepository());
+                    .logoutSuccessUrl("/");
     }
-
-    @Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(memberService).passwordEncoder(passwordEncoder());
-    }
-
-//    @Bean
-//    public AuthenticationFailureHandler failureHandler() {
-//        return new LoginFailureHandler();
-//    }
 }

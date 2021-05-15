@@ -1,49 +1,63 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
-<head th:include="fragments/main.html :: head" />
-<body>
-<div class="container">
-    <div th:replace="fragments/main.html :: bodyHeader"/>
-        <form class= "text-center" th:action="@{/members/login/authentication}" method="post"
-              th:object="${memberLoginForm}" onsubmit="return formValidation()">
-            <div class="form-group row">
-                <label th:for="${memberLoginForm.email}"></label>
-                <input class="form-control col-6 offset-3" type="text" th:field="*{email}"
-                       placeholder="이메일" maxlength="20">
-                <p class="col-6 offset-3 mb-0" id="err_empty_id" style="color: red"></p>
+<head th:replace="fragments/main.html :: head" />
+<body class="bg-light text-center">
+    <div class="jumbotron jumbotron-fluid bg-light mb-0">
+        <div class="container">
+            <a th:href="@{/}">
+                <span class="display-4 font-weight-bold font-italic text-dark">Hello Shop</span>
+            </a>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div th:if="${param.error}" class="alert alert-danger col-3" role="alert">
+            <p>이메일과 패스워드가 정확하지 않습니다.</p>
+            <p>또는 확인되지 않은 이메일을 사용했습니다.</p>
+        </div>
+    </div>
+    <div>
+        <form class= "needs-validation" th:action="@{/members/login}" method="post"
+              th:object="${loginForm}" novalidate>
+            <div class="form-row justify-content-center">
+                <div class="form-group col-3">
+                    <input class="form-control" type="text" th:field="*{email}"
+                           placeholder="이메일" maxlength="20" required>
+                    <div class="invalid-feedback">
+                        이메일을 입력하세요.
+                    </div>
+                </div>
             </div>
-
-            <div class="form-group row">
-                <label th:for="${memberLoginForm.password}"></label>
-                <input class="form-control col-6 offset-3" type="password" th:field="*{password}"
-                       placeholder="비밀번호" maxlength="20">
-                <p class="col-6 offset-3" id="err_empty_pwd" style="color: red"></p>
+            <div class="form-row justify-content-center">
+                <div class="form-group col-3">
+                    <input class="form-control" type="text" th:field="*{password}"
+                           placeholder="패스워드" maxlength="20" required>
+                    <div class="invalid-feedback">
+                        패스워드를 입력하세요.
+                    </div>
+                </div>
             </div>
-            <p id="err_login" th:text="${error}" style="color: red"></p>
-            <button type="submit" class="btn btn-success">로그인</button>
+            <div class="form-row justify-content-center">
+                <div class="form-group col-3">
+                    <button type="submit" class="btn btn-block btn-outline-primary">로그인</button>
+                </div>
+            </div>
         </form>
-</div>
-<div th:replace="fragments/main.html :: footer"/>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-3">
+            <div class="row justify-content-center">
+                <div class="col-6 text-left">
+                    <a class="text-dark" th:href="@{/members/new}"><small>회원가입</small></a>
+                </div>
+                <div class="col-6 text-right">
+                    <a class="text-dark" th:href="@{#}"><small>아이디찾기</small></a>
+                    <small> | </small>
+                    <a class="text-dark" th:href="@{#}"><small>비밀번호찾기</small></a>
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="mt-5" th:include="fragments/main.html :: footer"/>
 </body>
-<script>
-    function formValidation() {
-        $('#err_empty_id').text('')
-        $('#err_empty_pwd').text('')
-        $('#err_login').text('')
-
-        let emailLength = $('input[name="email"]').val().length
-        if (emailLength === 0) {
-            $('#err_empty_id').text('이메일을 입력하세요.')
-            return false
-        }
-
-        let passwordLength = $('input[name="password"]').val().length
-        if (passwordLength === 0) {
-            $('#err_empty_pwd').text('비밀번호를 입력하세요.')
-            return false
-        }
-
-        return true
-    }
-</script>
+<script th:replace="fragments/main.html :: form-validation"></script>
 </html>

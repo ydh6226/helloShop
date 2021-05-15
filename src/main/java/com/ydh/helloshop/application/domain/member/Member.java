@@ -4,14 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ydh.helloshop.application.domain.Address;
 import com.ydh.helloshop.application.domain.cart.Cart;
 import com.ydh.helloshop.application.domain.order.Order;
+import lombok.AccessLevel;
 import lombok.Getter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.EnumType.STRING;
@@ -22,8 +22,9 @@ import static javax.persistence.EnumType.STRING;
  * unique key = email
  */
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Member implements UserDetails {
+public class Member {
 
     @Id
     @GeneratedValue(generator = "member_id")
@@ -53,56 +54,21 @@ public class Member implements UserDetails {
     private Cart cart;
 
     //연관관계 메서드
-    protected void initCart() {
+    private void initCart() {
         this.cart = new Cart(this);
     }
 
-    //setter
-    public void createInfo(String name, String email, String password, Address address, MemberStatus memberStatus) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.address = address;
-        this.status = memberStatus;
-        joinDate = LocalDateTime.now();
-        initCart();
-    }
+    public static Member createMember(CreateMemberParam createMemberParam) {
+        Member member = new Member();
 
-    //UserDetails overide method
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<GrantedAuthority> roles = new HashSet<>();
-        roles.add(new SimpleGrantedAuthority(status.toString()));
-        return roles;
-    }
+        member.name = createMemberParam.getName();
+        member.email = createMemberParam.getEmail();
+        member.password = createMemberParam.getPassword();
+        member.address = createMemberParam.getAddress();
+        member.status = createMemberParam.getMemberStatus();
+        member.joinDate = LocalDateTime.now();
+        member.initCart();
 
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
+        return member;
     }
 }

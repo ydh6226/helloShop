@@ -29,7 +29,7 @@
 </head>
 
 <!-- header -->
-<div class="container-lg my-4" th:fragment="bodyHeader(itemSearch, leafCategories)">
+<div th:fragment="bodyHeader(itemSearch, leafCategories)" class="container-lg my-4">
     <div class="row d-flex justify-content-center">
         <a class="navbar-brand col-2 mr-0" th:href="@{/}">
             <span class="h2 font-weight-bold font-italic text-dark">Hello Shop</span>
@@ -58,7 +58,7 @@
         <div class="col-3">
             <div class="row text-center justify-content-center">
                 <a class="col-4 text-dark" th:href="@{/members/login}"><i class="fas fa-user-circle fa-3x"></i></a>
-                <a class="col-4 text-dark" th:href="@{/orderList}"><i class="fas fa-truck fa-3x"></i></a>
+                <a class="col-4 text-dark" th:href="@{/order/view}"><i class="fas fa-truck fa-3x"></i></a>
                 <a class="col-4 text-dark" th:href="@{/cart}"><i class="fas fa-shopping-cart fa-3x"></i></a>
             </div>
         </div>
@@ -78,9 +78,30 @@
 </script>
 
 <!-- Simple Body Header -->
-<div class="header" th:fragment="simpleBodyHeader">
+<div th:fragment="simpleBodyHeader" class="header">
     <div class="col-8"><a href="/"><h3>Hello Shop</h3></a></div>
 </div>
+
+<!-- form validation -->
+<script th:fragment="form-validation">
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            let forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            let validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
 
 <!-- footer -->
 <div class="container-lg text-center" th:fragment="footer">

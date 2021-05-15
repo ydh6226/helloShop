@@ -1,12 +1,11 @@
 package com.ydh.helloshop.application.controller.seller.item;
 
 import com.ydh.helloshop.application.controller.seller.form.AlbumForm;
-import com.ydh.helloshop.application.domain.Category;
+import com.ydh.helloshop.application.domain.member.CurrentMember;
 import com.ydh.helloshop.application.domain.member.Member;
 import com.ydh.helloshop.application.service.CategoryService;
 import com.ydh.helloshop.application.service.item.AlbumService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,7 +22,7 @@ public class AlbumController {
     private final AlbumService albumService;
 
     @GetMapping("/seller/album/new")
-    public String createItemForm(Model model, @AuthenticationPrincipal Member member) {
+    public String createItemForm(Model model, @CurrentMember Member member) {
         AlbumForm albumForm = new AlbumForm();
         albumForm.setSellerId(member.getId());
 

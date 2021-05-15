@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
-<head th:include="fragments/main.html :: head"/>
+<head th:replace="fragments/main.html :: head"/>
 <body>
 <div class="justify-content-center">
     <div th:replace="fragments/main.html :: bodyHeader(${itemSearch}, ${leafCategories})"/>
@@ -36,8 +36,8 @@
                     </div>
                 </div>
                 <div class="container bg-light border border-dark" sec:authorize="isAuthenticated()">
-                    <div class="row p-2" th:object="${memberInfo}">
-                        <div class="container text-center">
+                    <div class="row p-2">
+                        <div class="container text-center" th:object="${member}">
                             <p th:text="|*{name} 님 안녕하세요|">회원 이름</p>
 
                             <!-- 특정 권한 종속적 -->

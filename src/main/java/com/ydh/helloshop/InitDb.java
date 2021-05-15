@@ -4,6 +4,7 @@ import com.ydh.helloshop.application.controller.seller.form.AlbumForm;
 import com.ydh.helloshop.application.domain.Address;
 import com.ydh.helloshop.application.domain.Category;
 import com.ydh.helloshop.application.domain.item.ItemCategory;
+import com.ydh.helloshop.application.domain.member.CreateMemberParam;
 import com.ydh.helloshop.application.domain.member.Member;
 import com.ydh.helloshop.application.domain.item.Album;
 import com.ydh.helloshop.application.domain.item.Item;
@@ -14,6 +15,7 @@ import com.ydh.helloshop.application.service.CartService;
 import com.ydh.helloshop.application.service.item.ItemServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,6 +58,8 @@ public class InitDb {
 
         private final CartService cartService;
 
+        private final PasswordEncoder passwordEncoder;
+
         public void createRootCategory() {
             Category root = createCategory("root", null);
             categoryRepository.save(root);
@@ -83,23 +87,21 @@ public class InitDb {
         }
 
         public void createAdminMember() {
-            Member member = new Member();
-            member.createInfo("admin", "admin", new BCryptPasswordEncoder().encode("admin"),
-                    null, ADMIN);
+            Member member = Member.createMember(new CreateMemberParam("admin", "admin",
+                    passwordEncoder.encode("admin"), ADMIN, null));
             memberRepository.save(member);
         }
 
         public void createCustomerMember() {
-            Member member = new Member();
-            member.createInfo("cus", "cus", new BCryptPasswordEncoder().encode("cus"),
-                    new Address("경기", "행신로", "143번길"), CUSTOMER);
+            Member member = Member.createMember(new CreateMemberParam("cus", "cus",
+                    passwordEncoder.encode("cus"), CUSTOMER,
+                    new Address("경기", "행신로", "143번길")));
             memberRepository.save(member);
         }
 
         public void createSellerMember() {
-            Member member = new Member();
-            member.createInfo("sel", "sel", new BCryptPasswordEncoder().encode("sel"),
-                    null, SELLER);
+            Member member = Member.createMember(new CreateMemberParam("sel", "sel",
+                    passwordEncoder.encode("sel"), SELLER, null));
             memberRepository.save(member);
         }
 
@@ -189,6 +191,5 @@ public class InitDb {
             cartService.addToCart(2L, item1, 2);
             cartService.addToCart(2L, item2, 2);
         }
-
     }
 }
