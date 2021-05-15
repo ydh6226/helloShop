@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
 
     private final ItemServiceImpl itemService;
-    private final CategoryService categoryService;
 
     @RequestMapping("/")
     public String home(Model model, @CurrentMember Member member) {
@@ -25,9 +24,6 @@ public class HomeController {
 
         PageRequest pageRequest = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "createTime"));
         model.addAttribute("items", itemService.findItemsWithPaging(pageRequest));
-        model.addAttribute("itemSearch", new ItemSearch());
-        model.addAttribute("leafCategories", categoryService.findLeafCategories());
-
         return "home";
     }
 }

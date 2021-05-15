@@ -3,7 +3,7 @@
 <head th:include="fragments/main.html :: head" />
 <body>
 <div class="container">
-    <div th:replace="fragments/main.html :: bodyHeader"/>
+    <div th:replace="fragments/main.html :: header"/>
 
     <ul class="list-group text-center">
         <li class="list-group-item" th:each="album : ${albums}">

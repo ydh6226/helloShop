@@ -7,7 +7,7 @@
 </head>
 <body>
 <div class="container">
-    <div th:replace="fragments/main.html :: bodyHeader"/>
+    <div th:replace="fragments/main.html :: header"/>
 
     <form class="container" action="/seller/album/new" th:object="${albumForm}" method="post">
         <div class="form-group row" id="category-select">

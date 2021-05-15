@@ -9,44 +9,49 @@ import com.ydh.helloshop.application.service.item.AlbumService;
 import com.ydh.helloshop.application.service.item.ItemServiceImpl;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@RequestMapping("/seller")
 @RequiredArgsConstructor
 public class SellerController {
 
     private final ItemServiceImpl itemService;
 
-    private final CategoryService categoryService;
-
-    private final AlbumService albumService;
-
     private final CartItemService cartItemService;
 
-    //Repository 직접 사용
     private final ItemCategoryRepository itemCategoryRepository;
 
-    @GetMapping("/seller")
-    public String sellerMenu() {
-        return "seller/home";
+    private static final String SETTINGS_ITEM_LIST_URL = "/settings/itemList";
+    private static final String SETTINGS_ITEM_LIST_VIEW = "seller/settings/itemList";
+
+    private static final String SETTINGS_REGISTER_URL = "/settings/register";
+    private static final String SETTINGS_REGISTER_VIEW = "seller/settings/register";
+
+    @GetMapping(SETTINGS_ITEM_LIST_URL)
+    public String itemList() {
+        return SETTINGS_ITEM_LIST_VIEW;
     }
 
-    @GetMapping("/seller/items")
+    @GetMapping(SETTINGS_REGISTER_URL)
+    public String registerItem() {
+        return SETTINGS_REGISTER_VIEW;
+    }
+
+    @GetMapping("/items")
     public String createItem(Model model, @CurrentMember Member member) {
         model.addAttribute("itemList", itemService.findAllBySellerId(3L));
         return "seller/itemList";
     }
 
     @ResponseBody
-    @PostMapping("/seller/items/delete")
+    @PostMapping("/items/delete")
     public void deleteItem(@RequestBody SimpleItemDto itemDto) {
         List<Long> ids = itemDto.getIds();
 
