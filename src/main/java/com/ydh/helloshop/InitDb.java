@@ -4,6 +4,7 @@ import com.ydh.helloshop.application.controller.seller.form.AlbumForm;
 import com.ydh.helloshop.application.domain.Address;
 import com.ydh.helloshop.application.domain.Category;
 import com.ydh.helloshop.application.domain.item.ItemCategory;
+import com.ydh.helloshop.application.domain.member.CreateMemberParam;
 import com.ydh.helloshop.application.domain.member.Member;
 import com.ydh.helloshop.application.domain.item.Album;
 import com.ydh.helloshop.application.domain.item.Item;
@@ -86,23 +87,21 @@ public class InitDb {
         }
 
         public void createAdminMember() {
-            Member member = new Member();
-            member.createInfo("admin", "admin", passwordEncoder.encode("admin"),
-                    null, ADMIN);
+            Member member = Member.createMember(new CreateMemberParam("admin", "admin",
+                    passwordEncoder.encode("admin"), ADMIN, null));
             memberRepository.save(member);
         }
 
         public void createCustomerMember() {
-            Member member = new Member();
-            member.createInfo("cus", "cus", passwordEncoder.encode("cus"),
-                    new Address("경기", "행신로", "143번길"), CUSTOMER);
+            Member member = Member.createMember(new CreateMemberParam("cus", "cus",
+                    passwordEncoder.encode("cus"), CUSTOMER,
+                    new Address("경기", "행신로", "143번길")));
             memberRepository.save(member);
         }
 
         public void createSellerMember() {
-            Member member = new Member();
-            member.createInfo("sel", "sel", passwordEncoder.encode("sel"),
-                    null, SELLER);
+            Member member = Member.createMember(new CreateMemberParam("sel", "sel",
+                    passwordEncoder.encode("sel"), SELLER, null));
             memberRepository.save(member);
         }
 
