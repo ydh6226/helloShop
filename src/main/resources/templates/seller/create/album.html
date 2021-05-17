@@ -7,7 +7,7 @@
 </head>
 <body>
 <div class="container">
-    <div th:replace="fragments/main.html :: header"/>
+    <div th:replace="fragments/main.html :: header(${itemSearch}, ${leafCategories})"/>
 
     <form class="container" action="/seller/album/new" th:object="${albumForm}" method="post">
         <div class="form-group row" id="category-select">
@@ -94,7 +94,7 @@
 </body>
 <script th:inline="javascript">
     let categories = [[${categories}]]
-
+    console.log(categories)
     //선택2 생성
     $('.test-d0').change(function () {
         let index = parseInt($(".test-d0 option:selected").attr('index'))

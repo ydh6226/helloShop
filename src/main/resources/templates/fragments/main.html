@@ -58,7 +58,20 @@
         <div class="col-3">
             <div class="row text-center justify-content-center">
                 <div class="col-4 nav-item dropdown">
-                    <a class="text-dark pb-4" data-bs-toggle="dropdown" th:href="@{/members/login}">
+                    <a class="text-dark pb-4" data-bs-toggle="dropdown" sec:authorize="!isAuthenticated()" th:href="@{/members/login}">
+                        <i class="fas fa-user-circle fa-3x"></i>
+                    </a>
+                    <a class="text-dark pb-4" data-bs-toggle="dropdown"
+                       sec:authorize="${hasAuthority(T(com.ydh.helloshop.application.domain.member.MemberStatus).ADMIN)}" th:href="@{#}">
+                        <i class="fas fa-user-circle fa-3x"></i>
+                    </a>
+                    <a class="text-dark pb-4" data-bs-toggle="dropdown"
+                       sec:authorize="${hasAuthority(T(com.ydh.helloshop.application.domain.member.MemberStatus).SELLER)}"
+                       th:href="@{/seller/settings/itemList}">
+                        <i class="fas fa-user-circle fa-3x"></i>
+                    </a>
+                    <a class="text-dark pb-4" data-bs-toggle="dropdown"
+                       sec:authorize="${hasAuthority(T(com.ydh.helloshop.application.domain.member.MemberStatus).CUSTOMER)}" th:href="@{#}">
                         <i class="fas fa-user-circle fa-3x"></i>
                     </a>
                     <ul class="dropdown-menu mt-2">
