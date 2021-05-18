@@ -37,7 +37,7 @@ public abstract class Item {
 
     //불변 값 설정: 판매자 아이디는 바꿀 수 없다.
 //    @JoinColumn(foreignKey = )
-    private final Long sellerId;
+    private Long sellerId;
 
     @OneToMany(mappedBy = "item", cascade = ALL)
     private List<ItemCategory> itemCategories = new ArrayList<>();
@@ -54,16 +54,24 @@ public abstract class Item {
     }
 
     //== 상품 정보 수정 ==//
-    public void changeInfo(String name, int price, int stockQuantity) {
+    public void setBasicInfo(String name, int price, int stockQuantity) {
         this.name = name;
         this.price = price;
         this.stockQuantity = stockQuantity;
     }
 
+    public void setBasicInfo(ItemParam itemParam) {
+        this.name = itemParam.getName();
+        this.price = itemParam.getPrice();
+        this.stockQuantity = itemParam.getStockQuantity();
+        this.sellerId = itemParam.getSellerId();
+        addItemCategory(itemParam.getItemCategory());
+    }
+
     //== 연관 관계 메서드 ==/
     protected void addItemCategory(ItemCategory itemCategory) {
         itemCategories.add(itemCategory);
-        itemCategory.changeItem(this);
+        itemCategory.initItem(this);
     }
 
     //== 비즈니스 로직 ==/

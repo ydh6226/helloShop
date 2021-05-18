@@ -58,7 +58,7 @@ public class AlbumService implements ItemService<Album> {
     public void update(Long id, AlbumForm form) {
         Album album = albumRepository.findById(id).orElseThrow(this::exception);
         album.changeAlbumInfo(form.getArtist(), form.getEtc());
-        album.changeInfo(form.getName(), form.getPrice(), form.getStockQuantity());
+        album.setBasicInfo(form.getName(), form.getPrice(), form.getStockQuantity());
     }
 
     @Transactional

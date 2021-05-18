@@ -17,16 +17,15 @@ public class Book extends Item{
     private String author;
     private String isbn;
 
-    public Book(String author, String isbn, String name, int price, int stockQuantity) {
+    public Book(String author, String isbn) {
         this.author = author;
         this.isbn = isbn;
-        super.changeInfo(name, price, stockQuantity);
     }
 
     public Book(Long sellerId, String author, String isbn, String name, int price, int stockQuantity) {
         this.author = author;
         this.isbn = isbn;
-        super.changeInfo(name, price, stockQuantity);
+        super.setBasicInfo(name, price, stockQuantity);
     }
 
     //setter

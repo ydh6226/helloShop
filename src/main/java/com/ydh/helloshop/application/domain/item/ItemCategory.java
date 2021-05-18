@@ -32,8 +32,7 @@ public class ItemCategory {
         this.category = category;
     }
 
-    //setter
-    public void changeItem(Item item) {
+    public void initItem(Item item) {
         this.item = item;
     }
 

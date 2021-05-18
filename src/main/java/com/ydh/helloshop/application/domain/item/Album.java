@@ -12,25 +12,23 @@ import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @DiscriminatorValue("A")
-@NoArgsConstructor(access = PROTECTED)
+@NoArgsConstructor
 @Getter
 public class Album extends Item {
 
     private String artist;
     private String etc;
 
-    //생성자
-    public Album(String artist, String etc, String name, int price, int stockQuantity) {
+    public Album(String artist, String etc) {
         this.artist = artist;
         this.etc = etc;
-        super.changeInfo(name, price, stockQuantity);
     }
 
     public Album(Long sellerId ,String artist, String etc, String name, int price, int stockQuantity) {
         super(sellerId);
         this.artist = artist;
         this.etc = etc;
-        super.changeInfo(name, price, stockQuantity);
+        super.setBasicInfo(name, price, stockQuantity);
     }
 
     //setter
