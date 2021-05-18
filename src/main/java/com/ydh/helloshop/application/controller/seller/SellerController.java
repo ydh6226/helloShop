@@ -29,7 +29,7 @@ public class SellerController {
 
     private final CartItemService cartItemService;
 
-    private final CategoryRepository categoryRepository;
+    private final CategoryService categoryService;
 
     private final ItemCategoryRepository itemCategoryRepository;
 
@@ -48,6 +48,7 @@ public class SellerController {
     @GetMapping(SETTINGS_REGISTER_URL)
     public String registerItem(Model model) {
         model.addAttribute(new ItemForm());
+        model.addAttribute("categories", categoryService.findAllGroupedByType());
         return SETTINGS_REGISTER_VIEW;
     }
 

@@ -180,13 +180,13 @@
             height:500,
             callbacks: {
                 onImageUpload: function (files) {
-                    uploadSummernoteImageFile(files[0], this);
+                    uploadImageFile(files[0], this);
                 }
             }
         });
     });
 
-    function uploadSummernoteImageFile(file, editor) {
+    function uploadImageFile(file, editor) {
         let data = new FormData();
         data.append("file", file);
         $.ajax({
@@ -196,7 +196,6 @@
             contentType: false,
             processData: false,
             success: function(path) {
-                console.log(path);
                 $(editor).summernote('insertImage', path);
             },
             error: function (error) {

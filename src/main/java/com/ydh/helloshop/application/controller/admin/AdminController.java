@@ -24,7 +24,7 @@ public class AdminController {
 
     @GetMapping("/admin/category")
     public String categoryList(Model model) {
-        model.addAttribute("categories", categoryService.findAllByKind());
+        model.addAttribute("categories", categoryService.findAllGroupedByType());
         model.addAttribute("form", new CategoryForm());
         return "admin/category/categoryList";
     }

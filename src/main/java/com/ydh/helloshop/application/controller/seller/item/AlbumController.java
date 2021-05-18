@@ -27,7 +27,7 @@ public class AlbumController {
         albumForm.setSellerId(member.getId());
 
         model.addAttribute("albumForm", albumForm);
-        model.addAttribute("categories", categoryService.findAllByKind());
+        model.addAttribute("categories", categoryService.findAllGroupedByType());
         return "seller/create/album";
     }
 
@@ -35,7 +35,7 @@ public class AlbumController {
     @PostMapping("/seller/album/new")
     public String createItem(@Valid AlbumForm albumForm, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            model.addAttribute("categories", categoryService.findAllByKind());
+            model.addAttribute("categories", categoryService.findAllGroupedByType());
             return "seller/create/album";
         }
 

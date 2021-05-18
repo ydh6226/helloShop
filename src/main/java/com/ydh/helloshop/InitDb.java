@@ -64,26 +64,86 @@ public class InitDb {
             Category root = createCategory("root", null);
             categoryRepository.save(root);
 
-            //아래는 따로 빼기
-            Category c1 = createCategory("의류", root);
+            Category c1 = createCategory("앨범", root);
             Category c2 = createCategory("도서", root);
-            Category c11 = createCategory("상의", c1);
-            Category c12 = createCategory("하의", c1);
-            Category c21 = createCategory("만화", c2);
-            Category c111 = createCategory("반팔", c11);
-            Category c112 = createCategory("나시", c11);
-            Category c121 = createCategory("반바지", c12);
-            Category c211 = createCategory("코믹스", c21);
+            Category c3 = createCategory("가구", root);
+
+            Category c11 = createCategory("유아", c1);
+            Category c12 = createCategory("국내", c1);
+            Category c13 = createCategory("해외", c1);
+
+            Category c111 = createCategory("영어노래", c11);
+            Category c112 = createCategory("한국노래", c11);
+
+            Category c121 = createCategory("발라드", c12);
+            Category c122 = createCategory("댄스", c12);
+            Category c123 = createCategory("트로트", c12);
+
+            Category c131 = createCategory("빌보드", c13);
+            Category c132 = createCategory("spotify", c13);
+
+
+            Category c21 = createCategory("사회", c2);
+            Category c22 = createCategory("만화", c2);
+            Category c23 = createCategory("대학", c2);
+
+            Category c211 = createCategory("행정", c21);
+            Category c212 = createCategory("법", c21);
+
+            Category c221 = createCategory("코믹스", c22);
+            Category c222 = createCategory("원피스", c22);
+            Category c223 = createCategory("나루토", c22);
+
+            Category c231 = createCategory("공학", c23);
+            Category c232 = createCategory("사범", c23);
+
+            Category c31 = createCategory("의자", c3);
+            Category c32 = createCategory("식탁", c3);
+            Category c33 = createCategory("선반", c3);
+
+            Category c311 = createCategory("고정형", c31);
+            Category c312 = createCategory("이동형", c31);
+
+            Category c321 = createCategory("원형", c32);
+            Category c322 = createCategory("사각", c32);
+            Category c323 = createCategory("세모", c32);
+
+            Category c331 = createCategory("일단", c33);
+            Category c332 = createCategory("이단", c33);
 
             categoryRepository.save(c1);
             categoryRepository.save(c2);
+            categoryRepository.save(c3);
             categoryRepository.save(c11);
             categoryRepository.save(c12);
-            categoryRepository.save(c21);
+            categoryRepository.save(c13);
             categoryRepository.save(c111);
             categoryRepository.save(c112);
             categoryRepository.save(c121);
+            categoryRepository.save(c122);
+            categoryRepository.save(c123);
+            categoryRepository.save(c131);
+            categoryRepository.save(c132);
+            categoryRepository.save(c21);
+            categoryRepository.save(c22);
+            categoryRepository.save(c23);
             categoryRepository.save(c211);
+            categoryRepository.save(c212);
+            categoryRepository.save(c221);
+            categoryRepository.save(c222);
+            categoryRepository.save(c223);
+            categoryRepository.save(c231);
+            categoryRepository.save(c232);
+            categoryRepository.save(c31);
+            categoryRepository.save(c32);
+            categoryRepository.save(c33);
+            categoryRepository.save(c311);
+            categoryRepository.save(c312);
+            categoryRepository.save(c321);
+            categoryRepository.save(c322);
+            categoryRepository.save(c323);
+            categoryRepository.save(c331);
+            categoryRepository.save(c332);
         }
 
         public void createAdminMember() {

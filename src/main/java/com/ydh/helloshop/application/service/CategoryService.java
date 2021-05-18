@@ -65,7 +65,7 @@ public class CategoryService {
         return categoryRepository.findAllById(categoryIds);
     }
 
-    public List<Category> findAllByKind() {
+    public List<Category> findAllGroupedByType() {
         Category root = categoryRepository.findByName("root");
         List<Category> list = categoryRepository.findByParent(root);
 

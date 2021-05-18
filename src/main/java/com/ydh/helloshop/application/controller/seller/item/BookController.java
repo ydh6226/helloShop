@@ -34,7 +34,7 @@ public class BookController {
         bookForm.setSellerId(member.getId());
 
         model.addAttribute("bookForm", bookForm);
-        model.addAttribute("categories", categoryService.findAllByKind());
+        model.addAttribute("categories", categoryService.findAllGroupedByType());
 
         return "seller/create/book";
     }
@@ -43,7 +43,7 @@ public class BookController {
     public String createBook(@Valid BookForm bookForm , BindingResult result,
                              Model model, @CurrentMember Member member) {
         if (result.hasErrors()) {
-            model.addAttribute("categories", categoryService.findAllByKind());
+            model.addAttribute("categories", categoryService.findAllGroupedByType());
 
             return "seller/create/book";
         }

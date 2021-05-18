@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -25,8 +26,10 @@ public class ItemServiceImpl implements ItemService<Item> {
     private final CategoryRepository categoryRepository;
 
     public Long registerItem(ItemForm itemForm, Long sellerId) {
-        return createItem(itemForm, sellerId,
-                ItemCategory.createItemCategory(categoryRepository.findByName(itemForm.getCategoryName())));
+        Category category = categoryRepository.findById(itemForm.getCategoryId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카테고리입니다."));
+
+        return createItem(itemForm, sellerId, ItemCategory.createItemCategory(category));
     }
 
     @Override
