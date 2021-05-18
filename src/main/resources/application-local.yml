@@ -20,3 +20,8 @@ spring:
 logging:
   level:
     org.hibernate.SQL: debug # 로거를 통해 출력
+
+app:
+  image:
+    upload_path: C:\Users\user\image_factory
+    download_url: http://localhost:8081/images/download

@@ -170,4 +170,51 @@
     <p>&copy; Hello Shop</p>
 </div>
 
+<!-- Summernote script (Ajax csrf 토큰 필요) -->
+<script th:fragment="summernote" type="application/javascript">
+    $(function () {
+        $('.editor').summernote({
+            fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Noto Sans KR', 'Merriweather'],
+            placeholder: '상품을 설명해주세요.',
+            tabsize: 2,
+            height:500,
+            callbacks: {
+                onImageUpload: function (files) {
+                    uploadSummernoteImageFile(files[0], this);
+                }
+            }
+        });
+    });
+
+    function uploadSummernoteImageFile(file, editor) {
+        let data = new FormData();
+        data.append("file", file);
+        $.ajax({
+            data: data,
+            type: "POST",
+            url: "/images/upload",
+            contentType: false,
+            processData: false,
+            success: function(path) {
+                console.log(path);
+                $(editor).summernote('insertImage', path);
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        })
+    }
+</script>
+
+<!-- Ajax csrf token-->
+<script th:fragment="ajax-csrfToken" type="application/javascript" th:inline="javascript">
+    $(function () {
+        let csrfToken = /*[[${_csrf.token}]]*/ null
+        let csrfHeader = /*[[${_csrf.headerName}]]*/ null
+        $(document).ajaxSend(function (e, xhr, options) {
+            xhr.setRequestHeader(csrfHeader, csrfToken)
+        })
+    })
+</script>
+
 </html>

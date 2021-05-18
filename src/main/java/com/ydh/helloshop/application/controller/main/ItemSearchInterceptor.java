@@ -1,4 +1,4 @@
-package com.ydh.helloshop.application.controller;
+package com.ydh.helloshop.application.controller.main;
 
 import com.ydh.helloshop.application.controller.item.ItemSearch;
 import com.ydh.helloshop.application.service.CategoryService;
