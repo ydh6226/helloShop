@@ -4,18 +4,34 @@ import com.ydh.helloshop.application.domain.item.ItemType;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 @Data
 public class ItemForm {
-    // TODO: 2021-05-19[양동혁] itemType 입력 에러처리 
-    
+
     // 공통
+    @NotNull(message = "대분류를 선택하세요.")
     private ItemType itemType;
+
+    @NotNull(message = "소분류를 선택하세요.")
     private Long categoryId;
+
+    @NotBlank(message = "상품명을 입력하세요")
     private String name;
+
+    @Min(value = 0, message = "가격은 0원 이상이어합니다.")
     private int price;
+
+    @Min(value = 0, message = "재고는 0개 이상이어합니다.")
     private int stockQuantity;
+
+    @NotBlank(message = "상품을 설명해주세요.")
     private String description;
-    private MultipartFile representativeImage;
+
+    private MultipartFile representativeImageFile;
 
     //앨범
     private String artist;
@@ -26,7 +42,7 @@ public class ItemForm {
     private String isbn;
 
     //가구
-    private double length;
-    private double width;
-    private double height;
+    private Double length;
+    private Double width;
+    private Double height;
 }

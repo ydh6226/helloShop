@@ -13,8 +13,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -24,6 +24,8 @@ public class ItemServiceImpl implements ItemService<Item> {
     private final ItemRepository itemRepository;
 
     private final CategoryRepository categoryRepository;
+
+    private final MainService mainService;
 
     public Long registerItem(ItemForm itemForm, Long sellerId) {
         Category category = categoryRepository.findById(itemForm.getCategoryId())
@@ -107,6 +109,14 @@ public class ItemServiceImpl implements ItemService<Item> {
         itemParam.setStockQuantity(itemForm.getStockQuantity());
         itemParam.setSellerId(sellerId);
         itemParam.setItemCategory(itemCategory);
+        itemParam.setDescription(itemForm.getDescription());
+
+        try {
+            itemParam.setRepresentativeImageUrl(mainService.imageUpload(itemForm.getRepresentativeImageFile()));
+        } catch (IOException e) {
+            throw new IllegalStateException("파일 업로드 과정에서 에러가 발생했습니다.");
+        }
+
         return itemParam;
     }
 }

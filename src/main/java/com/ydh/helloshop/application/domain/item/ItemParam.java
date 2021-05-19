@@ -9,5 +9,7 @@ public class ItemParam {
     private int price;
     private int stockQuantity;
     private Long sellerId;
+    private String representativeImageUrl;
+    private String description;
     ItemCategory itemCategory;
 }

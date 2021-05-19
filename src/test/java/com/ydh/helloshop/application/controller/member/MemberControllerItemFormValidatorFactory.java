@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 @SpringBootTest
-class MemberControllerTest {
+class MemberControllerItemFormValidatorFactory {
 
     @Autowired
     MockMvc mockMvc;

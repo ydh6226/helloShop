@@ -25,7 +25,6 @@ public class Album extends Item {
     }
 
     public Album(Long sellerId ,String artist, String etc, String name, int price, int stockQuantity) {
-        super(sellerId);
         this.artist = artist;
         this.etc = etc;
         super.setBasicInfo(name, price, stockQuantity);

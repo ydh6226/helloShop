@@ -35,6 +35,10 @@ public abstract class Item {
 
     private LocalDateTime createTime;
 
+    private String representativeImageUrl;
+
+    private String description;
+
     //불변 값 설정: 판매자 아이디는 바꿀 수 없다.
 //    @JoinColumn(foreignKey = )
     private Long sellerId;
@@ -42,14 +46,8 @@ public abstract class Item {
     @OneToMany(mappedBy = "item", cascade = ALL)
     private List<ItemCategory> itemCategories = new ArrayList<>();
 
-    //생성자
-    protected Item() {
-        sellerId = 0L;
-    }
-
-    public Item(Long sellerId) {
+    public Item() {
         this.status = SALE;
-        this.sellerId = sellerId;
         this.createTime = LocalDateTime.now();
     }
 
@@ -65,6 +63,8 @@ public abstract class Item {
         this.price = itemParam.getPrice();
         this.stockQuantity = itemParam.getStockQuantity();
         this.sellerId = itemParam.getSellerId();
+        this.representativeImageUrl = itemParam.getRepresentativeImageUrl();
+        this.description = itemParam.getDescription();
         addItemCategory(itemParam.getItemCategory());
     }
 
