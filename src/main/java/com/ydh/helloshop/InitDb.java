@@ -1,31 +1,21 @@
 package com.ydh.helloshop;
 
-import com.ydh.helloshop.application.controller.seller.form.AlbumForm;
 import com.ydh.helloshop.application.domain.Address;
 import com.ydh.helloshop.application.domain.Category;
-import com.ydh.helloshop.application.domain.item.ItemCategory;
 import com.ydh.helloshop.application.domain.member.CreateMemberParam;
 import com.ydh.helloshop.application.domain.member.Member;
-import com.ydh.helloshop.application.domain.item.Album;
 import com.ydh.helloshop.application.domain.item.Item;
 import com.ydh.helloshop.application.repository.CategoryRepository;
 import com.ydh.helloshop.application.repository.MemberRepository;
-import com.ydh.helloshop.application.repository.item.AlbumRepository;
 import com.ydh.helloshop.application.service.CartService;
-import com.ydh.helloshop.application.service.item.ItemServiceImpl;
+import com.ydh.helloshop.application.service.ItemService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
-import java.util.Arrays;
-
 import static com.ydh.helloshop.application.domain.Category.createCategory;
-import static com.ydh.helloshop.application.domain.item.ItemCategory.createItemCategory;
 import static com.ydh.helloshop.application.domain.member.MemberStatus.*;
-import static com.ydh.helloshop.application.domain.item.Album.createAlbum;
 
 @Component
 @RequiredArgsConstructor
@@ -39,7 +29,7 @@ public class InitDb {
         initService.createAdminMember();
         initService.createCustomerMember();
         initService.createSellerMember();
-        initService.createItems();
+//        initService.createItems();
         initService.createCartItem();
     }
 
@@ -52,9 +42,7 @@ public class InitDb {
 
         private final CategoryRepository categoryRepository;
 
-        private final AlbumRepository albumRepository;
-
-        private final ItemServiceImpl itemService;
+        private final ItemService itemService;
 
         private final CartService cartService;
 
@@ -165,7 +153,7 @@ public class InitDb {
             memberRepository.save(member);
         }
 
-        public void createItems() {
+        /*public void createItems() {
             AlbumForm form1 = AlbumForm.builder()
                     .sellerId(3L)
                     .artist("김영한")
@@ -242,7 +230,7 @@ public class InitDb {
             albumRepository.save(album4);
             albumRepository.save(album6);
             albumRepository.save(album7);
-        }
+        }*/
 
         public void createCartItem() {
             Item item1 = itemService.findOne(1L);

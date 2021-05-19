@@ -7,7 +7,7 @@ import com.ydh.helloshop.application.domain.member.Member;
 import com.ydh.helloshop.application.repository.item.ItemCategoryRepository;
 import com.ydh.helloshop.application.service.CartItemService;
 import com.ydh.helloshop.application.service.CategoryService;
-import com.ydh.helloshop.application.service.item.ItemServiceImpl;
+import com.ydh.helloshop.application.service.ItemService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -25,7 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SellerController {
 
-    private final ItemServiceImpl itemService;
+    private final ItemService itemService;
 
     private final CartItemService cartItemService;
 

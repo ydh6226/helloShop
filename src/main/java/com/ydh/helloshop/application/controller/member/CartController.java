@@ -7,7 +7,7 @@ import com.ydh.helloshop.application.domain.order.OrderItem;
 import com.ydh.helloshop.application.service.CartItemService;
 import com.ydh.helloshop.application.service.CartService;
 import com.ydh.helloshop.application.service.OrderService;
-import com.ydh.helloshop.application.service.item.ItemServiceImpl;
+import com.ydh.helloshop.application.service.ItemService;
 import com.ydh.helloshop.infra.amqp.dto.DeliveryPublishParam;
 import com.ydh.helloshop.infra.amqp.sender.DeliveryPublisher;
 import lombok.Data;
@@ -31,7 +31,7 @@ public class CartController {
 
     private final CartService cartService;
     private final CartItemService cartItemService;
-    private final ItemServiceImpl itemService;
+    private final ItemService itemService;
     private final OrderService orderService;
     private final DeliveryPublisher deliveryPublisher;
 

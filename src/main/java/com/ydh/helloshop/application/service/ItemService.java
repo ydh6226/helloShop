@@ -1,4 +1,4 @@
-package com.ydh.helloshop.application.service.item;
+package com.ydh.helloshop.application.service;
 
 import com.ydh.helloshop.application.controller.item.ItemDto;
 import com.ydh.helloshop.application.controller.seller.form.ItemForm;
@@ -19,7 +19,7 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ItemServiceImpl implements ItemService<Item> {
+public class ItemService {
 
     private final ItemRepository itemRepository;
 
@@ -34,30 +34,13 @@ public class ItemServiceImpl implements ItemService<Item> {
         return createItem(itemForm, sellerId, ItemCategory.createItemCategory(category));
     }
 
-    @Override
-    public Long save(Item item) {
-        itemRepository.save(item);
-        return item.getId();
-    }
-
-    @Override
-    public void delete(Long id) {
-        itemRepository.deleteById(id);
-    }
-
     public void deleteItemsByIdsQuery(List<Long> ids) {
         itemRepository.deleteItemsByIdIn(ids);
 
     }
 
-    @Override
     public Item findOne(Long id) {
         return itemRepository.findById(id).orElseThrow(() -> new NoSuchItem("The Item could not be found."));
-    }
-
-    @Override
-    public List<Item> findAll() {
-        return itemRepository.findAll();
     }
 
     @Transactional(readOnly = true)

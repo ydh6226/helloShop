@@ -2,8 +2,8 @@ package com.ydh.helloshop.application.controller.main;
 
 import com.ydh.helloshop.application.domain.member.CurrentMember;
 import com.ydh.helloshop.application.domain.member.Member;
-import com.ydh.helloshop.application.service.item.ItemServiceImpl;
-import com.ydh.helloshop.application.service.item.MainService;
+import com.ydh.helloshop.application.service.ItemService;
+import com.ydh.helloshop.application.service.MainService;
 import com.ydh.helloshop.infra.config.property.ImageProperty;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,18 +17,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.UUID;
 
 @Slf4j
 @Controller
 @RequiredArgsConstructor
 public class MainController {
 
-    private final ItemServiceImpl itemService;
+    private final ItemService itemService;
 
     private final ImageProperty imageProperty;
 

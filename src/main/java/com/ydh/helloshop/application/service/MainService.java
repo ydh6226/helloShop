@@ -1,4 +1,4 @@
-package com.ydh.helloshop.application.service.item;
+package com.ydh.helloshop.application.service;
 
 import com.ydh.helloshop.infra.config.property.ImageProperty;
 import lombok.RequiredArgsConstructor;
