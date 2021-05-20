@@ -36,11 +36,11 @@ public class SellerController {
     private final ItemFormValidator itemFormValidator;
 
 
-    private static final String SETTINGS_ITEM_LIST_URL = "/settings/itemList";
-    private static final String SETTINGS_ITEM_LIST_VIEW = "seller/settings/itemList";
+    static final String SETTINGS_ITEM_LIST_URL = "/settings/itemList";
+    static final String SETTINGS_ITEM_LIST_VIEW = "seller/settings/itemList";
 
-    private static final String SETTINGS_REGISTER_URL = "/settings/register";
-    private static final String SETTINGS_REGISTER_VIEW = "seller/settings/register";
+    static final String SETTINGS_REGISTER_URL = "/settings/register";
+    static final String SETTINGS_REGISTER_VIEW = "seller/settings/register";
 
     @InitBinder("itemForm")
     public void itemFormExtraInfoValidator(WebDataBinder webDataBinder) {

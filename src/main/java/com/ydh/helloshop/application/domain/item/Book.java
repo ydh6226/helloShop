@@ -1,5 +1,6 @@
 package com.ydh.helloshop.application.domain.item;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,7 +10,7 @@ import java.util.List;
 
 @Entity
 @DiscriminatorValue("B")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Book extends Item{
 

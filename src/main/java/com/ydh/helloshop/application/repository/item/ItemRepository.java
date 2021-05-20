@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
@@ -24,4 +25,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     @Query("select i from Item i")
     Page<Item> findAllWithPaging(Pageable pageable);
+
+    Optional<Item> findByName(String name);
 }

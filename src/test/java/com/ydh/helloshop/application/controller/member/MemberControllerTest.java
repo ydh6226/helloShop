@@ -2,6 +2,7 @@ package com.ydh.helloshop.application.controller.member;
 
 import com.ydh.helloshop.application.domain.member.Member;
 import com.ydh.helloshop.application.factories.MemberFactory;
+import com.ydh.helloshop.application.factories.MemberInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -24,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 @SpringBootTest
-class MemberControllerItemFormValidatorFactory {
+class MemberControllerTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -32,14 +33,13 @@ class MemberControllerItemFormValidatorFactory {
     @Autowired
     MemberFactory memberFactory;
 
-    @Autowired
-    EntityManager em;
-
     @Test
     @DisplayName("로그인")
     void login() throws Exception {
         String password = "password";
-        Member member = memberFactory.createMember(password);
+        MemberInfo memberInfo = new MemberInfo();
+        memberInfo.setPassword(password);
+        Member member = memberFactory.createMember(memberInfo);
 
         mockMvc.perform(post("/members/login")
                 .param("email", member.getEmail())
@@ -54,7 +54,9 @@ class MemberControllerItemFormValidatorFactory {
     @DisplayName("로그인 - 실패")
     void loginWithError() throws Exception {
         String password = "password";
-        Member member = memberFactory.createMember(password);
+        MemberInfo memberInfo = new MemberInfo();
+        memberInfo.setPassword(password);
+        Member member = memberFactory.createMember(memberInfo);
 
         mockMvc.perform(post("/members/login")
                 .param("email", member.getEmail())

@@ -23,38 +23,14 @@ public class MemberFactory {
     @Autowired
     MemberService memberService;
 
-    /**
-     * memberStatus default: CUSTOMER
-     * password default: randomString
-     */
-    public Member createMember() {
-        Member member = Member.createMember(createMemberParam(MemberStatus.CUSTOMER, getRandomString()));
+    public Member createMember(MemberInfo memberInfo) {
+        Member member = Member.createMember(createMemberParam(memberInfo));
         memberService.join(member);
         return member;
     }
 
-    public Member createMember(String password) {
-        Member member = Member.createMember(createMemberParam(MemberStatus.CUSTOMER, password));
-        memberService.join(member);
-        return member;
-    }
-
-    public Member createMember(MemberStatus memberStatus) {
-        Member member = Member.createMember(createMemberParam(memberStatus, getRandomString()));
-        memberService.join(member);
-        return member;
-    }
-
-    private CreateMemberParam createMemberParam(MemberStatus memberStatus, String password) {
-        return new CreateMemberParam(getRandomString(), getRandomString(), passwordEncoder.encode(password),
-                memberStatus, createAddress());
-    }
-
-    private Address createAddress() {
-        return new Address(getRandomString(), getRandomString(), getRandomString());
-    }
-
-    private String getRandomString() {
-        return RandomStringUtils.randomAlphanumeric(10);
+    private CreateMemberParam createMemberParam(MemberInfo memberInfo) {
+        return new CreateMemberParam(memberInfo.getName(), memberInfo.getEmail(),
+                passwordEncoder.encode(memberInfo.getPassword()), memberInfo.getMemberStatus(), memberInfo.getAddress());
     }
 }

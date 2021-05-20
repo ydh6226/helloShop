@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
+
 import static com.ydh.helloshop.application.domain.Category.createCategory;
 import static com.ydh.helloshop.application.domain.member.MemberStatus.*;
 
@@ -30,7 +32,7 @@ public class InitDb {
         initService.createCustomerMember();
         initService.createSellerMember();
 //        initService.createItems();
-        initService.createCartItem();
+//        initService.createCartItem();
     }
 
     @Component

@@ -1,7 +1,11 @@
 package com.ydh.helloshop.application.controller.seller.form;
 
 import com.ydh.helloshop.application.domain.item.ItemType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import net.bytebuddy.asm.Advice;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Min;
@@ -10,6 +14,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ItemForm {
 
     // 공통
