@@ -10,8 +10,8 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 import static com.ydh.helloshop.application.domain.QCategory.category;
-import static com.ydh.helloshop.application.domain.QItemCategory.itemCategory;
 import static com.ydh.helloshop.application.domain.item.QAlbum.album;
+import static com.ydh.helloshop.application.domain.item.QItemCategory.itemCategory;
 
 public class AlbumRepositoryImpl extends QuerydslRepositorySupport implements AlbumRepositoryCustom {
 

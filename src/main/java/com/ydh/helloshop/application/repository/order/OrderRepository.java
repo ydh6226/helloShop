@@ -10,9 +10,9 @@ import org.springframework.util.StringUtils;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static com.ydh.helloshop.application.domain.QOrderItem.orderItem;
 import static com.ydh.helloshop.application.domain.item.QItem.item;
 import static com.ydh.helloshop.application.domain.order.QOrder.order;
+import static com.ydh.helloshop.application.domain.order.QOrderItem.orderItem;
 
 @Repository
 public class OrderRepository {
