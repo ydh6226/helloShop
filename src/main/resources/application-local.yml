@@ -1,0 +1,27 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/helloshop
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 100 # IN 쿼리의 개수
+
+logging:
+  level:
+    org.hibernate.SQL: debug # 로거를 통해 출력
+
+app:
+  image:
+    upload_path: C:\Users\user\image_factory
+    download_url: http://localhost:8081/images/download

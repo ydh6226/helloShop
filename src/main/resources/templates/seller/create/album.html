@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
-<head th:include="fragments/header :: header" />
+<head th:include="fragments/main.html :: head" />
 <head>
     <!-- font awesome -->
     <script src="https://kit.fontawesome.com/88cd8e9abf.js"></script>
 </head>
 <body>
 <div class="container">
-    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <div th:replace="fragments/main.html :: header(${itemSearch}, ${leafCategories})"/>
 
     <form class="container" action="/seller/album/new" th:object="${albumForm}" method="post">
         <div class="form-group row" id="category-select">
@@ -89,12 +89,12 @@
         </div>
     </form>
 
-    <div th:replace="fragments/footer :: footer"/>
+    <div th:replace="fragments/main.html :: footer"/>
 </div>
 </body>
 <script th:inline="javascript">
     let categories = [[${categories}]]
-
+    console.log(categories)
     //선택2 생성
     $('.test-d0').change(function () {
         let index = parseInt($(".test-d0 option:selected").attr('index'))

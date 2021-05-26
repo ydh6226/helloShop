@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ko">
+
+<!--head -->
+<head th:fragment="head">
+    <!-- meta tags -->
+    <meta charset="UTF-8">
+    <title>Hello Shop</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css" integrity="sha384-vSIIfh2YWi9wW0r9iZe7RJPrKwp6bG+s9QZMoITbCckVJqGCCRhc+ccxNcdpHuYu" crossorigin="anonymous">
+
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,400,500&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Noto Sans KR", "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        }
+    </style>
+</head>
+
+<!-- header -->
+<div th:fragment="header(itemSearch, leafCategories)" class="container-lg my-4">
+    <div class="row d-flex justify-content-center">
+        <a class="navbar-brand col-2 mr-0" th:href="@{/}">
+            <span class="h2 font-weight-bold font-italic text-dark">Hello Shop</span>
+        </a>
+        <div class="col-7 d-flex align-items-center">
+            <form th:action="@{/items}" class="flex-fill"
+                  method="get" th:object="${itemSearch}" onsubmit="return emptyCheck()">
+                <div class="form-row">
+                    <div class="col-3 border border-1 px-0">
+                        <select class="custom-select border-0 rounded" name="categoryName">
+                            <option selected value="">전체</option>
+                            <option th:each="category : ${leafCategories}"
+                                    th:text="${category.name}" th:value="${category.name}"></option>
+                        </select>
+                    </div>
+                    <div class="col-9">
+                        <div class="form-row border border-1 rounded">
+                            <input id="item-search" type="text" class="form-control input-itemName col-11 border-0"
+                                   placeholder="상품을 검색해보세요." name="itemName">
+                            <button class="col-1 btn text-dark" type="submit"><i class="fas fa-search fa-lg"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-3">
+            <div class="row text-center justify-content-center">
+                <div class="col-4 nav-item dropdown">
+                    <a class="text-dark pb-4" data-bs-toggle="dropdown" sec:authorize="!isAuthenticated()" th:href="@{/members/login}">
+                        <i class="fas fa-user-circle fa-3x"></i>
+                    </a>
+                    <a class="text-dark pb-4" data-bs-toggle="dropdown"
+                       sec:authorize="${hasAuthority(T(com.ydh.helloshop.application.domain.member.MemberStatus).ADMIN)}" th:href="@{#}">
+                        <i class="fas fa-user-circle fa-3x"></i>
+                    </a>
+                    <a class="text-dark pb-4" data-bs-toggle="dropdown"
+                       sec:authorize="${hasAuthority(T(com.ydh.helloshop.application.domain.member.MemberStatus).SELLER)}"
+                       th:href="@{/seller/settings/itemList}">
+                        <i class="fas fa-user-circle fa-3x"></i>
+                    </a>
+                    <a class="text-dark pb-4" data-bs-toggle="dropdown"
+                       sec:authorize="${hasAuthority(T(com.ydh.helloshop.application.domain.member.MemberStatus).CUSTOMER)}" th:href="@{#}">
+                        <i class="fas fa-user-circle fa-3x"></i>
+                    </a>
+                    <ul class="dropdown-menu mt-2">
+                        <li sec:authorize="${hasAuthority(T(com.ydh.helloshop.application.domain.member.MemberStatus).ADMIN)}">
+                            <a class="dropdown-item text-danger" href="#">운영 페이지</a>
+                        </li>
+                        <li sec:authorize="${hasAuthority(T(com.ydh.helloshop.application.domain.member.MemberStatus).SELLER)}">
+                            <a class="dropdown-item text-danger" th:href="@{/seller/settings/itemList}">상품관리</a>
+                        </li>
+                        <li><a class="dropdown-item" href="#"> Submenu item 1</a></li>
+                        <li><a class="dropdown-item" href="#"> Submenu item 2 </a></li>
+                        <li sec:authorize="isAuthenticated()">
+                            <form class="dropdown-item" th:action="@{/logout}" method="post">
+                                <button class="btn p-0" type="submit">로그아웃</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+                <a class="col-4 text-dark" th:href="@{/order/view}"><i class="fas fa-truck fa-3x"></i></a>
+                <a class="col-4 text-dark" th:href="@{/cart}"><i class="fas fa-shopping-cart fa-3x"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:fragment="dropdown-hover">
+    document.addEventListener("DOMContentLoaded", function(){
+        if (window.innerWidth > 992) {
+
+            document.querySelectorAll('.nav-item').forEach(function(everyitem){
+
+                everyitem.addEventListener('mouseover', function(e){
+
+                    let el_link = this.querySelector('a[data-bs-toggle]');
+
+                    if(el_link != null){
+                        let nextEl = el_link.nextElementSibling;
+                        el_link.classList.add('show');
+                        nextEl.classList.add('show');
+                    }
+
+                });
+                everyitem.addEventListener('mouseleave', function(e){
+                    let el_link = this.querySelector('a[data-bs-toggle]');
+
+                    if(el_link != null){
+                        let nextEl = el_link.nextElementSibling;
+                        el_link.classList.remove('show');
+                        nextEl.classList.remove('show');
+                    }
+                })
+            });
+        }
+    });
+</script>
+<!-- header form validation -->
+<script th:fragment="header-input-validation">
+    function emptyCheck() {
+        let $search = $('#item-search');
+        let param = $search.val().trim();
+        if (param.length === 0) {
+            $search.val('');
+            return false;
+        }
+        else return true;
+    }
+</script>
+
+<!-- Simple Body Header -->
+<div th:fragment="simpleheader" class="header">
+    <div class="col-8"><a href="/"><h3>Hello Shop</h3></a></div>
+</div>
+
+<!-- form validation -->
+<script th:fragment="form-validation">
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            let forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            let validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
+
+<!-- footer -->
+<div class="container-lg text-center" th:fragment="footer">
+    <p>&copy; Hello Shop</p>
+</div>
+
+<!-- Summernote script (Ajax csrf 토큰 필요) -->
+<script th:fragment="summernote" type="application/javascript">
+    $(function () {
+        $('.editor').summernote({
+            fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Noto Sans KR', 'Merriweather'],
+            placeholder: '상품을 설명해주세요.',
+            tabsize: 2,
+            height:500,
+            callbacks: {
+                onImageUpload: function (files) {
+                    uploadImageFile(files[0], this);
+                }
+            }
+        });
+    });
+
+    function uploadImageFile(file, editor) {
+        let data = new FormData();
+        data.append("file", file);
+        $.ajax({
+            data: data,
+            type: "POST",
+            url: "/images/upload",
+            contentType: false,
+            processData: false,
+            success: function(path) {
+                $(editor).summernote('insertImage', path);
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        })
+    }
+</script>
+
+<!-- Ajax csrf token-->
+<script th:fragment="ajax-csrfToken" type="application/javascript" th:inline="javascript">
+    $(function () {
+        let csrfToken = /*[[${_csrf.token}]]*/ null
+        let csrfHeader = /*[[${_csrf.headerName}]]*/ null
+        $(document).ajaxSend(function (e, xhr, options) {
+            xhr.setRequestHeader(csrfHeader, csrfToken)
+        })
+    })
+</script>
+
+</html>

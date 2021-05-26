@@ -20,3 +20,8 @@ spring:
     host: 3.36.203.222
     username: hello-shop
     password: hello-shop
+
+amqp:
+  queueName: shop2delivery.queue
+  exchangeName: shop2delivery.direct
+  routingKey: delivery-delegate

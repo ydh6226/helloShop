@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ko">
+
+<div th:fragment="seller-menu(currentMenu)" class="list-group col-2">
+    <a th:href="@{/seller/settings/itemList}" class="list-group-item list-group-item-action"
+       th:classappend="${currentMenu == 'view'}? active">등록 상품 조회</a>
+    <a th:href="@{/seller/settings/register}" class="list-group-item list-group-item-action"
+       th:classappend="${currentMenu == 'register'}? active">상품 등록</a>
+    <a href="#" class="list-group-item list-group-item-action"
+       th:classappend="${currentMenu == 'reserve1'}? active">Porta ac consectetur ac</a>
+    <a href="#" class="list-group-item list-group-item-action"
+       th:classappend="${currentMenu == 'reserve2'}? active">Vestibulum at eros</a>
+</div>
+
+</html>

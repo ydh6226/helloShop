@@ -1,3 +1,5 @@
+
+
 server:
   port: 8081
 
@@ -8,25 +10,14 @@ spring:
     password:
     driver-class-name: org.h2.Driver
 
-#HotSwap
-  devtools:
-    livereload:
-      enabled: true
-  thymeleaf:
-    cache: false
-
   jpa:
     hibernate:
-      ddl-auto: create
-      use-new-id-generator-mappings: true
+      ddl-auto: update
 
     properties:
       hibernate:
-        #        sout를 통해 출력
-        #        show_sql: true
         format_sql: true
         default_batch_fetch_size: 100 # IN 쿼리의 개수
-
 
   rabbitmq:
     host: 192.168.35.199
@@ -35,7 +26,10 @@ spring:
 
 logging:
   level:
-#       로거를 통해 출력
-    org.hibernate.SQL: debug
-#   sql 파리미터 출력
-#    org.hibernate.type: trace
+    org.hibernate.SQL: debug # 로거를 통해 출력
+
+app:
+  amqp:
+    queue-name: shop2delivery.queue
+    exchange-name: shop2delivery.direct
+    routing-key: delivery-delegate
