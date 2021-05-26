@@ -4,17 +4,20 @@ import com.ydh.helloshop.application.controller.item.ItemDto;
 import com.ydh.helloshop.application.controller.seller.form.ItemForm;
 import com.ydh.helloshop.application.domain.Category;
 import com.ydh.helloshop.application.domain.item.*;
+import com.ydh.helloshop.application.domain.member.Member;
 import com.ydh.helloshop.application.exception.noSuchThat.NoSuchItem;
 import com.ydh.helloshop.application.repository.CategoryRepository;
 import com.ydh.helloshop.application.repository.item.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -40,7 +43,7 @@ public class ItemService {
     }
 
     public Item findOne(Long id) {
-        return itemRepository.findById(id).orElseThrow(() -> new NoSuchItem("The Item could not be found."));
+        return itemRepository.findById(id).orElseThrow(ItemException::noSuchItemException);
     }
 
     @Transactional(readOnly = true)
@@ -49,7 +52,7 @@ public class ItemService {
     }
 
     public void update(Long id, String name, int price, int stockQuantity) {
-        Item item = itemRepository.findById(id).orElseThrow(() -> new NoSuchItem("The Item could not be found."));
+        Item item = itemRepository.findById(id).orElseThrow(ItemException::noSuchItemException);
         item.setBasicInfo(name, price, stockQuantity);
     }
 
@@ -60,6 +63,33 @@ public class ItemService {
         Page<ItemDto> map = result.map(i -> new ItemDto(i.getId(), i.getName(), i.getPrice()));
 
         return map.getContent();
+    }
+
+
+    public void changeItemStatusToPrepare(Member member, Long itemId) {
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(ItemException::noSuchItemException);
+
+        if (!authorityValidation(member.getId(), item.getSellerId())) {
+            throw  ItemException.accessDeniedException();
+        }
+
+        item.updateStatusToPrepare();
+    }
+
+    public void changeItemStatusToSale(Member member, Long itemId) {
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(ItemException::noSuchItemException);
+
+        if (!authorityValidation(member.getId(), item.getSellerId())) {
+            throw  ItemException.accessDeniedException();
+        }
+
+        item.updateStatusToSale();
+    }
+
+    private boolean authorityValidation(Long currentMemberId, Long sellerId) {
+        return currentMemberId.equals(sellerId);
     }
 
     private Long createItem(ItemForm itemForm, Long sellerId, ItemCategory itemCategory) {
@@ -101,5 +131,15 @@ public class ItemService {
         }
 
         return itemParam;
+    }
+
+    private static class ItemException {
+        private static IllegalArgumentException noSuchItemException() {
+            return new IllegalArgumentException("존재하지 않는 상품입니다.");
+        }
+
+        private static AccessDeniedException accessDeniedException() {
+            return new AccessDeniedException("상품의 판매자가 아닙니다.");
+        }
     }
 }

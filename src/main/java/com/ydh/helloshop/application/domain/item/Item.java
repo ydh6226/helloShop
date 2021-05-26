@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ydh.helloshop.application.domain.item.ItemStatus.PREPARE;
 import static com.ydh.helloshop.application.domain.item.ItemStatus.SALE;
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.EnumType.STRING;
@@ -87,5 +88,13 @@ public abstract class Item {
             throw new NotEnoughStockException("need more stock!!");
         }
         stockQuantity = restStock;
+    }
+
+    public void updateStatusToPrepare() {
+        status = PREPARE;
+    }
+
+    public void updateStatusToSale() {
+        status = SALE;
     }
 }
