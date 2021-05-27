@@ -35,7 +35,7 @@ public class OrderController {
 
     @PostMapping("/order")
     @ResponseBody
-    public ResponseEntity<String> orderOne(@RequestBody OrderInfoDto orderInfoDto, @CurrentMember Member member) {
+    public ResponseEntity<String> order(@RequestBody OrderInfoDto orderInfoDto, @CurrentMember Member member) {
         Long orderId = orderService.orderOne(member.getId(), orderInfoDto.getItemId(), orderInfoDto.getCount());
 
         Order findOrder = orderService.findOneWithDeliveryAndItem(orderId);
@@ -50,7 +50,7 @@ public class OrderController {
         //rabbitMQ send
         try {
             deliveryPublisher.send(List.of(dto));
-            return new ResponseEntity<>("ok", HttpStatus.OK);
+            return new ResponseEntity<>("ok", HttpStatus.ACCEPTED);
         } catch (Exception e) {
             // publish 실패하면 생성했던 주문 삭제
             orderService.cancelByRabbitMQError(findOrder);

@@ -19,8 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final MemberService memberService;
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -36,9 +34,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                     .mvcMatchers("/", "/members/login", "/items*").permitAll()
                     .mvcMatchers(HttpMethod.GET, "/items/**").permitAll()
-                    .mvcMatchers("/admin").hasAuthority("ADMIN")
-                    .mvcMatchers("/seller").hasAuthority("SELLER")
-                    .mvcMatchers("/order", "/cart", "/members/info").authenticated()
+                    .mvcMatchers("/admin/**").hasAuthority("ADMIN")
+                    .mvcMatchers("/seller/**").hasAuthority("SELLER")
+                    .mvcMatchers("/order/**", "/cart/**", "/members/info").authenticated()
                     .anyRequest()
                     .authenticated()
                     .and()

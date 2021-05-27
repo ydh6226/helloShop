@@ -81,9 +81,12 @@
                 let token = $("meta[name='_csrf']").attr('value')
                 xhr.setRequestHeader(header, token)
             },
-
-            success: function () {
-                alert("장바구니에 추가되었습니다.")
+            success: function (data, status, xhr) {
+                if (xhr.status === 202) {
+                    alert("장바구니에 추가되었습니다.")
+                } else {
+                    location.href = '/members/login'
+                }
             },
             error: function () {
                 alert("장바구니 추가에 실패했습니다.")
@@ -110,9 +113,13 @@
                 let token = $("meta[name='_csrf']").attr('value')
                 xhr.setRequestHeader(header, token)
             },
-            success: function () {
-                alert("구매를 완료하였습니다.")
-                location.href = '/order/view'
+            success: function (data, status, xhr) {
+                if (xhr.status === 202) {
+                    alert("구매를 완료하였습니다.")
+                    location.href = '/order/view'
+                } else {
+                    location.href = '/members/login'
+                }
             },
             error: function () {
                 alert("구매를 실패했습니다.")
