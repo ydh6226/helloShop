@@ -80,8 +80,14 @@ public class ItemService {
                 .orElseThrow(ItemException::noSuchItemException);
 
         if (!authorityValidation(member.getId(), item.getSellerId())) {
-            throw  ItemException.accessDeniedException();
+            throw ItemException.accessDeniedException();
         }
+
+        // TODO: 2021-05-27[양동혁] Exception Hadnelr 에서 안 잡히는지 확인
+        if (item.getStockQuantity() <= 0) {
+            throw ItemException.illegalStateException();
+        }
+        
 
         item.updateStatusToSale();
     }

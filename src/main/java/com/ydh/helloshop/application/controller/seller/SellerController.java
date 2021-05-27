@@ -81,8 +81,14 @@ public class SellerController {
     }
 
     @PostMapping(SETTINGS_ITEM_SALE)
-    public String changeItemStatusToSale(@CurrentMember Member member, @PathVariable(value = "id") Long itemId) {
-        itemService.changeItemStatusToSale(member, itemId);
+    public String changeItemStatusToSale(@CurrentMember Member member, @PathVariable(value = "id") Long itemId, Model model) {
+        try {
+            itemService.changeItemStatusToSale(member, itemId);
+        } catch (IllegalStateException e) {
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("itemList", itemService.findAllBySellerId(member.getId()));
+            return SETTINGS_ITEM_LIST_VIEW;
+        }
         return "redirect:/seller" + SETTINGS_ITEM_LIST_URL;
     }
 
