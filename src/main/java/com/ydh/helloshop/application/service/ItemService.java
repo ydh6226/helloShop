@@ -4,7 +4,8 @@ import com.ydh.helloshop.application.controller.item.ItemDto;
 import com.ydh.helloshop.application.controller.seller.form.ItemForm;
 import com.ydh.helloshop.application.domain.Category;
 import com.ydh.helloshop.application.domain.item.*;
-import com.ydh.helloshop.application.exception.noSuchThat.NoSuchItem;
+import com.ydh.helloshop.application.domain.member.Member;
+import com.ydh.helloshop.application.exception.ItemException;
 import com.ydh.helloshop.application.repository.CategoryRepository;
 import com.ydh.helloshop.application.repository.item.ItemRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +41,7 @@ public class ItemService {
     }
 
     public Item findOne(Long id) {
-        return itemRepository.findById(id).orElseThrow(() -> new NoSuchItem("The Item could not be found."));
+        return itemRepository.findById(id).orElseThrow(ItemException::noSuchItemException);
     }
 
     @Transactional(readOnly = true)
@@ -49,7 +50,7 @@ public class ItemService {
     }
 
     public void update(Long id, String name, int price, int stockQuantity) {
-        Item item = itemRepository.findById(id).orElseThrow(() -> new NoSuchItem("The Item could not be found."));
+        Item item = itemRepository.findById(id).orElseThrow(ItemException::noSuchItemException);
         item.setBasicInfo(name, price, stockQuantity);
     }
 
@@ -60,6 +61,39 @@ public class ItemService {
         Page<ItemDto> map = result.map(i -> new ItemDto(i.getId(), i.getName(), i.getPrice()));
 
         return map.getContent();
+    }
+
+
+    public void changeItemStatusToPrepare(Member member, Long itemId) {
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(ItemException::noSuchItemException);
+
+        if (!authorityValidation(member.getId(), item.getSellerId())) {
+            throw ItemException.accessDeniedException();
+        }
+
+        item.updateStatusToPrepare();
+    }
+
+    public void changeItemStatusToSale(Member member, Long itemId) {
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(ItemException::noSuchItemException);
+
+        if (!authorityValidation(member.getId(), item.getSellerId())) {
+            throw ItemException.accessDeniedException();
+        }
+
+        // TODO: 2021-05-27[양동혁] Exception Hadnelr 에서 안 잡히는지 확인
+        if (item.getStockQuantity() <= 0) {
+            throw ItemException.illegalStateException();
+        }
+        
+
+        item.updateStatusToSale();
+    }
+
+    private boolean authorityValidation(Long currentMemberId, Long sellerId) {
+        return currentMemberId.equals(sellerId);
     }
 
     private Long createItem(ItemForm itemForm, Long sellerId, ItemCategory itemCategory) {

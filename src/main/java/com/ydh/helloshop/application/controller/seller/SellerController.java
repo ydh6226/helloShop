@@ -36,11 +36,14 @@ public class SellerController {
     private final ItemFormValidator itemFormValidator;
 
 
-    static final String SETTINGS_ITEM_LIST_URL = "/settings/itemList";
-    static final String SETTINGS_ITEM_LIST_VIEW = "seller/settings/itemList";
+    static final String SETTINGS_ITEM_LIST_URL = "/settings/items";
+    static final String SETTINGS_ITEM_LIST_VIEW = "seller/settings/items";
 
     static final String SETTINGS_REGISTER_URL = "/settings/register";
     static final String SETTINGS_REGISTER_VIEW = "seller/settings/register";
+
+    static final String SETTINGS_ITEM_PREPARE = "/settings/item/{id}/prepare";
+    static final String SETTINGS_ITEM_SALE = "/settings/item/{id}/sale";
 
     @InitBinder("itemForm")
     public void itemFormExtraInfoValidator(WebDataBinder webDataBinder) {
@@ -48,7 +51,8 @@ public class SellerController {
     }
 
     @GetMapping(SETTINGS_ITEM_LIST_URL)
-    public String itemList() {
+    public String itemList(@CurrentMember Member member, Model model) {
+        model.addAttribute("itemList", itemService.findAllBySellerId(member.getId()));
         return SETTINGS_ITEM_LIST_VIEW;
     }
 
@@ -67,19 +71,37 @@ public class SellerController {
         }
 
         itemService.registerItem(itemForm, member.getId());
-        return "redirect:/";
+        return "redirect:/seller" + SETTINGS_ITEM_LIST_URL;
     }
 
-//    @GetMapping("/items")
+    @PostMapping(SETTINGS_ITEM_PREPARE)
+    public String changeItemStatusToPrepare(@CurrentMember Member member, @PathVariable(value = "id") Long itemId) {
+        itemService.changeItemStatusToPrepare(member, itemId);
+        return "redirect:/seller" + SETTINGS_ITEM_LIST_URL;
+    }
+
+    @PostMapping(SETTINGS_ITEM_SALE)
+    public String changeItemStatusToSale(@CurrentMember Member member, @PathVariable(value = "id") Long itemId, Model model) {
+        try {
+            itemService.changeItemStatusToSale(member, itemId);
+        } catch (IllegalStateException e) {
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("itemList", itemService.findAllBySellerId(member.getId()));
+            return SETTINGS_ITEM_LIST_VIEW;
+        }
+        return "redirect:/seller" + SETTINGS_ITEM_LIST_URL;
+    }
+
+//    @GetMapping(ITEM_LIST_URL)
 //    public String createItem(Model model, @CurrentMember Member member) {
-//        model.addAttribute("itemList", itemService.findAllBySellerId(3L));
-//        return "seller/itemList";
+//        model.addAttribute("itemList", itemService.findAllBySellerId(member.getId()));
+//        return "seller/test";
 //    }
 
     @ResponseBody
     @PostMapping("/items/delete")
-    public void deleteItem(@RequestBody SimpleItemDto itemDto) {
-        List<Long> ids = itemDto.getIds();
+    public void deleteItem(@RequestBody ItemParam itemParam) {
+        List<Long> ids = itemParam.getIds();
 
         //ItemCategory 삭제
         itemCategoryRepository.deleteItemCategoryByIdInQuery(ids);
@@ -92,7 +114,7 @@ public class SellerController {
     }
 
     @Data
-    static class SimpleItemDto {
+    static class ItemParam {
         List<Long> ids = new ArrayList<>();
     }
 }

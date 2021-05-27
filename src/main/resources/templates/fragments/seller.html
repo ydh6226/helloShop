@@ -3,8 +3,8 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ko">
 
 <div th:fragment="seller-menu(currentMenu)" class="list-group col-2">
-    <a th:href="@{/seller/settings/itemList}" class="list-group-item list-group-item-action"
-       th:classappend="${currentMenu == 'view'}? active">등록 상품 조회</a>
+    <a th:href="@{/seller/settings/items}" class="list-group-item list-group-item-action"
+       th:classappend="${currentMenu == 'items'}? active">등록 상품 조회</a>
     <a th:href="@{/seller/settings/register}" class="list-group-item list-group-item-action"
        th:classappend="${currentMenu == 'register'}? active">상품 등록</a>
     <a href="#" class="list-group-item list-group-item-action"

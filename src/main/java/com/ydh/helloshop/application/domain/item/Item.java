@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ydh.helloshop.application.domain.item.ItemStatus.PREPARE;
 import static com.ydh.helloshop.application.domain.item.ItemStatus.SALE;
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.EnumType.STRING;
@@ -15,7 +16,7 @@ import static javax.persistence.InheritanceType.SINGLE_TABLE;
 
 @Entity
 @Inheritance(strategy = SINGLE_TABLE)
-@DiscriminatorColumn(name = "dtype")
+@DiscriminatorColumn
 @Getter
 public abstract class Item {
 
@@ -37,17 +38,20 @@ public abstract class Item {
 
     private String representativeImageUrl;
 
+    @Lob
     private String description;
 
-    //불변 값 설정: 판매자 아이디는 바꿀 수 없다.
-//    @JoinColumn(foreignKey = )
     private Long sellerId;
+
+    @Column(name = "dtype", insertable = false, updatable = false)
+    @Enumerated(STRING)
+    private ItemType itemType;
 
     @OneToMany(mappedBy = "item", cascade = ALL)
     private List<ItemCategory> itemCategories = new ArrayList<>();
 
     public Item() {
-        this.status = SALE;
+        this.status = PREPARE;
         this.createTime = LocalDateTime.now();
     }
 
@@ -87,5 +91,13 @@ public abstract class Item {
             throw new NotEnoughStockException("need more stock!!");
         }
         stockQuantity = restStock;
+    }
+
+    public void updateStatusToPrepare() {
+        status = PREPARE;
+    }
+
+    public void updateStatusToSale() {
+        status = SALE;
     }
 }
