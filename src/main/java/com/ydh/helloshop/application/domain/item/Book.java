@@ -8,8 +8,10 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import java.util.List;
 
+import static com.ydh.helloshop.application.domain.item.ItemType.Values.BOOK;
+
 @Entity
-@DiscriminatorValue("B")
+@DiscriminatorValue(BOOK)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Book extends Item{

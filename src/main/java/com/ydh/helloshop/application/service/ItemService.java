@@ -5,19 +5,17 @@ import com.ydh.helloshop.application.controller.seller.form.ItemForm;
 import com.ydh.helloshop.application.domain.Category;
 import com.ydh.helloshop.application.domain.item.*;
 import com.ydh.helloshop.application.domain.member.Member;
-import com.ydh.helloshop.application.exception.noSuchThat.NoSuchItem;
+import com.ydh.helloshop.application.exception.ItemException;
 import com.ydh.helloshop.application.repository.CategoryRepository;
 import com.ydh.helloshop.application.repository.item.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -71,7 +69,7 @@ public class ItemService {
                 .orElseThrow(ItemException::noSuchItemException);
 
         if (!authorityValidation(member.getId(), item.getSellerId())) {
-            throw  ItemException.accessDeniedException();
+            throw ItemException.accessDeniedException();
         }
 
         item.updateStatusToPrepare();
@@ -131,15 +129,5 @@ public class ItemService {
         }
 
         return itemParam;
-    }
-
-    private static class ItemException {
-        private static IllegalArgumentException noSuchItemException() {
-            return new IllegalArgumentException("존재하지 않는 상품입니다.");
-        }
-
-        private static AccessDeniedException accessDeniedException() {
-            return new AccessDeniedException("상품의 판매자가 아닙니다.");
-        }
     }
 }

@@ -41,7 +41,9 @@
                             <tbody>
                                 <tr th:each="item : ${itemList}">
                                     <td><input type="checkbox" name="item-checkbox" th:category-number="${item.id}"></td>
-                                    <td class="align-middle" th:text="${item.name}"></td>
+                                    <td class="align-middle">
+                                        <a th:href="@{'/items/' + ${item.id}}" th:text="${item.name}" class="text-dark"></a>
+                                    </td>
                                     <td class="align-middle" th:text="${item.price}"></td>
                                     <td class="align-middle" th:text="${item.stockQuantity}"></td>
                                     <td class="align-middle" th:text="${item.itemCategories.get(0).category.name}"></td>

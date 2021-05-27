@@ -5,7 +5,7 @@ import com.ydh.helloshop.application.domain.item.Item;
 import com.ydh.helloshop.application.domain.member.Member;
 import com.ydh.helloshop.application.domain.order.Order;
 import com.ydh.helloshop.application.domain.order.OrderItem;
-import com.ydh.helloshop.application.exception.noSuchThat.NoSuchItem;
+import com.ydh.helloshop.application.exception.ItemException;
 import com.ydh.helloshop.application.exception.noSuchThat.NoSuchMember;
 import com.ydh.helloshop.application.repository.MemberRepository;
 import com.ydh.helloshop.application.repository.item.ItemRepository;
@@ -39,7 +39,7 @@ public class OrderService {
     public Long orderOne(Long memberId, Long itemId, int count) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NoSuchMember("The member could not be found."));
-        Item item = itemRepository.findById(itemId).orElseThrow(() -> new NoSuchItem("The Item could not be found."));
+        Item item = itemRepository.findById(itemId).orElseThrow(ItemException::noSuchItemException);
 
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(createOrderItem(item, item.getPrice(), count, new Delivery(member.getAddress())));

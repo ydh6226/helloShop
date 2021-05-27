@@ -1,13 +1,17 @@
 package com.ydh.helloshop.application.domain.item;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
+import static com.ydh.helloshop.application.domain.item.ItemType.Values.FURNITURE;
+
 @Entity
-@DiscriminatorValue("F")
+@Getter
+@DiscriminatorValue(FURNITURE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Furniture extends Item {
 
