@@ -42,8 +42,14 @@
                         <label class="col-4 col-form-label" for="item-count">개수</label>
                         <input type="number" id="item-count" class="form-control col-8" min="1" max="10" value="1" style="display: inline">
                     </div>
-                    <button type="button" id="cart-btn" class="btn btn-outline-success col-3">장바구니 담기</button>
-                    <button type="button" id="order-btn" class="btn btn-outline-primary col-3">바로구매</button>
+                    <form th:action="@{/orders}" class="col-4">
+                        <input type="hidden" id="order-infdo">
+                        <button type="button" id="cart-btn" class="btn btn-block btn-outline-success">장바구니 담기</button>
+                    </form>
+                    <form action="/orders" class="col-4" method="get" enctype="text/plain">
+                        <input type="hidden" id="orderInfo" name="orderInfo">
+                        <button type="submit" id="order-btn" class="btn btn-block btn-outline-primary">바로구매</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -59,6 +65,7 @@
 </body>
 <script th:replace="fragments/main.html :: dropdown-hover"></script>
 <script th:replace="fragments/main.html :: header-input-validation"></script>
+<script th:replace="fragments/main.html :: ajax-csrfToken"></script>
 <script th:inline="javascript">
     let itemId = [[${item.id}]]
 
@@ -76,11 +83,6 @@
             data: JSON.stringify(itemInfo),
             data_type: "json",
             contentType: "application/json;",
-            beforeSend: function (xhr) {
-                let header = $("meta[name='_csrf_header']").attr('content')
-                let token = $("meta[name='_csrf']").attr('value')
-                xhr.setRequestHeader(header, token)
-            },
             success: function (data, status, xhr) {
                 if (xhr.status === 202) {
                     alert("장바구니에 추가되었습니다.")
@@ -95,36 +97,19 @@
     })
 
     $('#order-btn').click(function () {
-        let count = $('#item-count').val()
+        let count = parseInt($('#item-count').val());
+
+        let requestOrderInfos = [];
 
         let itemInfo = {
-            count: count,
-            itemId: itemId
-        }
+            'count': count,
+            'itemId': itemId
+        };
 
-        $.ajax({
-            url: '/order',
-            type: 'post',
-            data: JSON.stringify(itemInfo),
-            data_type: "json",
-            contentType: "application/json;",
-            beforeSend: function (xhr) {
-                let header = $("meta[name='_csrf_header']").attr('content')
-                let token = $("meta[name='_csrf']").attr('value')
-                xhr.setRequestHeader(header, token)
-            },
-            success: function (data, status, xhr) {
-                if (xhr.status === 202) {
-                    alert("구매를 완료하였습니다.")
-                    location.href = '/order/view'
-                } else {
-                    location.href = '/members/login'
-                }
-            },
-            error: function () {
-                alert("구매를 실패했습니다.")
-            }
-        })
+        requestOrderInfos.push(itemInfo);
+
+        let data = {'requestOrderInfos': requestOrderInfos};
+        $('#orderInfo').val(JSON.stringify(data));
     })
 </script>
 </html>

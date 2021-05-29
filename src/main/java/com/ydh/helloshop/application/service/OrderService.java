@@ -39,6 +39,7 @@ public class OrderService {
     public Long orderOne(Long memberId, Long itemId, int count) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NoSuchMember("The member could not be found."));
+
         Item item = itemRepository.findById(itemId).orElseThrow(ItemException::noSuchItemException);
 
         List<OrderItem> orderItems = new ArrayList<>();

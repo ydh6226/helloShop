@@ -1,16 +1,25 @@
-package com.ydh.helloshop.application.controller.member;
+package com.ydh.helloshop.application.controller.order;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ydh.helloshop.application.controller.order.dto.RequestOrderParam;
+import com.ydh.helloshop.application.controller.order.dto.ResponseOrderInfo;
+import com.ydh.helloshop.application.controller.order.dto.ResponseOrderParam;
 import com.ydh.helloshop.application.domain.delivery.Delivery;
 import com.ydh.helloshop.application.domain.delivery.DeliveryStatus;
+import com.ydh.helloshop.application.domain.item.Item;
 import com.ydh.helloshop.application.domain.member.CurrentMember;
 import com.ydh.helloshop.application.domain.member.Member;
 import com.ydh.helloshop.application.domain.order.Order;
+import com.ydh.helloshop.application.exception.ItemException;
+import com.ydh.helloshop.application.repository.item.ItemRepository;
 import com.ydh.helloshop.application.repository.order.OrderSearch;
 import com.ydh.helloshop.application.service.OrderService;
 import com.ydh.helloshop.infra.amqp.dto.DeliveryPublishParam;
 import com.ydh.helloshop.infra.amqp.sender.DeliveryPublisher;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,7 +28,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.server.ServerErrorException;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -31,7 +42,37 @@ import java.util.stream.Collectors;
 public class OrderController {
 
     private final OrderService orderService;
+    private final ItemRepository itemRepository;
+
     private final DeliveryPublisher deliveryPublisher;
+
+    private final ObjectMapper objectMapper;
+
+    @GetMapping(value = "/orders")
+    public String orderView(String orderInfo, Model model, @CurrentMember Member member) {
+        try {
+            RequestOrderParam requestOrderParam = objectMapper.readValue(orderInfo, RequestOrderParam.class);
+            ResponseOrderParam responseOrderParam = new ResponseOrderParam();
+
+            // TODO: 2021-05-28[양동혁] in쿼리 사용하는지
+            requestOrderParam.getRequestOrderInfos()
+                    .forEach(requestOrderInfo -> {
+                        int count = requestOrderInfo.getCount();
+                        Item item = itemRepository.findById(requestOrderInfo.getItemId())
+                                .orElseThrow(ItemException::noSuchItemException);
+                        int totalPrice = count * item.getPrice();
+
+                        responseOrderParam.addParam(new ResponseOrderInfo(count, item, totalPrice));
+                    });
+            model.addAttribute("orderInfo", requestOrderParam);
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException("JSON 처리 에러");
+       }
+        model.addAttribute("member", member);
+
+        // TODO: 2021-05-28[양동혁] 상품검색 인터셉터 제외 
+        return "order/orderView";
+    }
 
     @PostMapping("/order")
     @ResponseBody

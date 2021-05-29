@@ -36,6 +36,8 @@ public class Order {
 
     private LocalDateTime orderDate;
 
+    private boolean isPayed;
+
     @Enumerated(STRING)
     private OrderStatus status;
 
