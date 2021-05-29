@@ -4,60 +4,96 @@
 <head th:replace="fragments/main.html :: head"/>
 <body>
 <div class="justify-content-center">
-    <div th:replace="fragments/main.html :: header(${itemSearch}, ${leafCategories})"/>
+    <div th:replace="fragments/main.html :: simple-header"/>
     <hr>
     <div class="container-lg">
-        <div class="row">
-            <div class="col-9">
-                <div class="container text-center">
-                    <p>최근 등록된 상품</p>
-                    <ul class="list-group">
-                        <li class="list-group-item" th:each="item : ${items}">
-                            <a th:href="|/items/${item.getId()}|"><span th:text="|${item.name} ${item.price}원|"></span></a>
-                        </li>
-                    </ul>
-                </div>
+        <div class="row justify-content-center">
+            <h2 class="col-12">주문 / 결제</h2>
+        </div>
+        <hr>
+        <div class="row mb-3">
+            <h4 class="col-12">구매자 정보</h4>
+            <div class="col-12">
+                <table class="table table-bordered">
+                    <colgroup>
+                        <col width="20%">
+                        <col width="80%">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th scope="row">이름</th>
+                            <td colspan="3" th:text="${member.name}">홍길동</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">이메일</th>
+                            <td colspan="3" th:text="${member.email}">hello@gamil.com</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="col-3">
-                <div class="container bg-light border border-dark" sec:authorize="isAnonymous()">
-                    <div class="row p-2">
-                        <div class="container text-center">
-                            <a class="btn btn-success px-4" href="/members/login">로그인</a>
+        </div>
+        <div class="row mb-3">
+            <h4 class="col-12">받는사람 정보 <button class="btn btn-outline-success p-1 ml-2">변경</button></h4>
+            <div class="col-12">
+                <table class="table table-bordered">
+                    <colgroup>
+                        <col width="20%">
+                        <col width="80%">
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <th scope="row">이름</th>
+                        <td colspan="3" th:text="${member.name}">홍길동</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">배송주소</th>
+                        <td colspan="3" th:text="${member.address.getFullAddress()}">hello@gamil.com</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="align-middle">배송 요청사항</th>
+                        <td>
+                            <input class="form-control border-dark" type="text">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <h4 class="col-12">선택상품</h4>
+            <div class="col-12">
+                <ul class="list-group">
+                    <li class="list-group-item" th:each="info : ${orderInfo.responseOrderParams}">
+                        <div class="row">
+                            <span th:text="${info.item.name}" class="col-6"></span>
+                            <span class="text-muted col-6">
+                            수량: <span th:text="${info.count}"></span>개 /
+                                통합 가격: <span th:text="${#numbers.formatInteger(info.totalPrice, 0, 'COMMA')}"></span>원
+                            </span>
                         </div>
-                    </div>
-                    <div class="row pb-2" style="font-size: x-small">
-                        <div class="col container">
-                            <a class="text-dark" href="/members/findId">아이디</a>
-                            <a class="text-dark" href="/members/findPwd">/비밀번호 찾기</a>
-                        </div>
-                        <div class="col-4 container text-right">
-                            <a class="text-dark" href="/members/new" >회원가입</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="container bg-light border border-dark" sec:authorize="isAuthenticated()">
-                    <div class="row p-2">
-                        <div class="container text-center" th:object="${member}">
-                            <p th:text="|*{name} 님 안녕하세요|">회원 이름</p>
-
-                            <!-- 특정 권한 종속적 -->
-                            <p sec:authorize="!hasAuthority('ADMIN')" th:text="*{email}">회원 이메일</p>
-                            <a sec:authorize="hasAuthority('ADMIN')" href="/admin"
-                               class="btn btn-outline-danger btn-sm">ADMIN</a>
-                            <!--                        <a sec:authorize="hasAuthority('CUSTOMER')" href="/cart"-->
-                            <!--                           class="btn btn-success btn-sm">장바구니</a>-->
-                            <a sec:authorize="hasAuthority('SELLER')" href="/seller/settings/items"
-                               class="btn btn-outline-danger btn-sm">판매자 메뉴</a>
-                        </div>
-                    </div>
-                    <div class="row p-2">
-                        <div class="col text-center">
-                            <form th:action="@{/logout}" method="post">
-                                <button class="btn btn-warning" style="font-size: xx-small" type="submit" value="logout">로그아웃</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <h4 class="col-12">결제정보</h4>
+            <div class="col-12">
+                <table class="table table-bordered">
+                    <colgroup>
+                        <col width="20%">
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <th scope="row">총결제금액</th>
+                        <td colspan="3"><span th:text="${#numbers.formatInteger(orderInfo.totalPrice, 0, 'COMMA')}"></span>원</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-4">
+                <button class="btn btn-block btn-primary p-2" type="button" style="font-size: 25px">결제하기</button>
             </div>
         </div>
     </div>

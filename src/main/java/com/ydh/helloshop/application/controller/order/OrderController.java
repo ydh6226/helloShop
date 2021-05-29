@@ -64,7 +64,7 @@ public class OrderController {
 
                         responseOrderParam.addParam(new ResponseOrderInfo(count, item, totalPrice));
                     });
-            model.addAttribute("orderInfo", requestOrderParam);
+            model.addAttribute("orderInfo", responseOrderParam);
         } catch (JsonProcessingException e) {
             throw new IllegalStateException("JSON 처리 에러");
        }
