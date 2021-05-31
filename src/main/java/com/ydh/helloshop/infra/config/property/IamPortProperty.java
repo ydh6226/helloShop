@@ -6,9 +6,9 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
-@ConfigurationProperties("app.image")
-public class ImageProperty {
+@ConfigurationProperties("app.iam-port")
+public class IamPortProperty {
 
-    private String uploadPath;
-    private String downloadUrl;
+    private String impKey;
+    private String impSecret;
 }

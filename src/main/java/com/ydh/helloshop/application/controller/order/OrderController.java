@@ -2,6 +2,7 @@ package com.ydh.helloshop.application.controller.order;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ydh.helloshop.application.controller.order.dto.CreateOrderParam;
 import com.ydh.helloshop.application.controller.order.dto.RequestOrderParam;
 import com.ydh.helloshop.application.controller.order.dto.ResponseOrderInfo;
 import com.ydh.helloshop.application.controller.order.dto.ResponseOrderParam;
@@ -24,10 +25,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ServerErrorException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -72,6 +70,12 @@ public class OrderController {
 
         // TODO: 2021-05-28[양동혁] 상품검색 인터셉터 제외 
         return "order/orderView";
+    }
+
+    @PostMapping("/orders")
+    @ResponseBody
+    public ResponseEntity<Long> createOrder(@RequestBody CreateOrderParam createOrderParam, @CurrentMember Member member) {
+        return new ResponseEntity<>(orderService.order(createOrderParam, member.getId()), HttpStatus.OK);
     }
 
     @PostMapping("/order")

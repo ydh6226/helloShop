@@ -1,5 +1,6 @@
 package com.ydh.helloshop.application.service;
 
+import com.ydh.helloshop.application.controller.order.dto.CreateOrderParam;
 import com.ydh.helloshop.application.domain.delivery.Delivery;
 import com.ydh.helloshop.application.domain.item.Item;
 import com.ydh.helloshop.application.domain.member.Member;
@@ -34,6 +35,21 @@ public class OrderService {
     private final MemberRepository memberRepository;
     private final ItemRepository itemRepository;
 
+    @Transactional
+    public Long order(CreateOrderParam createOrderParam, Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(IllegalArgumentException::new);
+        Order order = new Order(member);
+
+        createOrderParam.getRequestOrderInfos().forEach(requestOrderInfo -> {
+            Item item = itemRepository.findById(requestOrderInfo.getItemId())
+                    .orElseThrow(ItemException::noSuchItemException);
+
+            order.addOrderItem(createOrderItem(item, item.getPrice(), requestOrderInfo.getCount(),
+                    new Delivery(member.getAddress())));
+        });
+        return orderRepository.save(order);
+    }
+
     //단일주문
     @Transactional
     public Long orderOne(Long memberId, Long itemId, int count) {
@@ -48,8 +64,8 @@ public class OrderService {
         Order order = createOrder(member, orderItems);
         return orderRepository.save(order);
     }
-
     //복수주문
+
     @Transactional
     public Long orderMultiple(Long memberId, List<Long> itemIds, List<Integer> counts) {
         Member member = memberRepository.findById(memberId)
@@ -75,22 +91,22 @@ public class OrderService {
 
         return orderRepository.save(createOrder(member, orderItems));
     }
-
     //주문 취소
+
     @Transactional
     public void cancelOrder(Long orderId) {
         Order order = orderRepository.findOne(orderId);
         order.cancel();
     }
-
     //rabbitMQ send 과정중 에러 발생했을 때 주문 취소
+
     @Transactional
     public void cancelByRabbitMQError(Order order) {
         order.getMember().getOrders().remove(order);
         orderRepository.deleteOne(order);
     }
-
     //검색
+
     public List<Order> findAll(OrderSearch orderSearch) {
         return orderRepository.findAll(orderSearch);
     }
