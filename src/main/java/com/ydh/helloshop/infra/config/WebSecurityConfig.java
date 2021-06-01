@@ -32,7 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                    .mvcMatchers("/", "/members/login", "/items*", "/orders").permitAll()
+                    .mvcMatchers("/", "/members/login", "/items*", "/orders", "/payments").permitAll()
                     .mvcMatchers(HttpMethod.GET, "/items/**").permitAll()
                     .mvcMatchers("/admin/**").hasAuthority("ADMIN")
                     .mvcMatchers("/seller/**").hasAuthority("SELLER")

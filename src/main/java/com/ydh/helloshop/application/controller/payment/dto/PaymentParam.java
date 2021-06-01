@@ -1,4 +1,4 @@
-package com.ydh.helloshop.application.controller.payment.dto.request;
+package com.ydh.helloshop.application.controller.payment.dto;
 
 
 import lombok.Data;

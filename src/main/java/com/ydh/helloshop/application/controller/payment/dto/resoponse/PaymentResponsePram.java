@@ -3,14 +3,13 @@ package com.ydh.helloshop.application.controller.payment.dto.resoponse;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
-public class PaymentResponsePram {
+@EqualsAndHashCode(callSuper = true)
+public class PaymentResponsePram extends IamPortResponseParam {
 
-    private Long code;
-    private String message;
     public Response response;
-
 
     public String getBuyerEmail() {
         return response.getBuyerEmail();
@@ -24,8 +23,6 @@ public class PaymentResponsePram {
         return response.getAmount();
     }
 
-
-    // TODO: 2021-05-31[양동혁] rest template에 objectMapper 추가
     @Data
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     private static class Response {

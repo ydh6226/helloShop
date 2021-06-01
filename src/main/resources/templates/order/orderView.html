@@ -127,7 +127,8 @@
                 success: function (orderId) {
                     payment(orderId);
                 },
-                error: function () {
+                error: function (data) {
+                    console.log(data.responseText);
                     alert('주문정보 생성을 실패했습니다.');
                 }
             })

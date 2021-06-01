@@ -3,12 +3,12 @@ package com.ydh.helloshop.application.controller.payment.dto.resoponse;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
-public class AuthenticateResponsePram {
+@EqualsAndHashCode(callSuper = true)
+public class AuthenticateResponsePram extends IamPortResponseParam {
 
-    private Long code;
-    private Long message;
     private Response response;
 
     public String getAccessToken() {

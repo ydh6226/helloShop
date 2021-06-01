@@ -72,6 +72,7 @@ public class OrderController {
         return "order/orderView";
     }
 
+    // TODO: 2021-06-01[양동혁] restapi exception으로 분리
     @PostMapping("/orders")
     @ResponseBody
     public ResponseEntity<Long> createOrder(@RequestBody CreateOrderParam createOrderParam, @CurrentMember Member member) {
