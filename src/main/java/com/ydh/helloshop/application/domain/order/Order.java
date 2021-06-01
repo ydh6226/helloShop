@@ -38,21 +38,20 @@ public class Order {
     private List<OrderItem> orderItems = new ArrayList<>();
 
     private LocalDateTime orderDate;
-
-    private boolean isPayed;
-
     @Enumerated(STRING)
     private OrderStatus status;
 
     //생성 메서드
     public Order(Member member) {
         this.orderDate = LocalDateTime.now();
-        this.status = OrderStatus.ORDER;
+        this.status = OrderStatus.CREATED;
         this.member = member;
     }
 
+    public void setStatusPayed() {
+        status = OrderStatus.PAYED;
+    }
 
-    //setter
     private void setStatusCancel() {
         status = OrderStatus.CANCEL;
     }
@@ -76,9 +75,6 @@ public class Order {
         orderItems.forEach(order::addOrderItem);
         return order;
     }
-
-
-
 
     //== 비즈니스 로직 ==//
     //주문 취소

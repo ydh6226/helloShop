@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.ydh.helloshop.application.domain.order.Order.createOrder;
 import static com.ydh.helloshop.application.domain.order.OrderItem.createOrderItem;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
@@ -36,8 +35,9 @@ public class OrderService {
     private final ItemRepository itemRepository;
 
     @Transactional
-    public Long order(CreateOrderParam createOrderParam, Long memberId) {
-        Member member = memberRepository.findById(memberId).orElseThrow(IllegalArgumentException::new);
+    public Order createOrder(CreateOrderParam createOrderParam, Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
         Order order = new Order(member);
 
         createOrderParam.getRequestOrderInfos().forEach(requestOrderInfo -> {
@@ -61,8 +61,8 @@ public class OrderService {
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(createOrderItem(item, item.getPrice(), count, new Delivery(member.getAddress())));
 
-        Order order = createOrder(member, orderItems);
-        return orderRepository.save(order);
+        Order order = Order.createOrder(member, orderItems);
+        return orderRepository.save(order).getId();
     }
     //복수주문
 
@@ -89,7 +89,7 @@ public class OrderService {
                         new Delivery(member.getAddress())))
                 .collect(toList());
 
-        return orderRepository.save(createOrder(member, orderItems));
+        return orderRepository.save(Order.createOrder(member, orderItems)).getId();
     }
     //주문 취소
 

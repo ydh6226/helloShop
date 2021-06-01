@@ -1,6 +1,8 @@
 package com.ydh.helloshop.application.controller.payment;
 
 import com.ydh.helloshop.application.controller.payment.dto.resoponse.PaymentResponsePram;
+import com.ydh.helloshop.application.domain.item.Album;
+import com.ydh.helloshop.application.domain.item.Item;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

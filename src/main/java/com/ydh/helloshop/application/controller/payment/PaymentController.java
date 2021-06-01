@@ -53,6 +53,8 @@ public class PaymentController {
         if (orderValidation(order, paymentResponsePram)) {
             return new ResponseEntity<>("잘못된 결제입니다.", HttpStatus.BAD_REQUEST);
         }
+        order.setStatusPayed();
+        // TODO: 2021-06-02[양동혁] RABBITMQ 배송정보 전송
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

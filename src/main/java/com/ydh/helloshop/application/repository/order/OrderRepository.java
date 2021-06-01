@@ -25,9 +25,9 @@ public class OrderRepository {
         this.query = new JPAQueryFactory(em);
     }
 
-    public Long save(Order order) {
+    public Order save(Order order) {
         em.persist(order);
-        return order.getId();
+        return order;
     }
 
     public Order findOne(Long id) {

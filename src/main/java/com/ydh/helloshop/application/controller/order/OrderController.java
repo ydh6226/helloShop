@@ -20,15 +20,12 @@ import com.ydh.helloshop.infra.amqp.dto.DeliveryPublishParam;
 import com.ydh.helloshop.infra.amqp.sender.DeliveryPublisher;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ServerErrorException;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -76,7 +73,8 @@ public class OrderController {
     @PostMapping("/orders")
     @ResponseBody
     public ResponseEntity<Long> createOrder(@RequestBody CreateOrderParam createOrderParam, @CurrentMember Member member) {
-        return new ResponseEntity<>(orderService.order(createOrderParam, member.getId()), HttpStatus.OK);
+        Order order = orderService.createOrder(createOrderParam, member.getId());
+        return new ResponseEntity<>(order.getId(), HttpStatus.OK);
     }
 
     @PostMapping("/order")
