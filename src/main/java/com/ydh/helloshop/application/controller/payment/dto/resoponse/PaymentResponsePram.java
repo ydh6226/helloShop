@@ -1,5 +1,6 @@
 package com.ydh.helloshop.application.controller.payment.dto.resoponse;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
@@ -24,6 +25,7 @@ public class PaymentResponsePram extends IamPortResponseParam {
     }
 
     @Data
+    @JsonIgnoreProperties(ignoreUnknown = true)
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
     private static class Response {
         private String buyerEmail;
