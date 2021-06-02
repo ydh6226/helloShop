@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ko">
+<head th:include="fragments/main.html :: head"/>
+<head>
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+</head>
+<body>
+<div class="justify-content-center">
+    <div th:replace="fragments/main.html :: simple-header"/>
+    <hr>
+    <div class="container-lg">
+        <div class="row justify-content-center">
+            <h2 class="col-12">주문 / 결제</h2>
+        </div>
+        <hr>
+        <div class="row mb-3">
+            <h4 class="col-12">구매자 정보</h4>
+            <div class="col-12">
+                <table class="table table-bordered">
+                    <colgroup>
+                        <col width="20%">
+                        <col width="80%">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th scope="row">이름</th>
+                            <td colspan="3" th:text="${member.name}">홍길동</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">이메일</th>
+                            <td colspan="3" th:text="${member.email}">hello@gamil.com</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <h4 class="col-12">받는사람 정보</h4>
+            <div class="col-12">
+                <table class="table table-bordered">
+                    <colgroup>
+                        <col width="20%">
+                        <col width="80%">
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <th scope="row">이름</th>
+                        <td colspan="3" th:text="${member.name}">홍길동</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">배송주소</th>
+                        <td colspan="3" th:text="${member.address.getFullAddress()}">hello@gamil.com</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="align-middle">배송 요청사항</th>
+                        <td>
+                            <input id="shipping-requirements" class="form-control border-dark" type="text">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <h4 class="col-12">선택상품</h4>
+            <div class="col-12">
+                <ul class="list-group">
+                    <li class="list-group-item" th:each="info : ${orderInfo.responseOrderParams}">
+                        <div class="row">
+                            <span th:text="${info.item.name}" class="col-6"></span>
+                            <span class="text-muted col-6">
+                            수량: <span th:text="${info.count}"></span>개 /
+                                통합 가격: <span th:text="${#numbers.formatInteger(info.totalPrice, 0, 'COMMA')}"></span>원
+                            </span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <h4 class="col-12">결제정보</h4>
+            <div class="col-12">
+                <table class="table table-bordered">
+                    <colgroup>
+                        <col width="20%">
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <th scope="row">총결제금액</th>
+                        <td colspan="3"><span th:text="${#numbers.formatInteger(orderInfo.totalPrice, 0, 'COMMA')}"></span>원</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-4">
+                <button id="payment-btn" class="btn btn-block btn-primary p-2" type="button" style="font-size: 25px">결제하기</button>
+            </div>
+        </div>
+    </div>
+    <hr>
+</div>
+<div th:replace="fragments/main.html :: footer"/>
+</body>
+<div th:replace="fragments/main.html :: ajax-csrfToken"></div>
+<script th:inline="javascript">
+    //주문생성 요쳥
+    $(function () {
+        $('#payment-btn').click(function () {
+            let responseOrderParams = [[${orderInfo.responseOrderParams}]];
+
+            let shippingRequirements = $('#shipping-requirements').val();
+            let requestOrderInfos = [];
+            responseOrderParams.forEach(function (el) {
+                requestOrderInfos.push({'count': el['count'], 'itemId': el['item']['id']});
+            })
+
+            let createOrderParam = {'requestOrderInfos': requestOrderInfos, 'shippingRequirements': shippingRequirements};
+            $.ajax({
+                url: "/orders",
+                type: "post",
+                data: JSON.stringify(createOrderParam),
+                dateType: "json",
+                contentType: "application/json;",
+                success: function (orderId) {
+                    payment(orderId);
+                },
+                error: function (data) {
+                    console.log(data.responseText);
+                    alert('주문정보 생성을 실패했습니다.');
+                }
+            })
+        })
+
+        //결제 요청
+        function payment(orderId) {
+            let IMP = window.IMP;
+            IMP.init('imp28456985');
+
+            IMP.request_pay({
+                pg : 'inicis', // version 1.1.0부터 지원.
+                pay_method : 'card',
+                merchant_uid : 'merchant_' + new Date().getTime(),
+                name : 'Hello Shop 결제',
+                amount : [[${orderInfo.totalPrice}]],
+                buyer_email : [[${member.email}]],
+                buyer_name : [[${member.name}]],
+                buyer_addr : [[${member.address.getFullAddress()}]],
+                m_redirect_url : 'https://www.yourdomain.com/payments/complete'
+            }, function(rsp) {
+                if (rsp.success) {
+                    paymentValidation(rsp, orderId);
+                } else {
+                    var msg = '결제에 실패하였습니다.';
+                    msg += '에러내용 : ' + rsp.error_msg;
+                    alert(msg);
+                }
+            });
+        }
+
+        function paymentValidation(rsp, orderId) {
+            let paymentParam = {
+                impUid : rsp.imp_uid,
+                orderId : orderId
+            };
+
+            $.ajax({
+                url: "/payments/validation",
+                type: "post",
+                data: JSON.stringify(paymentParam),
+                dateType: "json",
+                contentType: "application/json;",
+                success: function () {
+                    alert("결제에 성공했습니다.")
+                },
+                error: function () {
+                    alert('잘못된 결제정보 입니다.');
+                }
+            })
+        }
+    })
+</script>
+</html>

@@ -1,5 +1,6 @@
 package com.ydh.helloshop.application.domain.item;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ydh.helloshop.application.exception.NotEnoughStockException;
 import lombok.Getter;
 
@@ -47,6 +48,7 @@ public abstract class Item {
     @Enumerated(STRING)
     private ItemType itemType;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "item", cascade = ALL)
     private List<ItemCategory> itemCategories = new ArrayList<>();
 

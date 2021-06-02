@@ -1,7 +1,9 @@
 package com.ydh.helloshop.application.domain.order;
 
 import com.ydh.helloshop.application.domain.member.Member;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -20,6 +22,7 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @Table(name = "orders")
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order {
 
     @Id
@@ -35,18 +38,20 @@ public class Order {
     private List<OrderItem> orderItems = new ArrayList<>();
 
     private LocalDateTime orderDate;
-
     @Enumerated(STRING)
     private OrderStatus status;
 
     //생성 메서드
-    protected Order() {
-        orderDate = LocalDateTime.now();
-        status = OrderStatus.ORDER;
+    public Order(Member member) {
+        this.orderDate = LocalDateTime.now();
+        this.status = OrderStatus.CREATED;
+        this.member = member;
     }
 
+    public void setStatusPayed() {
+        status = OrderStatus.PAYED;
+    }
 
-    //setter
     private void setStatusCancel() {
         status = OrderStatus.CANCEL;
     }
@@ -58,19 +63,18 @@ public class Order {
         member.getOrders().add(this);
     }
 
-    private void addOrderItem(OrderItem orderItem) {
+    public void addOrderItem(OrderItem orderItem) {
         orderItems.add(orderItem);
         orderItem.initOrder(this);
     }
 
     //주문 생성 메서드
     public static Order createOrder(Member member, List<OrderItem> orderItems) {
-        Order order = new Order();
+        Order order = new Order(member);
         order.setMember(member);
         orderItems.forEach(order::addOrderItem);
         return order;
     }
-
 
     //== 비즈니스 로직 ==//
     //주문 취소

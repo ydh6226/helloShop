@@ -1,5 +1,6 @@
 package com.ydh.helloshop.application.controller.seller;
 
+import com.ydh.helloshop.application.domain.member.MemberStatus;
 import com.ydh.helloshop.application.factories.MemberFactory;
 import com.ydh.helloshop.application.factories.MemberInfo;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +34,9 @@ class SellerControllerTest {
     @BeforeEach
     private void initDb() {
         MemberInfo memberInfo = new MemberInfo();
+        memberInfo.setMemberStatus(MemberStatus.SELLER);
         memberInfo.setEmail(EMAIL);
+
         memberFactory.createMember(memberInfo);
     }
 

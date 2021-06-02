@@ -1,5 +1,6 @@
 package com.ydh.helloshop.application.service;
 
+import com.ydh.helloshop.application.controller.order.dto.CreateOrderParam;
 import com.ydh.helloshop.application.domain.delivery.Delivery;
 import com.ydh.helloshop.application.domain.item.Item;
 import com.ydh.helloshop.application.domain.member.Member;
@@ -19,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.ydh.helloshop.application.domain.order.Order.createOrder;
 import static com.ydh.helloshop.application.domain.order.OrderItem.createOrderItem;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
@@ -34,21 +34,38 @@ public class OrderService {
     private final MemberRepository memberRepository;
     private final ItemRepository itemRepository;
 
+    @Transactional
+    public Order createOrder(CreateOrderParam createOrderParam, Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+        Order order = new Order(member);
+
+        createOrderParam.getRequestOrderInfos().forEach(requestOrderInfo -> {
+            Item item = itemRepository.findById(requestOrderInfo.getItemId())
+                    .orElseThrow(ItemException::noSuchItemException);
+
+            order.addOrderItem(createOrderItem(item, item.getPrice(), requestOrderInfo.getCount(),
+                    new Delivery(member.getAddress())));
+        });
+        return orderRepository.save(order);
+    }
+
     //단일주문
     @Transactional
     public Long orderOne(Long memberId, Long itemId, int count) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NoSuchMember("The member could not be found."));
+
         Item item = itemRepository.findById(itemId).orElseThrow(ItemException::noSuchItemException);
 
         List<OrderItem> orderItems = new ArrayList<>();
         orderItems.add(createOrderItem(item, item.getPrice(), count, new Delivery(member.getAddress())));
 
-        Order order = createOrder(member, orderItems);
-        return orderRepository.save(order);
+        Order order = Order.createOrder(member, orderItems);
+        return orderRepository.save(order).getId();
     }
-
     //복수주문
+
     @Transactional
     public Long orderMultiple(Long memberId, List<Long> itemIds, List<Integer> counts) {
         Member member = memberRepository.findById(memberId)
@@ -72,24 +89,24 @@ public class OrderService {
                         new Delivery(member.getAddress())))
                 .collect(toList());
 
-        return orderRepository.save(createOrder(member, orderItems));
+        return orderRepository.save(Order.createOrder(member, orderItems)).getId();
     }
-
     //주문 취소
+
     @Transactional
     public void cancelOrder(Long orderId) {
         Order order = orderRepository.findOne(orderId);
         order.cancel();
     }
-
     //rabbitMQ send 과정중 에러 발생했을 때 주문 취소
+
     @Transactional
     public void cancelByRabbitMQError(Order order) {
         order.getMember().getOrders().remove(order);
         orderRepository.deleteOne(order);
     }
-
     //검색
+
     public List<Order> findAll(OrderSearch orderSearch) {
         return orderRepository.findAll(orderSearch);
     }

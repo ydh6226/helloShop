@@ -16,3 +16,8 @@ spring:
 logging:
   level:
     org.hibernate.SQL: trace
+
+app:
+  iam-port:
+    imp_key: '0961094963459268'
+    imp_secret: 'D7dRYbk3a1fgVGfyZG7YVNN8FhEjevSSC6JBh3Er4UH0AXyAEGzzunI9EmtSSlKvru6JyKbCESDfQcQu'
