@@ -3,7 +3,6 @@ package com.ydh.helloshop.application.controller.payment;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ydh.helloshop.application.repository.order.OrderRepository;
 import com.ydh.helloshop.infra.config.property.IamPortProperty;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;

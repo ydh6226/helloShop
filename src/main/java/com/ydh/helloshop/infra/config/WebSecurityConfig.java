@@ -32,11 +32,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                    .mvcMatchers("/", "/members/login", "/items*", "/orders", "/payments").permitAll()
+                    .mvcMatchers("/", "/members/login").permitAll()
                     .mvcMatchers(HttpMethod.GET, "/items/**").permitAll()
                     .mvcMatchers("/admin/**").hasAuthority("ADMIN")
                     .mvcMatchers("/seller/**").hasAuthority("SELLER")
-                    .mvcMatchers("/order/**", "/cart/**", "/members/info").authenticated()
+                    .mvcMatchers("/orders", "/order/**", "/cart/**",  "/members/info", "/payments/**").authenticated()
                     .anyRequest()
                     .authenticated()
                     .and()
