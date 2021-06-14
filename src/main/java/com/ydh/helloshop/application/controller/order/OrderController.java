@@ -14,6 +14,7 @@ import com.ydh.helloshop.application.domain.member.Member;
 import com.ydh.helloshop.application.domain.order.Order;
 import com.ydh.helloshop.application.exception.ItemException;
 import com.ydh.helloshop.application.repository.item.ItemRepository;
+import com.ydh.helloshop.application.repository.order.OrderRepository;
 import com.ydh.helloshop.application.repository.order.OrderSearch;
 import com.ydh.helloshop.application.service.OrderService;
 import com.ydh.helloshop.infra.amqp.dto.DeliveryPublishParam;
@@ -22,6 +23,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -37,11 +39,33 @@ import java.util.stream.Collectors;
 public class OrderController {
 
     private final OrderService orderService;
+
+    private final OrderRepository orderRepository;
     private final ItemRepository itemRepository;
 
     private final DeliveryPublisher deliveryPublisher;
-
     private final ObjectMapper objectMapper;
+
+    @GetMapping(value = "/orders/{id}")
+    public String CartCheckView(@PathVariable("id") Long orderId, @CurrentMember Member member, Model model) {
+        Order order = orderRepository.findOrderWithOrderItemsAndMember(orderId);
+        if (order == null) {
+            throw new IllegalArgumentException("잘못된 주문 정보입니다.");
+        }
+        if (!order.getMember().equals(member)) {
+            throw new AccessDeniedException("해당주문은 접근할 수 없습니다.");
+        }
+
+        ResponseOrderParam responseOrderParam = new ResponseOrderParam();
+        order.getOrderItems()
+                .forEach(oi -> responseOrderParam
+                        .addParam(new ResponseOrderInfo(oi.getCount(), oi.getItem(), oi.getTotalPrice())));
+
+        model.addAttribute("member", member);
+        model.addAttribute("orderInfo", responseOrderParam);
+
+        return "order/orderView";
+    }
 
     @GetMapping(value = "/orders")
     public String orderView(String orderInfo, Model model, @CurrentMember Member member) {

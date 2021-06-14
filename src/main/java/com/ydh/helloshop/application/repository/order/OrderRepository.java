@@ -4,6 +4,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ydh.helloshop.application.domain.order.Order;
 import com.ydh.helloshop.application.domain.order.OrderStatus;
+import com.ydh.helloshop.application.domain.order.QOrderItem;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -11,6 +12,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 import static com.ydh.helloshop.application.domain.item.QItem.item;
+import static com.ydh.helloshop.application.domain.member.QMember.member;
 import static com.ydh.helloshop.application.domain.order.QOrder.order;
 import static com.ydh.helloshop.application.domain.order.QOrderItem.orderItem;
 
@@ -32,6 +34,14 @@ public class OrderRepository {
 
     public Order findOne(Long id) {
         return em.find(Order.class, id);
+    }
+
+    public Order findOrderWithOrderItemsAndMember(Long id) {
+        return query.selectFrom(order)
+                .join(order.member, member).fetchJoin()
+                .join(order.orderItems, orderItem).fetchJoin()
+                .where(order.id.eq(id))
+                .fetchOne();
     }
 
     public Order findOneWithDeliveryAndItem(Long id) {

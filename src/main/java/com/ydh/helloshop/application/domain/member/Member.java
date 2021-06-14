@@ -5,6 +5,7 @@ import com.ydh.helloshop.application.domain.Address;
 import com.ydh.helloshop.application.domain.cart.Cart;
 import com.ydh.helloshop.application.domain.order.Order;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,6 +24,7 @@ import static javax.persistence.EnumType.STRING;
  */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(of = "id")
 @Getter
 public class Member {
 

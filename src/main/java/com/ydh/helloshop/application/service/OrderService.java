@@ -40,13 +40,14 @@ public class OrderService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
         Order order = new Order(member);
 
-        createOrderParam.getRequestOrderInfos().forEach(requestOrderInfo -> {
-            Item item = itemRepository.findById(requestOrderInfo.getItemId())
-                    .orElseThrow(ItemException::noSuchItemException);
+        createOrderParam.getRequestOrderInfos()
+                .forEach(requestOrderInfo -> {
+                    Item item = itemRepository.findById(requestOrderInfo.getItemId())
+                            .orElseThrow(ItemException::noSuchItemException);
 
-            order.addOrderItem(createOrderItem(item, item.getPrice(), requestOrderInfo.getCount(),
-                    new Delivery(member.getAddress())));
-        });
+                    order.addOrderItem(createOrderItem(item, item.getPrice(), requestOrderInfo.getCount(),
+                            new Delivery(member.getAddress())));
+                });
         return orderRepository.save(order);
     }
 

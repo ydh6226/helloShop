@@ -1,9 +1,19 @@
 package com.ydh.helloshop.application.controller.member;
 
+import com.ydh.helloshop.application.controller.order.dto.CreateOrderParam;
+import com.ydh.helloshop.application.controller.order.dto.RequestOrderInfo;
+import com.ydh.helloshop.application.controller.order.dto.ResponseOrderInfo;
+import com.ydh.helloshop.application.controller.order.dto.ResponseOrderParam;
+import com.ydh.helloshop.application.domain.cart.Cart;
+import com.ydh.helloshop.application.domain.cart.CartItem;
+import com.ydh.helloshop.application.domain.delivery.Delivery;
+import com.ydh.helloshop.application.domain.item.Item;
 import com.ydh.helloshop.application.domain.member.CurrentMember;
 import com.ydh.helloshop.application.domain.member.Member;
 import com.ydh.helloshop.application.domain.order.Order;
 import com.ydh.helloshop.application.domain.order.OrderItem;
+import com.ydh.helloshop.application.repository.CartRepository;
+import com.ydh.helloshop.application.repository.order.OrderRepository;
 import com.ydh.helloshop.application.service.CartItemService;
 import com.ydh.helloshop.application.service.CartService;
 import com.ydh.helloshop.application.service.OrderService;
@@ -18,6 +28,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,6 +41,9 @@ public class CartController {
     private final CartItemService cartItemService;
     private final ItemService itemService;
     private final OrderService orderService;
+
+    private final CartRepository cartRepository;
+
     private final DeliveryPublisher deliveryPublisher;
 
     @GetMapping("/cart")
@@ -37,6 +51,28 @@ public class CartController {
         model.addAttribute("cart", cartService.findOneByMemberId(member.getId()));
         return "cart/view";
     }
+
+    @PostMapping("/cart/checkout")
+    @ResponseBody
+    public Long checkout(@RequestBody CartCheckoutParam cartCheckoutParam, @CurrentMember Member member) {
+        Cart cart = cartRepository.findOneByMemberId(member.getId());
+
+        CreateOrderParam createOrderParam = new CreateOrderParam();
+
+        List<Long> cartItemIds = cartCheckoutParam.getCartItemIds();
+        List<CartItem> cartItems = cart.getCartItems();
+
+        cartItems.stream()
+                .filter(ci -> cartItemIds.contains(ci.getId()))
+                .forEach(ci -> createOrderParam
+                        .getRequestOrderInfos()
+                        .add(new RequestOrderInfo(ci.getCount(), ci.getItem().getId())));
+
+        return orderService
+                .createOrder(createOrderParam, member.getId())
+                .getId();
+    }
+/*
 
     @PostMapping("/cart/checkout")
     @ResponseBody
@@ -62,6 +98,7 @@ public class CartController {
             return new ResponseEntity<>("rabbitMQ send error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+*/
 
     @ResponseBody
     @ResponseStatus(value = HttpStatus.ACCEPTED)
@@ -108,5 +145,10 @@ public class CartController {
         List<Integer> counts;
         List<Long> itemIds;
         Long cartId;
+    }
+
+    @Data
+    static class CartCheckoutParam {
+        List<Long> cartItemIds = new ArrayList<>();
     }
 }

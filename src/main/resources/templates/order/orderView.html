@@ -68,7 +68,8 @@
                 <ul class="list-group">
                     <li class="list-group-item" th:each="info : ${orderInfo.responseOrderParams}">
                         <div class="row">
-                            <span th:text="${info.item.name}" class="col-6"></span>
+                            <a class="col-6 text-dark" th:href="@{'/items/' + ${info.item.id}}" th:text="${info.item.name}"></a>
+<!--                            <span th:text="${info.item.name}" class="col-6"></span>-->
                             <span class="text-muted col-6">
                             수량: <span th:text="${info.count}"></span>개 /
                                 통합 가격: <span th:text="${#numbers.formatInteger(info.totalPrice, 0, 'COMMA')}"></span>원
