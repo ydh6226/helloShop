@@ -4,7 +4,6 @@ import com.ydh.helloshop.application.domain.order.Order;
 import lombok.Getter;
 
 import javax.persistence.*;
-
 import java.time.LocalDateTime;
 
 import static javax.persistence.FetchType.LAZY;

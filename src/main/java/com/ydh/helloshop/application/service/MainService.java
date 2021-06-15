@@ -2,8 +2,6 @@ package com.ydh.helloshop.application.service;
 
 import com.ydh.helloshop.infra.config.property.ImageProperty;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

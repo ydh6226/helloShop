@@ -1,6 +1,5 @@
 package com.ydh.helloshop.application.domain.item;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ydh.helloshop.application.domain.Category;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -2,9 +2,9 @@ package com.ydh.helloshop;
 
 import com.ydh.helloshop.application.domain.Address;
 import com.ydh.helloshop.application.domain.Category;
+import com.ydh.helloshop.application.domain.item.Item;
 import com.ydh.helloshop.application.domain.member.CreateMemberParam;
 import com.ydh.helloshop.application.domain.member.Member;
-import com.ydh.helloshop.application.domain.item.Item;
 import com.ydh.helloshop.application.repository.CategoryRepository;
 import com.ydh.helloshop.application.repository.MemberRepository;
 import com.ydh.helloshop.application.service.CartService;
@@ -13,8 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.PostConstruct;
 
 import static com.ydh.helloshop.application.domain.Category.createCategory;
 import static com.ydh.helloshop.application.domain.member.MemberStatus.*;

@@ -19,11 +19,11 @@
                     <div class="col-10">
                         <div class="form-check pl-0">
                             <label th:for="${#ids.next('status')}">구매 회원 </label>
-                            <input type="radio" th:field="*{status}" th:value="${T(com.ydh.helloshop.domain.member.MemberStatus).CUSTOMER}">
+                            <input type="radio" th:field="*{status}" th:value="${T(com.ydh.helloshop.application.domain.member.MemberStatus).CUSTOMER}">
                         </div>
                         <div class="form-check pl-0">
                             <label th:for="${#ids.next('status')}">판매 회원 </label>
-                            <input type="radio" th:field="*{status}" th:value="${T(com.ydh.helloshop.domain.member.MemberStatus).SELLER}">
+                            <input type="radio" th:field="*{status}" th:value="${T(com.ydh.helloshop.application.domain.member.MemberStatus).SELLER}">
                         </div>
                         <p class="invalid-feedback d-block mb-0"
                            th:if="${#fields.hasErrors('status')}" th:errors="*{status}">incorrect data</p>

@@ -1,12 +1,10 @@
 package com.ydh.helloshop.infra.config;
 
-import com.ydh.helloshop.application.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -32,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                    .mvcMatchers("/", "/members/login").permitAll()
+                    .mvcMatchers("/", "/members/login", "/members/new", "/members/welcome").permitAll()
                     .mvcMatchers(HttpMethod.GET, "/items/**").permitAll()
                     .mvcMatchers("/admin/**").hasAuthority("ADMIN")
                     .mvcMatchers("/seller/**").hasAuthority("SELLER")
