@@ -58,7 +58,7 @@ public class ItemService {
     public List<ItemDto> findItemsWithPaging(PageRequest pageRequest) {
         Page<Item> result = itemRepository.findAllWithPaging(pageRequest);
 
-        Page<ItemDto> map = result.map(i -> new ItemDto(i.getId(), i.getName(), i.getPrice()));
+        Page<ItemDto> map = result.map(i -> new ItemDto(i.getId(), i.getName(), i.getRepresentativeImageUrl(), i.getPrice()));
 
         return map.getContent();
     }

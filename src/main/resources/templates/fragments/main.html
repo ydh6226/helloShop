@@ -76,7 +76,7 @@
                     </a>
                     <a class="text-dark pb-4" data-bs-toggle="dropdown"
                        sec:authorize="${hasAuthority(T(com.ydh.helloshop.application.domain.member.MemberStatus).SELLER)}"
-                       th:href="@{/seller/settings/itemList}">
+                       th:href="@{/seller/settings/items}">
                         <i class="fas fa-user-circle fa-3x"></i>
                     </a>
                     <a class="text-dark pb-4" data-bs-toggle="dropdown"
@@ -90,8 +90,8 @@
                         <li sec:authorize="${hasAuthority(T(com.ydh.helloshop.application.domain.member.MemberStatus).SELLER)}">
                             <a class="dropdown-item text-danger" th:href="@{/seller/settings/items}">상품관리</a>
                         </li>
-                        <li><a class="dropdown-item" href="#"> Submenu item 1</a></li>
-                        <li><a class="dropdown-item" href="#"> Submenu item 2 </a></li>
+                        <li><a class="dropdown-item" href="#"> reserved1</a></li>
+                        <li><a class="dropdown-item" href="#"> reserved2 </a></li>
                         <li sec:authorize="isAuthenticated()">
                             <form class="dropdown-item" th:action="@{/logout}" method="post">
                                 <button class="btn p-0 text-primary" type="submit"><b>로그아웃</b></button>

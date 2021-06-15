@@ -63,7 +63,7 @@ public class CartController {
         List<CartItem> cartItems = cart.getCartItems();
 
         cartItems.stream()
-                .filter(ci -> cartItemIds.contains(ci.getId()))
+                .filter(ci -> cartItemIds.contains(ci.getItem().getId()))
                 .forEach(ci -> createOrderParam
                         .getRequestOrderInfos()
                         .add(new RequestOrderInfo(ci.getCount(), ci.getItem().getId())));

@@ -3,7 +3,7 @@
 <head th:include="fragments/main.html :: head" />
 <body>
 <div class="container">
-    <div th:replace="fragments/main.html :: header"/>
+    <div th:replace="fragments/main.html :: header(${itemSearch}, ${leafCategories})"/>
 
     <table class="table table-striped">
         <thead>
@@ -20,9 +20,9 @@
             <td th:text="*{orderDto.itemName}"></td>
             <td th:text="*{orderDto.price}"></td>
             <th:block th:switch="${orderDto.deliveryStatus}">
-                <td th:case="${T(com.ydh.helloshop.domain.delivery.DeliveryStatus).READY}" th:text="|배송 준비|"></td>
-                <td th:case="${T(com.ydh.helloshop.domain.delivery.DeliveryStatus).SHIPPED}" th:text="배송중"></td>
-                <td th:case="${T(com.ydh.helloshop.domain.delivery.DeliveryStatus).COMP}" th:text="|배송 완료|"></td>
+                <td th:case="${T(com.ydh.helloshop.application.domain.delivery.DeliveryStatus).READY}" th:text="|배송 준비|"></td>
+                <td th:case="${T(com.ydh.helloshop.application.domain.delivery.DeliveryStatus).SHIPPED}" th:text="배송중"></td>
+                <td th:case="${T(com.ydh.helloshop.application.domain.delivery.DeliveryStatus).COMP}" th:text="|배송 완료|"></td>
             </th:block>
         </tr>
         </tbody>

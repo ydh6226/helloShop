@@ -2,6 +2,7 @@ package com.ydh.helloshop.application.repository.order;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ydh.helloshop.application.domain.item.QItem;
 import com.ydh.helloshop.application.domain.order.Order;
 import com.ydh.helloshop.application.domain.order.OrderStatus;
 import com.ydh.helloshop.application.domain.order.QOrderItem;
@@ -40,6 +41,7 @@ public class OrderRepository {
         return query.selectFrom(order)
                 .join(order.member, member).fetchJoin()
                 .join(order.orderItems, orderItem).fetchJoin()
+                .join(orderItem.item, item).fetchJoin()
                 .where(order.id.eq(id))
                 .fetchOne();
     }

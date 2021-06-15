@@ -9,5 +9,6 @@ public class ItemDto {
 
     private Long id;
     private String name;
+    private String representativeImageUrl;
     private int price;
 }

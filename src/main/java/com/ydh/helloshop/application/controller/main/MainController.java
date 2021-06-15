@@ -36,7 +36,7 @@ public class MainController {
     public String home(Model model, @CurrentMember Member member) {
         model.addAttribute("member", member);
 
-        PageRequest pageRequest = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "createTime"));
+        PageRequest pageRequest = PageRequest.of(0, 12, Sort.by(Sort.Direction.DESC, "createTime"));
         model.addAttribute("items", itemService.findItemsWithPaging(pageRequest));
         return "home";
     }
