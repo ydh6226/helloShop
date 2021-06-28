@@ -1,17 +1,53 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ko">
-<head th:include="fragments/main.html :: head" />
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ko">
+<head th:include="fragments/main.html :: head"/>
+<head>
+    <style>
+        img {
+            width: auto;
+            height: 200px;
+        }
+    </style>
+</head>
 <body>
-<div class="container">
-    <div th:replace="fragments/main.html :: header"/>
-
-    <ul class="list-group text-center">
-        <li class="list-group-item" th:each="album : ${albums}">
-            <a th:href="|/items/${album.getId()}|"><span th:text="|${album.name} ${album.price}원|"></span></a>
-        </li>
-    </ul>
-
-    <div th:replace="fragments/main.html :: footer"/>
+<div class="justify-content-center">
+    <div th:replace="fragments/main.html :: header(${itemSearch}, ${leafCategories})"/>
+    <hr>
+    <div class="container-lg">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div th:if="${items.size() == 0}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong th:text="${search.itemName}"></strong> 에 해당하는 상품이 없습니다.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <p class="text-center h2 my-4">검색 결과</p>
+                <div class="row row-cols-4">
+                    <div class="col mb-4" th:each="item : ${items}">
+                        <div class="card h-100">
+                            <a th:href="@{'/items/' + ${item.id}}">
+                                <img th:src="${item.representativeImageUrl}" class="card-img-top">
+                            </a>
+                            <div class="card-body">
+                                <a th:href="@{'/items/' + ${item.id}}">
+                                    <h6 class="card-title text-dark" th:text="${item.name}">title</h6>
+                                </a>
+                                <p class="card-text">
+                                    <span th:text="${#numbers.formatInteger(item.price, 0, 'COMMA')}"></span>원
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
 </div>
+<div th:replace="fragments/main.html :: footer"/>
 </body>
+<script th:replace="fragments/main.html::dropdown-hover"></script>
+<script th:replace="fragments/main.html::header-input-validation"></script>
 </html>

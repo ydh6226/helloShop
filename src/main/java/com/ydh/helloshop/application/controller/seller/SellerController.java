@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -26,9 +27,7 @@ import java.util.List;
 public class SellerController {
 
     private final ItemService itemService;
-
     private final CartItemService cartItemService;
-
     private final CategoryService categoryService;
 
     private final ItemCategoryRepository itemCategoryRepository;
@@ -42,8 +41,10 @@ public class SellerController {
     static final String SETTINGS_REGISTER_URL = "/settings/register";
     static final String SETTINGS_REGISTER_VIEW = "seller/settings/register";
 
-    static final String SETTINGS_ITEM_PREPARE = "/settings/item/{id}/prepare";
-    static final String SETTINGS_ITEM_SALE = "/settings/item/{id}/sale";
+    static final String SETTINGS_ITEM_PREPARE_URL = "/settings/item/{id}/prepare";
+    static final String SETTINGS_ITEM_SALE_URL = "/settings/item/{id}/sale";
+
+    static final String ITEM_MODIFY_STOCK_URL = "/settings/item/{id}/modify-stock";
 
     @InitBinder("itemForm")
     public void itemFormExtraInfoValidator(WebDataBinder webDataBinder) {
@@ -74,13 +75,21 @@ public class SellerController {
         return "redirect:/seller" + SETTINGS_ITEM_LIST_URL;
     }
 
-    @PostMapping(SETTINGS_ITEM_PREPARE)
+    @PostMapping(ITEM_MODIFY_STOCK_URL)
+    public String modifyItemStock(@CurrentMember Member member, @PathVariable("id") Long itemId, int stockQuantity,
+                                  RedirectAttributes redirectAttributes) {
+        String itemName = itemService.changeItemStock(member, itemId, stockQuantity);
+        redirectAttributes.addFlashAttribute("message", String.format("'%s' 상품의 수량을 변경했습니다.", itemName));
+        return "redirect:/seller" + SETTINGS_ITEM_LIST_URL;
+    }
+
+    @PostMapping(SETTINGS_ITEM_PREPARE_URL)
     public String changeItemStatusToPrepare(@CurrentMember Member member, @PathVariable(value = "id") Long itemId) {
         itemService.changeItemStatusToPrepare(member, itemId);
         return "redirect:/seller" + SETTINGS_ITEM_LIST_URL;
     }
 
-    @PostMapping(SETTINGS_ITEM_SALE)
+    @PostMapping(SETTINGS_ITEM_SALE_URL)
     public String changeItemStatusToSale(@CurrentMember Member member, @PathVariable(value = "id") Long itemId, Model model) {
         try {
             itemService.changeItemStatusToSale(member, itemId);
