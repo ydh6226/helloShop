@@ -11,6 +11,7 @@ import com.ydh.helloshop.application.repository.item.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +24,6 @@ import java.util.List;
 public class ItemService {
 
     private final ItemRepository itemRepository;
-
     private final CategoryRepository categoryRepository;
 
     private final MainService mainService;
@@ -33,6 +33,20 @@ public class ItemService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카테고리입니다."));
 
         return createItem(itemForm, sellerId, ItemCategory.createItemCategory(category));
+    }
+
+    public String changeItemStock(Member member, Long itemId, int stockQuantity) {
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
+
+
+        // TODO: 2021-06-28[양동혁] 예외처리
+        if (!item.getSellerId().equals(member.getId())) {
+            throw new AccessDeniedException("해당상품에 접근 권한이 없습니다.");
+        }
+
+        item.changeStockQuantity(stockQuantity);
+        return item.getName();
     }
 
     public void deleteItemsByIdsQuery(List<Long> ids) {

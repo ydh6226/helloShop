@@ -30,6 +30,13 @@
                         </div>
                     </div>
                 </div>
+                <div class="row" th:if="${message}">
+                    <div class="col-12">
+                        <div class="alert alert-success block" role="alert">
+                            <span th:text="${message}"></span>
+                        </div>
+                    </div>
+                </div>
                 <div class="row mb-2">
                     <div class="col-12">
                         <button type="button" class="btn btn-outline-danger select-delete">선택상품삭제</button>
@@ -55,7 +62,37 @@
                                         <a th:href="@{'/items/' + ${item.id}}" th:text="${item.name}" class="text-dark"></a>
                                     </td>
                                     <td class="align-middle" th:text="${item.price}"></td>
-                                    <td class="align-middle" th:text="${item.stockQuantity}"></td>
+                                    <td class="align-middle">
+                                        <button type="button" class="btn btn-sm" data-toggle="modal" th:data-target="'#exampleModal' + ${item.id}">
+                                            <span><i class="fas fa-plus-circle"></i></span>
+                                        </button>
+                                        <!-- Modal -->
+                                        <div class="modal fade" th:id="'exampleModal' + ${item.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">
+                                                            '<span th:text="${item.name}"></span>' 상품 수량변경
+                                                        </h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <form th:action="@{'/seller/settings/item/' + ${item.id} + '/modify-stock'}" method="post">
+                                                        <div class="modal-body">
+                                                            <label>수량</label>
+                                                            <input type="number" class="form-control" th:value="${item.stockQuantity}" min="0" name="stockQuantity" required>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                                                            <button type="submit" class="btn btn-primary">변경</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span th:text="${item.stockQuantity}"></span>
+                                    </td>
                                     <td class="align-middle" th:text="${item.itemCategories.get(0).category.name}"></td>
                                     <td class="align-middle" th:if="${item.status == T(com.ydh.helloshop.application.domain.item.ItemStatus).PREPARE}">
                                         <form th:action="@{'/seller/settings/item/' + ${item.id} +  '/sale'}" method="post">

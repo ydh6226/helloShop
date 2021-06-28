@@ -95,6 +95,11 @@ public abstract class Item {
         stockQuantity = restStock;
     }
 
+
+    public void changeStockQuantity(int stockQuantity) {
+        this.stockQuantity = stockQuantity;
+    }
+
     public void updateStatusToPrepare() {
         status = PREPARE;
     }
