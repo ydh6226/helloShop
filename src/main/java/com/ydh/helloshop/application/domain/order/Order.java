@@ -38,6 +38,7 @@ public class Order {
     private List<OrderItem> orderItems = new ArrayList<>();
 
     private LocalDateTime orderDate;
+
     @Enumerated(STRING)
     private OrderStatus status;
 
@@ -49,11 +50,11 @@ public class Order {
     }
 
     public void setStatusPayed() {
-        status = OrderStatus.PAYED;
+        status = OrderStatus.PAID;
     }
 
     private void setStatusCancel() {
-        status = OrderStatus.CANCEL;
+        status = OrderStatus.CANCELED;
     }
 
 

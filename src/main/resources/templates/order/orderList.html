@@ -15,11 +15,11 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="orderDto : ${orderListDto}">
-            <td th:text="*{orderDto.orderDate}"></td>
-            <td th:text="*{orderDto.itemName}"></td>
-            <td th:text="*{orderDto.price}"></td>
-            <th:block th:switch="${orderDto.deliveryStatus}">
+        <tr th:each="order : ${searchResult.getOrderParams()}">
+            <td th:text="*{order.orderDate}"></td>
+            <td th:text="*{order.itemName}"></td>
+            <td th:text="*{order.price}"></td>
+            <th:block th:switch="${order.deliveryStatus}">
                 <td th:case="${T(com.ydh.helloshop.application.domain.delivery.DeliveryStatus).READY}" th:text="|배송 준비|"></td>
                 <td th:case="${T(com.ydh.helloshop.application.domain.delivery.DeliveryStatus).SHIPPED}" th:text="배송중"></td>
                 <td th:case="${T(com.ydh.helloshop.application.domain.delivery.DeliveryStatus).COMP}" th:text="|배송 완료|"></td>

@@ -13,6 +13,9 @@ import com.ydh.helloshop.application.repository.item.ItemRepository;
 import com.ydh.helloshop.application.repository.order.OrderRepository;
 import com.ydh.helloshop.application.repository.order.OrderSearch;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -106,13 +109,14 @@ public class OrderService {
         order.getMember().getOrders().remove(order);
         orderRepository.deleteOne(order);
     }
-    //검색
 
-    public List<Order> findAll(OrderSearch orderSearch) {
-        return orderRepository.findAll(orderSearch);
+    /** 검색 **/
+    public PageImpl<Order> findPagedOrdersBySearch(OrderSearch orderSearch, Pageable pageable) {
+        return orderRepository.findPagedOrdersBySearch(orderSearch, pageable);
     }
 
     public Order findOneWithDeliveryAndItem(Long id) {
         return orderRepository.findOneWithDeliveryAndItem(id);
     }
+
 }

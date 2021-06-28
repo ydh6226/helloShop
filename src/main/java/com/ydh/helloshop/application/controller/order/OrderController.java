@@ -6,8 +6,10 @@ import com.ydh.helloshop.application.controller.order.dto.CreateOrderParam;
 import com.ydh.helloshop.application.controller.order.dto.RequestOrderParam;
 import com.ydh.helloshop.application.controller.order.dto.ResponseOrderInfo;
 import com.ydh.helloshop.application.controller.order.dto.ResponseOrderParam;
+import com.ydh.helloshop.application.controller.order.dto.search.OrderParam;
+import com.ydh.helloshop.application.controller.order.dto.search.OrderSearchResParam;
+import com.ydh.helloshop.application.controller.order.dto.search.PageMetaData;
 import com.ydh.helloshop.application.domain.delivery.Delivery;
-import com.ydh.helloshop.application.domain.delivery.DeliveryStatus;
 import com.ydh.helloshop.application.domain.item.Item;
 import com.ydh.helloshop.application.domain.member.CurrentMember;
 import com.ydh.helloshop.application.domain.member.Member;
@@ -21,6 +23,9 @@ import com.ydh.helloshop.infra.amqp.dto.DeliveryPublishParam;
 import com.ydh.helloshop.infra.amqp.sender.DeliveryPublisher;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -28,11 +33,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.springframework.data.domain.Sort.Direction.DESC;
 
 @Controller
 @RequiredArgsConstructor
@@ -127,22 +132,30 @@ public class OrderController {
     }
 
     @GetMapping("/order/view")
-    public String orderList(Model model, @CurrentMember Member member) {
-        List<Order> orders = orderService.findAll(new OrderSearch(member.getId()));
-        List<OrderListDto> orderListDto = new ArrayList<>();
+    public String orderList(Model model, @CurrentMember Member member,
+                            @PageableDefault(size = 7) Pageable pageable) {
+        PageImpl<Order> pageableOrders =
+                orderService.findPagedOrdersBySearch(new OrderSearch(member.getId()), pageable);
 
+        OrderSearchResParam orderSearchResParam = new OrderSearchResParam();
+
+        PageMetaData pageMetaData = new PageMetaData(pageableOrders.getNumber(), pageableOrders.getSize(),
+                pageableOrders.getTotalPages(), pageableOrders.getTotalElements());
+        orderSearchResParam.setPageMetaData(pageMetaData);
+
+        List<Order> orders = pageableOrders.getContent();
         orders.forEach(o -> {
-            List<OrderListDto> result = o.getOrderItems()
+            List<OrderParam> orderParams = o.getOrderItems()
                     .stream()
-                    .map(oi -> new OrderListDto(
-                            oi.getItem().getId(),
-                            oi.getItem().getName(), oi.getOrder().getOrderDate(),
-                            oi.getTotalPrice(), oi.getDelivery().getStatus())).collect(Collectors.toList());
-            orderListDto.addAll(result);
+                    .map(oi -> new OrderParam(oi.getItem().getId(),
+                            oi.getItem().getName(),
+                            o.getOrderDate(),
+                            oi.getItem().getPrice(),
+                            oi.getDelivery().getStatus()))
+                    .collect(Collectors.toList());
+            orderSearchResParam.setOrderParams(orderParams);
         });
-
-        model.addAttribute("orderListDto", orderListDto);
-
+        model.addAttribute("searchResult", orderSearchResParam);
         return "order/orderList";
     }
 
@@ -150,24 +163,5 @@ public class OrderController {
     static class OrderInfoDto {
         int count;
         Long itemId;
-    }
-
-    @Data
-    static class OrderListDto {
-        private Long itemId;
-        private String itemName;
-        String orderDate;
-        private int price;
-        private DeliveryStatus deliveryStatus;
-
-        public OrderListDto(Long itemId, String itemName, LocalDateTime orderDate, int price, DeliveryStatus deliveryStatus) {
-            this.itemId = itemId;
-            this.itemName = itemName;
-            this.price = price;
-            this.deliveryStatus = deliveryStatus;
-
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            this.orderDate = orderDate.format(formatter);
-        }
     }
 }
