@@ -15,6 +15,13 @@ public class ItemController {
 
     private final ItemRepository itemRepository;
 
+    @GetMapping("/items")
+    public String searchItem(ItemSearch search, Model model) {
+        model.addAttribute("items", itemRepository.findItemsBySearch(search));
+        model.addAttribute("search",search);
+        return "item/itemSearch";
+    }
+
     @GetMapping("/items/{itemId}")
     public String itemView(@PathVariable("itemId") Long itemId, Model model) {
         Item item = itemRepository.findById(itemId)

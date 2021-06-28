@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface ItemRepository extends JpaRepository<Item, Long> {
+public interface ItemRepository extends JpaRepository<Item, Long>, CustomItemRepository {
 
     @Query("select i from Item i where i.id in :itemIds")
     List<Item> findMultiple(@Param("itemIds") List<Long> itemIds);
@@ -22,9 +22,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     @Modifying(clearAutomatically = true)
     @Query("delete from Item i where i.id in :itemIds")
     void deleteItemsByIdIn(@Param("itemIds") List<Long> itemIds);
-
-    @Query("select i from Item i")
-    Page<Item> findAllWithPaging(Pageable pageable);
 
     Optional<Item> findByName(String name);
 }

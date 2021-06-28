@@ -69,8 +69,8 @@ public class ItemService {
     }
 
     @Transactional(readOnly = true)
-    public List<ItemDto> findItemsWithPaging(PageRequest pageRequest) {
-        Page<Item> result = itemRepository.findAllWithPaging(pageRequest);
+    public List<ItemDto> findOnSaleItemWithPaging(PageRequest pageRequest) {
+        Page<Item> result = itemRepository.findOnSaleItemsWithPaging(pageRequest);
 
         Page<ItemDto> map = result.map(i -> new ItemDto(i.getId(), i.getName(), i.getRepresentativeImageUrl(), i.getPrice()));
 
