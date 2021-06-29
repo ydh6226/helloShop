@@ -102,10 +102,10 @@ public class OrderRepository extends QuerydslRepositorySupport {
         return orderItem.item.name.contains(itemName);
     }
 
-    private BooleanExpression statusEq(OrderStatus statusCond) {
-        if (statusCond == null) {
+    private BooleanExpression statusEq(OrderStatus status) {
+        if (status == null) {
             return null;
         }
-        return order.status.eq(statusCond);
+        return order.status.eq(status);
     }
 }

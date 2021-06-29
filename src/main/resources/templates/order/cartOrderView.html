@@ -23,14 +23,14 @@
                         <col width="80%">
                     </colgroup>
                     <tbody>
-                        <tr>
-                            <th scope="row">이름</th>
-                            <td colspan="3" th:text="${member.name}">홍길동</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">이메일</th>
-                            <td colspan="3" th:text="${member.email}">hello@gamil.com</td>
-                        </tr>
+                    <tr>
+                        <th scope="row">이름</th>
+                        <td colspan="3" th:text="${member.name}">홍길동</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">이메일</th>
+                        <td colspan="3" th:text="${member.email}">hello@gamil.com</td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -69,7 +69,7 @@
                     <li class="list-group-item" th:each="info : ${orderInfo.responseOrderParams}">
                         <div class="row">
                             <a class="col-6 text-dark" th:href="@{'/items/' + ${info.item.id}}" th:text="${info.item.name}"></a>
-<!--                            <span th:text="${info.item.name}" class="col-6"></span>-->
+                            <!--                            <span th:text="${info.item.name}" class="col-6"></span>-->
                             <span class="text-muted col-6">
                             수량: <span th:text="${info.count}"></span>개 /
                                 통합 가격: <span th:text="${#numbers.formatInteger(info.totalPrice, 0, 'COMMA')}"></span>원
@@ -110,29 +110,7 @@
     //주문생성 요쳥
     $(function () {
         $('#payment-btn').click(function () {
-            let responseOrderParams = [[${orderInfo.responseOrderParams}]];
-
-            let shippingRequirements = $('#shipping-requirements').val();
-            let requestOrderInfos = [];
-            responseOrderParams.forEach(function (el) {
-                requestOrderInfos.push({'count': el['count'], 'itemId': el['item']['id']});
-            })
-
-            let createOrderParam = {'requestOrderInfos': requestOrderInfos, 'shippingRequirements': shippingRequirements};
-            $.ajax({
-                url: "/orders",
-                type: "post",
-                data: JSON.stringify(createOrderParam),
-                dateType: "json",
-                contentType: "application/json;",
-                success: function (orderId) {
-                    payment(orderId);
-                },
-                error: function (data) {
-                    console.log(data.responseText);
-                    alert('주문정보 생성을 실패했습니다.');
-                }
-            })
+            payment([[${orderId}]])
         })
 
         //결제 요청
@@ -161,6 +139,7 @@
             });
         }
 
+        //결제검증
         function paymentValidation(rsp, orderId) {
             let paymentParam = {
                 impUid : rsp.imp_uid,
@@ -174,11 +153,31 @@
                 dateType: "json",
                 contentType: "application/json;",
                 success: function () {
-                    alert("결제에 성공했습니다.")
+                    deleteCartItem(orderId);
+                    alert("결제에 성공했습니다.");
                     location.href = '/order/view';
                 },
                 error: function () {
                     alert('잘못된 결제정보 입니다.');
+                }
+            })
+        }
+
+        function deleteCartItem(orderId) {
+            data = {
+                'orderId' : orderId
+            }
+            $.ajax({
+                url: "/cart/deleteCartItem",
+                type: "post",
+                data: JSON.stringify(data),
+                dateType: "json",
+                contentType: "application/json;",
+                success: function () {
+                    return true;
+                },
+                error: function () {
+                    return false;
                 }
             })
         }

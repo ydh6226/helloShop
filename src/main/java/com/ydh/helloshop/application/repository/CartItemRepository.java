@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface CartItemRepository extends JpaRepository<CartItem, Long> {
+public interface CartItemRepository extends JpaRepository<CartItem, Long>, CustomCartItemRepository {
 
     List<CartItem> findByItemId(Long itemId);
 
@@ -32,7 +32,5 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
     @Modifying(clearAutomatically = true)
     @Query("delete from CartItem ci where ci.item.id in :itemIds")
     void deleteByItemIdsInQuery(@Param("itemIds") List<Long> itemIds);
-
-
 
 }

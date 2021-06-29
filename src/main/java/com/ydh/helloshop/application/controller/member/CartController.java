@@ -2,11 +2,15 @@ package com.ydh.helloshop.application.controller.member;
 
 import com.ydh.helloshop.application.controller.order.dto.CreateOrderParam;
 import com.ydh.helloshop.application.controller.order.dto.RequestOrderInfo;
+import com.ydh.helloshop.application.controller.order.dto.ResponseOrderInfo;
+import com.ydh.helloshop.application.controller.order.dto.ResponseOrderParam;
 import com.ydh.helloshop.application.domain.cart.Cart;
 import com.ydh.helloshop.application.domain.cart.CartItem;
 import com.ydh.helloshop.application.domain.member.CurrentMember;
 import com.ydh.helloshop.application.domain.member.Member;
+import com.ydh.helloshop.application.domain.order.Order;
 import com.ydh.helloshop.application.repository.CartRepository;
+import com.ydh.helloshop.application.repository.order.OrderRepository;
 import com.ydh.helloshop.application.service.CartItemService;
 import com.ydh.helloshop.application.service.CartService;
 import com.ydh.helloshop.application.service.ItemService;
@@ -15,6 +19,7 @@ import com.ydh.helloshop.infra.amqp.sender.DeliveryPublisher;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -46,10 +51,9 @@ public class CartController {
     @ResponseBody
     public Long checkout(@RequestBody CartCheckoutParam cartCheckoutParam, @CurrentMember Member member) {
         Cart cart = cartRepository.findOneByMemberId(member.getId());
-
         CreateOrderParam createOrderParam = new CreateOrderParam();
 
-        List<Long> cartItemIds = cartCheckoutParam.getCartItemIds();
+        List<Long> cartItemIds = cartCheckoutParam.getItemIds();
         List<CartItem> cartItems = cart.getCartItems();
 
         cartItems.stream()
@@ -61,6 +65,13 @@ public class CartController {
         return orderService
                 .createOrder(createOrderParam, member.getId())
                 .getId();
+    }
+
+    @PostMapping("/cart/deleteCartItem")
+    @ResponseBody
+    public ResponseEntity<Void> deleteCartItem(@RequestBody OrderInfo orderInfo, @CurrentMember Member member) {
+        cartService.deleteCartItemsByOrderId(orderInfo.getOrderId(), member.getId());
+        return ResponseEntity.ok().build();
     }
 /*
 
@@ -126,19 +137,24 @@ public class CartController {
 
     @Data
     private static class SimpleItemDto {
-        Long itemId;
-        int count;
+        private Long itemId;
+        private int count;
     }
 
     @Data
-    static class OrderInfoDto {
-        List<Integer> counts;
-        List<Long> itemIds;
-        Long cartId;
+    private static class OrderInfoDto {
+        private List<Integer> counts;
+        private List<Long> itemIds;
+        private Long cartId;
     }
 
     @Data
-    static class CartCheckoutParam {
-        List<Long> cartItemIds = new ArrayList<>();
+    private static class CartCheckoutParam {
+        private List<Long> itemIds = new ArrayList<>();
+    }
+
+    @Data
+    private static class OrderInfo {
+        private Long orderId;
     }
 }

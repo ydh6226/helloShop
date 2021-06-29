@@ -68,8 +68,9 @@ public class OrderController {
 
         model.addAttribute("member", member);
         model.addAttribute("orderInfo", responseOrderParam);
+        model.addAttribute("orderId", orderId);
 
-        return "order/orderView";
+        return "order/cartOrderView";
     }
 
     @GetMapping(value = "/orders")
@@ -141,6 +142,7 @@ public class OrderController {
 
         PageMetaData pageMetaData = new PageMetaData(pageableOrders.getNumber(), pageableOrders.getSize(),
                 pageableOrders.getTotalPages(), pageableOrders.getTotalElements());
+
         orderSearchResParam.setPageMetaData(pageMetaData);
 
         List<Order> orders = pageableOrders.getContent();
@@ -153,7 +155,7 @@ public class OrderController {
                             oi.getItem().getPrice(),
                             oi.getDelivery().getStatus()))
                     .collect(Collectors.toList());
-            orderSearchResParam.setOrderParams(orderParams);
+            orderSearchResParam.getOrderParams().addAll(orderParams);
         });
         model.addAttribute("searchResult", orderSearchResParam);
         return "order/orderList";
