@@ -78,7 +78,8 @@ public class OrderRepository extends QuerydslRepositorySupport {
                 .join(order.member, member)
                 .where(memberEq(orderSearch.getMemberId()),
                         itemNameLike(orderSearch.getItemName()),
-                        statusEq(orderSearch.getOrderStatus()))
+                        statusEq(orderSearch.getOrderStatus()),
+                        order.status.ne(OrderStatus.CREATED))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(order.orderDate.desc())

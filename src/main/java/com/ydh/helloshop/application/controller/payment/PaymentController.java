@@ -12,6 +12,7 @@ import com.ydh.helloshop.infra.config.property.IamPortProperty;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,6 +53,7 @@ public class PaymentController {
         this.restTemplate = restTemplate;
     }
 
+    @Transactional
     @PostMapping("/payments/validation")
     public ResponseEntity<String> paymentValidation(@RequestBody PaymentParam paymentParam) throws JsonProcessingException {
         PaymentResponsePram paymentResponsePram = getPaymentInfo(paymentParam.getImpUid(), getAccessToken());
