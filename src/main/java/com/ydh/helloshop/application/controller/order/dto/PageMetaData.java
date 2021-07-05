@@ -1,4 +1,4 @@
-package com.ydh.helloshop.application.controller.order.dto.search;
+package com.ydh.helloshop.application.controller.order.dto;
 
 import lombok.Data;
 

@@ -13,7 +13,9 @@ import com.ydh.helloshop.application.repository.item.ItemRepository;
 import com.ydh.helloshop.application.repository.order.OrderItemRepository;
 import com.ydh.helloshop.application.repository.order.OrderRepository;
 import com.ydh.helloshop.application.repository.order.OrderSearch;
+import com.ydh.helloshop.application.repository.order.dto.OrderParam;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -117,7 +119,7 @@ public class OrderService {
         return orderRepository.findPagedOrdersBySearch(orderSearch, pageable);
     }
 
-    public PageImpl<OrderItem> findOrderItemsBySearch(OrderSearch orderSearch, Pageable pageable) {
+    public Page<OrderParam> findOrderItemsBySearch(OrderSearch orderSearch, Pageable pageable) {
         return orderItemRepository.findBySearch(orderSearch, pageable);
     }
 

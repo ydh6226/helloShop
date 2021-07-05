@@ -1,5 +1,6 @@
-package com.ydh.helloshop.application.controller.order.dto.search;
+package com.ydh.helloshop.application.controller.order.dto;
 
+import com.ydh.helloshop.application.repository.order.dto.OrderParam;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

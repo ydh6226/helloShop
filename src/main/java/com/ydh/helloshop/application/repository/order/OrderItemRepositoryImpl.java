@@ -7,52 +7,44 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ydh.helloshop.application.domain.item.QItem;
-import com.ydh.helloshop.application.domain.member.QMember;
-import com.ydh.helloshop.application.domain.order.OrderItem;
 import com.ydh.helloshop.application.domain.order.OrderStatus;
-import com.ydh.helloshop.application.domain.order.QOrder;
-import com.ydh.helloshop.application.domain.order.QOrderItem;
+import com.ydh.helloshop.application.repository.order.dto.OrderParam;
+import com.ydh.helloshop.application.repository.order.dto.QOrderParam;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.util.StringUtils;
 
-import java.util.List;
-
 import static com.querydsl.core.types.Order.ASC;
 import static com.querydsl.core.types.Order.DESC;
+import static com.ydh.helloshop.application.domain.delivery.QDelivery.delivery;
 import static com.ydh.helloshop.application.domain.item.QItem.item;
 import static com.ydh.helloshop.application.domain.member.QMember.member;
 import static com.ydh.helloshop.application.domain.order.QOrder.order;
 import static com.ydh.helloshop.application.domain.order.QOrderItem.orderItem;
 
 @RequiredArgsConstructor
-public class OrderItemRepositoryImpl implements CustomOrderItemRepository {
+public class OrderItemRepositoryImpl implements OrderItemRepositoryCustom {
 
     private final JPAQueryFactory query;
 
     @Override
-    public PageImpl<OrderItem> findBySearch(OrderSearch orderSearch, Pageable pageable) {
-        JPAQuery<OrderItem> tempResult = query.selectFrom(orderItem)
-                .join(orderItem.order, order).fetchJoin()
-                .join(orderItem.item, item).fetchJoin()
+    public Page<OrderParam> findBySearch(OrderSearch orderSearch, Pageable pageable) {
+        QueryResults<OrderParam> results = query.select(new QOrderParam(item.id, item.name, order.orderDate, item.price, orderItem.count, delivery.status))
+                .from(orderItem)
+                .join(orderItem.order, order)
+                .join(orderItem.item, item)
+                .join(orderItem.delivery, delivery)
                 .join(order.member, member)
                 .where(member.id.eq(orderSearch.getMemberId()))
                 .where(itemNameLike(orderSearch.getItemName()))
                 .where(statusEq(orderSearch.getOrderStatus()))
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize());
-
-        for (Sort.Order o : pageable.getSort()) {
-            Order order = o.isAscending()? ASC : DESC;
-
-            PathBuilder<Object> pathBuilder = new PathBuilder<>(Object.class, "order");
-            tempResult.orderBy(new OrderSpecifier(order, pathBuilder.get(o.getProperty())));
-        }
-
-        QueryResults<OrderItem> results = tempResult.fetchResults();
+                .limit(pageable.getPageSize())
+                .orderBy(order.orderDate.desc())
+                .fetchResults();
 
         return new PageImpl<>(results.getResults(), pageable, results.getTotal());
     }

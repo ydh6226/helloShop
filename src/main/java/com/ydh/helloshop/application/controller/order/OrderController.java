@@ -6,9 +6,9 @@ import com.ydh.helloshop.application.controller.order.dto.CreateOrderParam;
 import com.ydh.helloshop.application.controller.order.dto.RequestOrderParam;
 import com.ydh.helloshop.application.controller.order.dto.ResponseOrderInfo;
 import com.ydh.helloshop.application.controller.order.dto.ResponseOrderParam;
-import com.ydh.helloshop.application.controller.order.dto.search.OrderParam;
-import com.ydh.helloshop.application.controller.order.dto.search.OrderSearchResParam;
-import com.ydh.helloshop.application.controller.order.dto.search.PageMetaData;
+import com.ydh.helloshop.application.repository.order.dto.OrderParam;
+import com.ydh.helloshop.application.controller.order.dto.OrderSearchResParam;
+import com.ydh.helloshop.application.controller.order.dto.PageMetaData;
 import com.ydh.helloshop.application.domain.delivery.Delivery;
 import com.ydh.helloshop.application.domain.item.Item;
 import com.ydh.helloshop.application.domain.member.CurrentMember;
@@ -24,17 +24,19 @@ import com.ydh.helloshop.infra.amqp.dto.DeliveryPublishParam;
 import com.ydh.helloshop.infra.amqp.sender.DeliveryPublisher;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -135,55 +137,11 @@ public class OrderController {
 
     @GetMapping("/order/view")
     public String orderList(Model model, @CurrentMember Member member,
-                            @PageableDefault(size = 7) Pageable pageable) {
+                            @PageableDefault(size = 7) Pageable pageable, @RequestParam(defaultValue = "") String itemName) {
 
-        PageImpl<OrderItem> pagedOrders = orderService.findOrderItemsBySearch(new OrderSearch(member.getId()), pageable);
-
-        OrderSearchResParam orderSearchResParam = new OrderSearchResParam();
-
-        PageMetaData pageMetaData = new PageMetaData(pagedOrders.getNumber(), pagedOrders.getSize(),
-                pagedOrders.getTotalPages(), pagedOrders.getTotalElements());
-        orderSearchResParam.setPageMetaData(pageMetaData);
-
-        for (OrderItem orderItem : pagedOrders.getContent()) {
-            Item item = orderItem.getItem();
-            OrderParam orderParam = new OrderParam(item.getId(), item.getName(),
-                    orderItem.getOrder().getOrderDate(),
-                    item.getPrice(), orderItem.getDelivery().getStatus());
-
-            orderSearchResParam.getOrderParams().add(orderParam);
-        }
-        model.addAttribute("searchResult", orderSearchResParam);
-        return "order/orderList";
-    }
-
-
-    @GetMapping("/order/views")
-    public String orderLists(Model model, @CurrentMember Member member,
-                            @PageableDefault(size = 7) Pageable pageable) {
-        PageImpl<Order> pageableOrders =
-                orderService.findPagedOrdersBySearch(new OrderSearch(member.getId()), pageable);
-
-        OrderSearchResParam orderSearchResParam = new OrderSearchResParam();
-
-        PageMetaData pageMetaData = new PageMetaData(pageableOrders.getNumber(), pageableOrders.getSize(),
-                pageableOrders.getTotalPages(), pageableOrders.getTotalElements());
-
-        orderSearchResParam.setPageMetaData(pageMetaData);
-
-        List<Order> orders = pageableOrders.getContent();
-        orders.forEach(o -> {
-            List<OrderParam> orderParams = o.getOrderItems()
-                    .stream()
-                    .map(oi -> new OrderParam(oi.getItem().getId(),
-                            oi.getItem().getName(),
-                            o.getOrderDate(),
-                            oi.getItem().getPrice(),
-                            oi.getDelivery().getStatus()))
-                    .collect(Collectors.toList());
-            orderSearchResParam.getOrderParams().addAll(orderParams);
-        });
-        model.addAttribute("searchResult", orderSearchResParam);
+        Page<OrderParam> orders = orderService.findOrderItemsBySearch(new OrderSearch(member.getId(), itemName), pageable);
+        model.addAttribute("orders", orders);
+        model.addAttribute("itemName", itemName);
         return "order/orderList";
     }
 
