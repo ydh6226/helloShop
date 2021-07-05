@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
@@ -24,7 +25,7 @@ public class MemberForm {
     @Email(message = "올바른 이메일을 입력하세요.")
     private String email;
 
-    @Min(value = 5, message = "비밀번호는 다섯 글자 이상이어야 합니다.")
+    @Length(min = 5, message = "비밀번호는 다섯 글자 이상이어야 합니다.")
     private String password;
 
     @NotNull(message = "회원종류 선택은 필수입니다.")

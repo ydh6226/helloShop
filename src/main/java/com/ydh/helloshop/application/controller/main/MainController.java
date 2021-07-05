@@ -3,7 +3,7 @@ package com.ydh.helloshop.application.controller.main;
 import com.ydh.helloshop.application.domain.member.CurrentMember;
 import com.ydh.helloshop.application.domain.member.Member;
 import com.ydh.helloshop.application.service.ItemService;
-import com.ydh.helloshop.application.service.MainService;
+import com.ydh.helloshop.infra.imageUploader.ImageUploader;
 import com.ydh.helloshop.infra.config.property.ImageProperty;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,9 +28,9 @@ public class MainController {
 
     private final ItemService itemService;
 
+    private final ImageUploader imageUploader;
     private final ImageProperty imageProperty;
 
-    private final MainService mainService;
 
     @RequestMapping("/")
     public String home(Model model, @CurrentMember Member member) {
@@ -46,7 +46,7 @@ public class MainController {
     @PostMapping("/images/upload")
     public ResponseEntity<String> imageUpload(MultipartFile file) {
         try {
-            return new ResponseEntity<>(mainService.imageUpload(file), HttpStatus.OK);
+            return new ResponseEntity<>(imageUploader.upload(file), HttpStatus.OK);
         } catch (IOException e) {
             log.error("파일 입력에서 에러가 발생했습니다.");
             e.printStackTrace();

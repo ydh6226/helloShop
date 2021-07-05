@@ -8,6 +8,7 @@ import com.ydh.helloshop.application.domain.member.Member;
 import com.ydh.helloshop.application.exception.ItemException;
 import com.ydh.helloshop.application.repository.CategoryRepository;
 import com.ydh.helloshop.application.repository.item.ItemRepository;
+import com.ydh.helloshop.infra.imageUploader.ImageUploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,7 +27,7 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final CategoryRepository categoryRepository;
 
-    private final MainService mainService;
+    private final ImageUploader imageUploader;
 
     public Long registerItem(ItemForm itemForm, Long sellerId) {
         Category category = categoryRepository.findById(itemForm.getCategoryId())
@@ -143,7 +144,7 @@ public class ItemService {
         itemParam.setDescription(itemForm.getDescription());
 
         try {
-            itemParam.setRepresentativeImageUrl(mainService.imageUpload(itemForm.getRepresentativeImageFile()));
+            itemParam.setRepresentativeImageUrl(imageUploader.upload(itemForm.getRepresentativeImageFile()));
         } catch (IOException e) {
             throw new IllegalStateException("파일 업로드 과정에서 에러가 발생했습니다.");
         }
