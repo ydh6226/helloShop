@@ -1,4 +1,4 @@
-package com.ydh.helloshop;
+package com.ydh.helloshop.infra.config;
 
 import com.ydh.helloshop.application.domain.Address;
 import com.ydh.helloshop.application.domain.Category;
@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.PostConstruct;
 
 import static com.ydh.helloshop.application.domain.Category.createCategory;
 import static com.ydh.helloshop.application.domain.member.MemberStatus.*;

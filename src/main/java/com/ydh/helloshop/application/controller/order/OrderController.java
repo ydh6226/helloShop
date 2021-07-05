@@ -14,6 +14,7 @@ import com.ydh.helloshop.application.domain.item.Item;
 import com.ydh.helloshop.application.domain.member.CurrentMember;
 import com.ydh.helloshop.application.domain.member.Member;
 import com.ydh.helloshop.application.domain.order.Order;
+import com.ydh.helloshop.application.domain.order.OrderItem;
 import com.ydh.helloshop.application.exception.ItemException;
 import com.ydh.helloshop.application.repository.item.ItemRepository;
 import com.ydh.helloshop.application.repository.order.OrderRepository;
@@ -134,6 +135,31 @@ public class OrderController {
 
     @GetMapping("/order/view")
     public String orderList(Model model, @CurrentMember Member member,
+                            @PageableDefault(size = 7) Pageable pageable) {
+
+        PageImpl<OrderItem> pagedOrders = orderService.findOrderItemsBySearch(new OrderSearch(member.getId()), pageable);
+
+        OrderSearchResParam orderSearchResParam = new OrderSearchResParam();
+
+        PageMetaData pageMetaData = new PageMetaData(pagedOrders.getNumber(), pagedOrders.getSize(),
+                pagedOrders.getTotalPages(), pagedOrders.getTotalElements());
+        orderSearchResParam.setPageMetaData(pageMetaData);
+
+        for (OrderItem orderItem : pagedOrders.getContent()) {
+            Item item = orderItem.getItem();
+            OrderParam orderParam = new OrderParam(item.getId(), item.getName(),
+                    orderItem.getOrder().getOrderDate(),
+                    item.getPrice(), orderItem.getDelivery().getStatus());
+
+            orderSearchResParam.getOrderParams().add(orderParam);
+        }
+        model.addAttribute("searchResult", orderSearchResParam);
+        return "order/orderList";
+    }
+
+
+    @GetMapping("/order/views")
+    public String orderLists(Model model, @CurrentMember Member member,
                             @PageableDefault(size = 7) Pageable pageable) {
         PageImpl<Order> pageableOrders =
                 orderService.findPagedOrdersBySearch(new OrderSearch(member.getId()), pageable);

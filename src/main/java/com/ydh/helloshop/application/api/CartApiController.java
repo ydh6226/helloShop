@@ -1,7 +1,7 @@
 package com.ydh.helloshop.application.api;
 
 import com.ydh.helloshop.application.domain.cart.Cart;
-import com.ydh.helloshop.application.repository.CartRepository;
+import com.ydh.helloshop.application.repository.cart.CartRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;

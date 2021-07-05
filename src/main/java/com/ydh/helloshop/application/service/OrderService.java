@@ -10,6 +10,7 @@ import com.ydh.helloshop.application.exception.ItemException;
 import com.ydh.helloshop.application.exception.noSuchThat.NoSuchMember;
 import com.ydh.helloshop.application.repository.MemberRepository;
 import com.ydh.helloshop.application.repository.item.ItemRepository;
+import com.ydh.helloshop.application.repository.order.OrderItemRepository;
 import com.ydh.helloshop.application.repository.order.OrderRepository;
 import com.ydh.helloshop.application.repository.order.OrderSearch;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final MemberRepository memberRepository;
     private final ItemRepository itemRepository;
+    private final OrderItemRepository orderItemRepository;
 
     @Transactional
     public Order createOrder(CreateOrderParam createOrderParam, Long memberId) {
@@ -113,6 +115,10 @@ public class OrderService {
     /** 검색 **/
     public PageImpl<Order> findPagedOrdersBySearch(OrderSearch orderSearch, Pageable pageable) {
         return orderRepository.findPagedOrdersBySearch(orderSearch, pageable);
+    }
+
+    public PageImpl<OrderItem> findOrderItemsBySearch(OrderSearch orderSearch, Pageable pageable) {
+        return orderItemRepository.findBySearch(orderSearch, pageable);
     }
 
     public Order findOneWithDeliveryAndItem(Long id) {

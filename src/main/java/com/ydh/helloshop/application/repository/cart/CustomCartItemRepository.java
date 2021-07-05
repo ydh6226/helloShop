@@ -1,4 +1,4 @@
-package com.ydh.helloshop.application.repository;
+package com.ydh.helloshop.application.repository.cart;
 
 import java.util.List;
 
