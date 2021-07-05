@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
-<head th:replace="fragments/main :: head" />
+<head th:include="fragments/main.html :: head"/>
 <body>
-<div>
-    <div th:replace="fragments/main.html :: header"/>
-    <div>
-        <h1> 회원가입이 완료되었습니다.</h1>
-        <a href="/"><h3>메인으로 이동</h3></a>
+<div class="justify-content-center">
+    <div th:replace="fragments/main.html :: header(${itemSearch}, ${leafCategories})"/>
+    <hr>
+    <div class="container-lg">
+        <div>
+            <h1>회원가입이 완료되었습니다.</h1>
+            <a href="/"><h3>메인으로 이동</h3></a>
+        </div>
     </div>
-
-    <div th:replace="fragments/main.html :: footer"/>
+    <hr>
 </div>
+<div th:replace="fragments/main.html :: footer"/>
 </body>
+<script th:replace="fragments/main.html::header-input-validation"></script>
 </html>
