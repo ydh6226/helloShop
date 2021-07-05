@@ -10,9 +10,12 @@ import com.ydh.helloshop.application.exception.ItemException;
 import com.ydh.helloshop.application.exception.noSuchThat.NoSuchMember;
 import com.ydh.helloshop.application.repository.MemberRepository;
 import com.ydh.helloshop.application.repository.item.ItemRepository;
+import com.ydh.helloshop.application.repository.order.OrderItemRepository;
 import com.ydh.helloshop.application.repository.order.OrderRepository;
 import com.ydh.helloshop.application.repository.order.OrderSearch;
+import com.ydh.helloshop.application.repository.order.dto.OrderParam;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -36,6 +39,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final MemberRepository memberRepository;
     private final ItemRepository itemRepository;
+    private final OrderItemRepository orderItemRepository;
 
     @Transactional
     public Order createOrder(CreateOrderParam createOrderParam, Long memberId) {
@@ -113,6 +117,10 @@ public class OrderService {
     /** 검색 **/
     public PageImpl<Order> findPagedOrdersBySearch(OrderSearch orderSearch, Pageable pageable) {
         return orderRepository.findPagedOrdersBySearch(orderSearch, pageable);
+    }
+
+    public Page<OrderParam> findOrderItemsBySearch(OrderSearch orderSearch, Pageable pageable) {
+        return orderItemRepository.findBySearch(orderSearch, pageable);
     }
 
     public Order findOneWithDeliveryAndItem(Long id) {

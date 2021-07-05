@@ -1,43 +1,68 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
-<head th:include="fragments/main.html :: head" />
+<head th:include="fragments/main.html :: head"/>
 <body>
-<div class="container">
+<div class="justify-content-center">
     <div th:replace="fragments/main.html :: header(${itemSearch}, ${leafCategories})"/>
-<!--    <div class="media border border-dark rounded">-->
-<!--        <div class="text-center">-->
-<!--            <p>안년연ㅇ</p>-->
-<!--            <img src="https://thumbnail7.coupangcdn.com/thumbnails/remote/96x96ex/image/retail/images/63395926118037-429ee89c-8080-48cb-85ff-e34f1e418876.jpg" class="align-self-start mr-3" alt="...">-->
-<!--        </div>-->
-<!--        <div class="media-body">-->
-<!--            <h5 class="mt-0">Top-aligned media</h5>-->
-<!--            <p>I’m gon’ put her in a coma. You give a hundred reasons why, and you say you're really gonna try. So I sat quietly, agreed politely. Suiting up for my crowning battle. And on my 18th Birthday we got matching tattoos. So très chic, yeah, she's a classic. I am ready for the road less traveled.</p>-->
-<!--            <p>I'm walking on air (tonight). But down to earth. You're original, cannot be replaced. But in another life I would be your girl. We drove to Cali and got drunk on the beach. We can dance, until we die, you and I, will be young forever. Saw you downtown singing the Blues.</p>-->
-<!--        </div>-->
-<!--    </div>-->
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>주문날짜</th>
-            <th>상품명</th>
-            <th>가격</th>
-            <th>배송 상태</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="order : ${searchResult.getOrderParams()}">
-            <td th:text="*{order.orderDate}"></td>
-            <td th:text="*{order.itemName}"></td>
-            <td th:text="*{order.price}"></td>
-            <th:block th:switch="${order.deliveryStatus}">
-                <td th:case="${T(com.ydh.helloshop.application.domain.delivery.DeliveryStatus).READY}" th:text="|배송 준비|"></td>
-                <td th:case="${T(com.ydh.helloshop.application.domain.delivery.DeliveryStatus).SHIPPED}" th:text="배송중"></td>
-                <td th:case="${T(com.ydh.helloshop.application.domain.delivery.DeliveryStatus).COMP}" th:text="|배송 완료|"></td>
-            </th:block>
-        </tr>
-        </tbody>
-    </table>
-    <div th:replace="fragments/main.html :: footer"/>
+    <hr>
+    <div class="container-lg">
+        <h2>주문목록</h2>
+        <div class="row">
+            <div class="col-5 mb-3">
+                <form class="col-10 form-inline border border-1 rounded p-0" th:action="@{/order/view}">
+                    <input type="text" class="col form-control input-itemName border-0"
+                           placeholder="주문상품을 검색할 수 있어요." th:value="${itemName}" name="itemName">
+                    <button class="col-2 btn text-dark" type="submit"><i class="fas fa-search fa-lg"></i></button>
+                </form>
+            </div>
+        </div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>주문날짜</th>
+                <th>상품명</th>
+                <th>수량</th>
+                <th>총 가격</th>
+                <th>배송 상태</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="order : ${orders.getContent()}">
+                <td th:text="*{order.orderDate}"></td>
+                <td>
+                    <a th:href="@{'/item/' + ${order.itemId}}"><span class="text-dark" th:text="*{order.itemName}"></span></a>
+                </td>
+                <td th:text="*{order.count}"></td>
+                <td th:text="*{order.totalPrice}"></td>
+                <td th:text="*{order.deliveryStatus.title}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <ul class="pagination justify-content-center font-weight-bold">
+            <li class="page-item" th:classappend="${!orders.hasPrevious()} ? disabled">
+                <a class="page-link" th:if="${orders.hasPrevious()}"
+                   th:href="@{'/order/view?page=' + ${orders.previousPageable().getPageNumber()} + ${#strings.isEmpty(itemName)?'' : '&itemName=' + itemName}}">
+                    <span><<</span>
+                </a>
+                <a class="page-link" th:if="${!orders.hasPrevious()}" href="#"><span><<</span></a>
+            </li>
+            <li th:each="num : ${#numbers.sequence(1, orders.getTotalPages())}" class="page-item" th:classappend="${num - 1 == orders.getNumber()} ? active">
+                <a class="page-link" th:href="@{'/order/view?page=' + ${num - 1} + ${#strings.isEmpty(itemName)?'' : '&itemName=' + itemName}}">
+                    <span th:text="${num}"></span>
+                </a>
+            </li>
+            <li class="page-item" th:classappend="${!orders.hasNext()} ? disabled">
+                <a class="page-link" th:if="${orders.hasNext()}"
+                   th:href="@{'/order/view?page=' + ${orders.nextPageable().getPageNumber()} + ${#strings.isEmpty(itemName)?'' : '&itemName=' + itemName}}">
+                    <span>>></span>
+                </a>
+                <a class="page-link" th:if="${!orders.hasNext()}" href="#"><span>>></span></a>
+            </li>
+        </ul>
+    </div>
+    <hr>
 </div>
+<div th:replace="fragments/main.html :: footer"/>
 </body>
+<script th:replace="fragments/main.html::header-input-validation"></script>
 </html>

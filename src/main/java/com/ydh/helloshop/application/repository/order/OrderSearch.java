@@ -14,7 +14,8 @@ public class OrderSearch {
     private String itemName;
     private OrderStatus orderStatus;
 
-    public OrderSearch(Long memberId) {
+    public OrderSearch(Long memberId, String itemName) {
         this.memberId = memberId;
+        this.itemName = itemName;
     }
 }

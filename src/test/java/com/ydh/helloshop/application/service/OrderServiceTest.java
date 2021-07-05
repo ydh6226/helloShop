@@ -94,6 +94,8 @@ class OrderServiceTest {
         //then
         assertThat(item.getStockQuantity()).isEqualTo(0);
     }
+    
+
 
     private Member createMember() {
         return Member.createMember(new CreateMemberParam());

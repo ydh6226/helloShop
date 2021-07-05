@@ -2,7 +2,7 @@ package com.ydh.helloshop.application.service;
 
 import com.ydh.helloshop.application.domain.cart.CartItem;
 import com.ydh.helloshop.application.exception.noSuchThat.NoSuchCartItem;
-import com.ydh.helloshop.application.repository.CartItemRepository;
+import com.ydh.helloshop.application.repository.cart.CartItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
