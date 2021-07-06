@@ -3,25 +3,19 @@ package com.ydh.helloshop.application.service;
 import com.ydh.helloshop.application.controller.seller.form.ItemForm;
 import com.ydh.helloshop.application.domain.Category;
 import com.ydh.helloshop.application.domain.item.Album;
-import com.ydh.helloshop.application.domain.item.Book;
 import com.ydh.helloshop.application.domain.item.Item;
 import com.ydh.helloshop.application.domain.item.ItemType;
 import com.ydh.helloshop.application.repository.CategoryRepository;
 import com.ydh.helloshop.application.repository.item.ItemRepository;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import com.ydh.helloshop.infra.imageUploader.ImageUploader;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.lang.reflect.Executable;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,7 +38,7 @@ class ItemServiceTest {
     CategoryRepository categoryRepository;
 
     @MockBean
-    MainService mainService;
+    ImageUploader imageUploader;
 
     private static final Long SELLER_ID = 1L;
 
@@ -58,7 +52,7 @@ class ItemServiceTest {
         //given
         Long categoryId = createCategory();
         System.out.println(categoryId);
-        given(mainService.imageUpload(any())).willReturn(IMAGE_URL);
+        given(imageUploader.upload(any())).willReturn(IMAGE_URL);
 
         //when
         itemService.registerItem(createItemForm(categoryId) ,SELLER_ID);
@@ -76,7 +70,7 @@ class ItemServiceTest {
     void registerItemWithInvalidCategory() throws Exception {
         //given
         createCategory();
-        given(mainService.imageUpload(any())).willReturn(IMAGE_URL);
+        given(imageUploader.upload(any())).willReturn(IMAGE_URL);
 
         //when
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,

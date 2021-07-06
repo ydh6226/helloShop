@@ -1,6 +1,3 @@
-server:
-  port: 8081
-
 spring:
   datasource:
     url: jdbc:h2:tcp://localhost/~/helloshop
@@ -15,11 +12,11 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        default_batch_fetch_size: 100 # IN 쿼리의 개수
 
 logging:
   level:
     org.hibernate.SQL: debug # 로거를 통해 출력
+    com.amazonaws.util.EC2MetadataUtils: error
 
 app:
   image:
@@ -29,3 +26,10 @@ app:
   iam-port:
     imp_key: '0961094963459268'
     imp_secret: 'D7dRYbk3a1fgVGfyZG7YVNN8FhEjevSSC6JBh3Er4UH0AXyAEGzzunI9EmtSSlKvru6JyKbCESDfQcQu'
+
+cloud:
+  aws:
+    stack:
+      auto: false
+    credentials:
+      instance-profile: true

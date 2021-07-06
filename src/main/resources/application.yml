@@ -1,0 +1,16 @@
+server:
+  port: 8081
+
+spring:
+  jpa:
+    properties:
+      default_batch_fetch_size: 100
+
+cloud:
+  aws:
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+    credentials:
+      instance-profile: true
