@@ -38,7 +38,8 @@ public class  MemberController {
             return "members/createMemberForm";
         }
 
-        memberService.join(Member.createMember(createMemberParam(form)));
+        Long accountId = memberService.join(Member.createMember(createMemberParam(form)));
+        memberService.login(accountId);
 
         return "redirect:/members/welcome";
     }

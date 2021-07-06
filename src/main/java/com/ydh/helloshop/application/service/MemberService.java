@@ -5,6 +5,10 @@ import com.ydh.helloshop.application.domain.member.UserMember;
 import com.ydh.helloshop.application.exception.noSuchThat.NoSuchMember;
 import com.ydh.helloshop.application.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -56,5 +60,18 @@ public class MemberService implements UserDetailsService {
             throw new UsernameNotFoundException(email);
         }
         return new UserMember(member.get());
+    }
+
+    public void login(Long accountId) {
+        Member member = memberRepository.findById(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+
+        new UserMember(member);
+
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(new UserMember(member), member.getPassword(),
+                List.of(new SimpleGrantedAuthority(member.getStatus().toString())));
+
+        SecurityContextHolder.getContext().setAuthentication(token);
+        System.out.println();
     }
 }
