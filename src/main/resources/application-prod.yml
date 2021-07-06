@@ -14,6 +14,11 @@ spring:
     username: hello-shop
     password: hello-shop
 
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: false
+
 app:
   amqp:
     queueName: shop2delivery.queue

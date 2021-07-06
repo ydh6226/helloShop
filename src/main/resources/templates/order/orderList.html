@@ -46,9 +46,16 @@
                 </a>
                 <a class="page-link" th:if="${!orders.hasPrevious()}" href="#"><span><<</span></a>
             </li>
-            <li th:each="num : ${#numbers.sequence(1, orders.getTotalPages())}" class="page-item" th:classappend="${num - 1 == orders.getNumber()} ? active">
+
+            <li th:if="${orders.getTotalPages() > 0}" th:each="num : ${#numbers.sequence(1, orders.getTotalPages())}"
+                class="page-item" th:classappend="${num - 1 == orders.getNumber()} ? active">
                 <a class="page-link" th:href="@{'/order/view?page=' + ${num - 1} + ${#strings.isEmpty(itemName)?'' : '&itemName=' + itemName}}">
                     <span th:text="${num}"></span>
+                </a>
+            </li>
+            <li th:if="${orders.getTotalPages() == 0}" class="page-item active">
+                <a class="page-link" th:href="@{'/order/view'+ ${#strings.isEmpty(itemName)?'' : '?itemName=' + itemName}}">
+                    <span>1</span>
                 </a>
             </li>
             <li class="page-item" th:classappend="${!orders.hasNext()} ? disabled">
