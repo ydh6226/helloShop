@@ -12,7 +12,6 @@ import com.ydh.helloshop.application.service.CartItemService;
 import com.ydh.helloshop.application.service.CartService;
 import com.ydh.helloshop.application.service.ItemService;
 import com.ydh.helloshop.application.service.OrderService;
-import com.ydh.helloshop.infra.amqp.sender.DeliveryPublisher;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -37,8 +36,6 @@ public class CartController {
 
     private final CartRepository cartRepository;
 
-    private final DeliveryPublisher deliveryPublisher;
-
     @GetMapping("/cart")
     public String cartView(Model model, @CurrentMember Member member) {
         model.addAttribute("cart", cartService.findOneByMemberId(member.getId()));
@@ -47,8 +44,7 @@ public class CartController {
 
     @PostMapping("/cart/checkout")
     @ResponseBody
-    public ResponseEntity<Object> checkout(@RequestBody CartCheckoutParam cartCheckoutParam, @CurrentMember Member member,
-                         RedirectAttributes redirectAttributes) {
+    public ResponseEntity<Object> checkout(@RequestBody CartCheckoutParam cartCheckoutParam, @CurrentMember Member member) {
         Cart cart = cartRepository.findOneByMemberId(member.getId());
         CreateOrderParam createOrderParam = new CreateOrderParam();
 
@@ -76,33 +72,6 @@ public class CartController {
         cartService.deleteCartItemsByOrderId(orderInfo.getOrderId(), member.getId());
         return ResponseEntity.ok().build();
     }
-/*
-
-    @PostMapping("/cart/checkout")
-    @ResponseBody
-    public ResponseEntity<String> cartCheckout(@RequestBody OrderInfoDto orderInfoDto, @CurrentMember Member member) {
-        Long orderId = orderService.orderMultiple(member.getId(), orderInfoDto.getItemIds(), orderInfoDto.getCounts());
-
-        Order findOrder = orderService.findOneWithDeliveryAndItem(orderId);
-        List<OrderItem> orderItems = findOrder.getOrderItems();
-
-        List<DeliveryPublishParam> dtos = orderItems.stream().map(oi ->
-                new DeliveryPublishParam(oi.getDelivery().getId(), member.getName(),
-                        oi.getItem().getName(), oi.getDelivery().getAddress()))
-                .collect(Collectors.toList());
-
-        //RabbitMQ send
-        try {
-            deliveryPublisher.send(dtos);
-            cartService.checkout(orderInfoDto.getCartId(), orderInfoDto.getItemIds());
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            // publish 실패하면 생성했던 주문 삭제
-            orderService.cancelByRabbitMQError(findOrder);
-            return new ResponseEntity<>("rabbitMQ send error", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-*/
 
     @ResponseBody
     @ResponseStatus(value = HttpStatus.ACCEPTED)
@@ -142,13 +111,6 @@ public class CartController {
     private static class SimpleItemDto {
         private Long itemId;
         private int count;
-    }
-
-    @Data
-    private static class OrderInfoDto {
-        private List<Integer> counts;
-        private List<Long> itemIds;
-        private Long cartId;
     }
 
     @Data

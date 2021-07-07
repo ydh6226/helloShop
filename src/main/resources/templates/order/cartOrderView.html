@@ -107,7 +107,6 @@
 </body>
 <div th:replace="fragments/main.html :: ajax-csrfToken"></div>
 <script th:inline="javascript">
-    //주문생성 요쳥
     $(function () {
         $('#payment-btn').click(function () {
             payment([[${orderId}]])

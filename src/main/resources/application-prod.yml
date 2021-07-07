@@ -10,7 +10,7 @@ spring:
       ddl-auto: update
 
   rabbitmq:
-    host: 3.36.203.222
+    host: 3.36.82.153
     username: hello-shop
     password: hello-shop
 

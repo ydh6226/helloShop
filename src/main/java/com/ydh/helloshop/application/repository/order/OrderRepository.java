@@ -5,6 +5,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ydh.helloshop.application.domain.delivery.QDelivery;
 import com.ydh.helloshop.application.domain.item.Item;
 import com.ydh.helloshop.application.domain.item.QItem;
 import com.ydh.helloshop.application.domain.order.Order;
@@ -22,6 +23,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Objects;
 
+import static com.ydh.helloshop.application.domain.delivery.QDelivery.delivery;
 import static com.ydh.helloshop.application.domain.item.QItem.item;
 import static com.ydh.helloshop.application.domain.member.QMember.member;
 import static com.ydh.helloshop.application.domain.order.QOrder.order;
@@ -52,6 +54,16 @@ public class OrderRepository extends QuerydslRepositorySupport {
         return query.selectFrom(order)
                 .join(order.member, member).fetchJoin()
                 .join(order.orderItems, orderItem).fetchJoin()
+                .join(orderItem.item, item).fetchJoin()
+                .where(order.id.eq(id))
+                .fetchOne();
+    }
+
+    public Order findOrderForPublish(Long id) {
+        return query.selectFrom(order)
+                .join(order.member, member).fetchJoin()
+                .join(order.orderItems, orderItem).fetchJoin()
+                .join(orderItem.delivery, delivery).fetchJoin()
                 .join(orderItem.item, item).fetchJoin()
                 .where(order.id.eq(id))
                 .fetchOne();

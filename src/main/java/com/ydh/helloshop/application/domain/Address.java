@@ -1,5 +1,6 @@
 package com.ydh.helloshop.application.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,7 @@ public class Address {
     private String street;
     private String zipcode;
 
+    @JsonIgnore
     public String getFullAddress() {
         return String.format("%s %s %s", city, street, zipcode);
     }

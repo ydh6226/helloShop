@@ -38,6 +38,7 @@ public class OrderItemRepositoryImpl implements OrderItemRepositoryCustom {
                 .join(orderItem.item, item)
                 .join(orderItem.delivery, delivery)
                 .join(order.member, member)
+                .where(order.status.ne(OrderStatus.CREATED))
                 .where(member.id.eq(orderSearch.getMemberId()))
                 .where(itemNameLike(orderSearch.getItemName()))
                 .where(statusEq(orderSearch.getOrderStatus()))

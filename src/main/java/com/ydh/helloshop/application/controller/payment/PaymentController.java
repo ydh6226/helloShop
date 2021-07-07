@@ -8,6 +8,8 @@ import com.ydh.helloshop.application.controller.payment.dto.resoponse.Authentica
 import com.ydh.helloshop.application.controller.payment.dto.resoponse.PaymentResponsePram;
 import com.ydh.helloshop.application.domain.order.Order;
 import com.ydh.helloshop.application.repository.order.OrderRepository;
+import com.ydh.helloshop.application.service.DeliveryService;
+import com.ydh.helloshop.infra.amqp.sender.DeliveryPublisher;
 import com.ydh.helloshop.infra.config.property.IamPortProperty;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -25,6 +27,7 @@ import java.time.Duration;
 @RestController
 public class PaymentController {
 
+    private final DeliveryService deliveryService;
     private final OrderRepository orderRepository;
 
     private final RestTemplate restTemplate;
@@ -39,7 +42,9 @@ public class PaymentController {
 
     public PaymentController(OrderRepository orderRepository, RestTemplateBuilder restTemplateBuilder,
                              IamPortProperty iamPortProperty, ObjectMapper objectMapper,
-                             IamPortResponseErrorHandler iamPortResponseErrorHandler) {
+                             IamPortResponseErrorHandler iamPortResponseErrorHandler,
+                             DeliveryService deliveryService) {
+        this.deliveryService = deliveryService;
         this.orderRepository = orderRepository;
         this.iamPortProperty = iamPortProperty;
         this.objectMapper = objectMapper;
@@ -63,7 +68,9 @@ public class PaymentController {
             return new ResponseEntity<>("잘못된 결제입니다.", HttpStatus.BAD_REQUEST);
         }
         order.setStatusPayed();
-        // TODO: 2021-06-02[양동혁] RABBITMQ 배송정보 전송
+
+        deliveryService.publishDeliveryInfo(order.getId());
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

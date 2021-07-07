@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-@Profile(value = "prod")
+@Profile({"prod", "dev"})
 @Component
 @RequiredArgsConstructor
 public class AmqpDeliveryConsumer {
