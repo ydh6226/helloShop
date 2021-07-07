@@ -6,6 +6,7 @@ import com.ydh.helloshop.application.domain.cart.Cart;
 import com.ydh.helloshop.application.domain.cart.CartItem;
 import com.ydh.helloshop.application.domain.member.CurrentMember;
 import com.ydh.helloshop.application.domain.member.Member;
+import com.ydh.helloshop.application.exception.NotEnoughStockException;
 import com.ydh.helloshop.application.repository.cart.CartRepository;
 import com.ydh.helloshop.application.service.CartItemService;
 import com.ydh.helloshop.application.service.CartService;
@@ -19,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,7 +47,8 @@ public class CartController {
 
     @PostMapping("/cart/checkout")
     @ResponseBody
-    public Long checkout(@RequestBody CartCheckoutParam cartCheckoutParam, @CurrentMember Member member) {
+    public ResponseEntity<Object> checkout(@RequestBody CartCheckoutParam cartCheckoutParam, @CurrentMember Member member,
+                         RedirectAttributes redirectAttributes) {
         Cart cart = cartRepository.findOneByMemberId(member.getId());
         CreateOrderParam createOrderParam = new CreateOrderParam();
 
@@ -58,9 +61,13 @@ public class CartController {
                         .getRequestOrderInfos()
                         .add(new RequestOrderInfo(ci.getCount(), ci.getItem().getId())));
 
-        return orderService
-                .createOrder(createOrderParam, member.getId())
-                .getId();
+        try {
+            return ResponseEntity.ok(orderService
+                    .createOrder(createOrderParam, member.getId())
+                    .getId());
+        } catch (NotEnoughStockException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PostMapping("/cart/deleteCartItem")

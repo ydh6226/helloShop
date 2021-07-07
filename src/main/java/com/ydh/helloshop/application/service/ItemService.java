@@ -151,4 +151,10 @@ public class ItemService {
 
         return itemParam;
     }
+
+    public boolean canOrder(Long itemId, int requestStock) {
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
+        return item.canOrder(requestStock);
+    }
 }

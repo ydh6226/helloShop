@@ -90,7 +90,7 @@ public abstract class Item {
     public void removeStock(int count) {
         int restStock = stockQuantity - count;
         if (restStock < 0) {
-            throw new NotEnoughStockException("need more stock!!");
+            throw new NotEnoughStockException(name + " 상품의 재고가 부족합니다.");
         }
         stockQuantity = restStock;
     }
@@ -106,5 +106,9 @@ public abstract class Item {
 
     public void updateStatusToSale() {
         status = SALE;
+    }
+
+    public boolean canOrder(int requestStock) {
+        return status == SALE && stockQuantity > requestStock;
     }
 }

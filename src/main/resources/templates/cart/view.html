@@ -198,6 +198,9 @@
             contentType: "application/json;",
             success: function (orderId) {
                 location.href = '/orders/' + orderId;
+            },
+            error: function (request, status, error) {
+                alert(request.responseText);
             }
         })
     })

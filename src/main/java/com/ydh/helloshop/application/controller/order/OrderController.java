@@ -2,13 +2,8 @@ package com.ydh.helloshop.application.controller.order;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ydh.helloshop.application.controller.order.dto.CreateOrderParam;
-import com.ydh.helloshop.application.controller.order.dto.RequestOrderParam;
-import com.ydh.helloshop.application.controller.order.dto.ResponseOrderInfo;
-import com.ydh.helloshop.application.controller.order.dto.ResponseOrderParam;
+import com.ydh.helloshop.application.controller.order.dto.*;
 import com.ydh.helloshop.application.repository.order.dto.OrderParam;
-import com.ydh.helloshop.application.controller.order.dto.OrderSearchResParam;
-import com.ydh.helloshop.application.controller.order.dto.PageMetaData;
 import com.ydh.helloshop.application.domain.delivery.Delivery;
 import com.ydh.helloshop.application.domain.item.Item;
 import com.ydh.helloshop.application.domain.member.CurrentMember;
@@ -19,6 +14,7 @@ import com.ydh.helloshop.application.exception.ItemException;
 import com.ydh.helloshop.application.repository.item.ItemRepository;
 import com.ydh.helloshop.application.repository.order.OrderRepository;
 import com.ydh.helloshop.application.repository.order.OrderSearch;
+import com.ydh.helloshop.application.service.ItemService;
 import com.ydh.helloshop.application.service.OrderService;
 import com.ydh.helloshop.infra.amqp.dto.DeliveryPublishParam;
 import com.ydh.helloshop.infra.amqp.sender.DeliveryPublisher;
@@ -36,6 +32,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,6 +44,7 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 public class OrderController {
 
     private final OrderService orderService;
+    private final ItemService itemService;
 
     private final OrderRepository orderRepository;
     private final ItemRepository itemRepository;
@@ -77,25 +75,36 @@ public class OrderController {
     }
 
     @GetMapping(value = "/orders")
-    public String orderView(String orderInfo, Model model, @CurrentMember Member member) {
+    public String orderView(String orderInfo, Model model, @CurrentMember Member member, RedirectAttributes attributes) {
+        RequestOrderParam requestOrderParam;
         try {
-            RequestOrderParam requestOrderParam = objectMapper.readValue(orderInfo, RequestOrderParam.class);
-            ResponseOrderParam responseOrderParam = new ResponseOrderParam();
-
-            // TODO: 2021-05-28[양동혁] in쿼리 사용하는지
-            requestOrderParam.getRequestOrderInfos()
-                    .forEach(requestOrderInfo -> {
-                        int count = requestOrderInfo.getCount();
-                        Item item = itemRepository.findById(requestOrderInfo.getItemId())
-                                .orElseThrow(ItemException::noSuchItemException);
-                        int totalPrice = count * item.getPrice();
-
-                        responseOrderParam.addParam(new ResponseOrderInfo(count, item, totalPrice));
-                    });
-            model.addAttribute("orderInfo", responseOrderParam);
+            requestOrderParam = objectMapper.readValue(orderInfo, RequestOrderParam.class);
         } catch (JsonProcessingException e) {
             throw new IllegalStateException("JSON 처리 에러");
        }
+        for (RequestOrderInfo requestOrderInfo : requestOrderParam.getRequestOrderInfos()) {
+            if (!itemService.canOrder(requestOrderInfo.getItemId(), requestOrderInfo.getCount())) {
+                attributes.addFlashAttribute("message", "상품의 재고가 부족합니다.");
+                return "redirect:/items/" + requestOrderInfo.getItemId();
+            }
+        }
+
+
+        ResponseOrderParam responseOrderParam = new ResponseOrderParam();
+
+        // TODO: 2021-05-28[양동혁] in쿼리 사용하는지
+        requestOrderParam.getRequestOrderInfos()
+                .forEach(requestOrderInfo -> {
+                    int count = requestOrderInfo.getCount();
+                    Item item = itemRepository.findById(requestOrderInfo.getItemId())
+                            .orElseThrow(ItemException::noSuchItemException);
+                    int totalPrice = count * item.getPrice();
+
+                    responseOrderParam.addParam(new ResponseOrderInfo(count, item, totalPrice));
+                });
+        model.addAttribute("orderInfo", responseOrderParam);
+
+
         model.addAttribute("member", member);
 
         // TODO: 2021-05-28[양동혁] 상품검색 인터셉터 제외 
