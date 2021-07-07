@@ -22,7 +22,3 @@ app:
   image:
     upload_path: C:\Users\user\image_factory
     download_url: http://localhost:8081/images/download
-
-  iam-port:
-    imp_key: '0961094963459268'
-    imp_secret: 'D7dRYbk3a1fgVGfyZG7YVNN8FhEjevSSC6JBh3Er4UH0AXyAEGzzunI9EmtSSlKvru6JyKbCESDfQcQu'

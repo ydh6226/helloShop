@@ -2,6 +2,7 @@ package com.ydh.helloshop.application.controller.payment;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ydh.helloshop.application.repository.order.OrderRepository;
+import com.ydh.helloshop.application.service.DeliveryService;
 import com.ydh.helloshop.infra.config.property.IamPortProperty;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,9 @@ class PaymentControllerRestTest {
 
     @MockBean
     IamPortProperty iamPortProperty;
+
+    @MockBean
+    DeliveryService deliveryService;
 
     @Test
     void test() throws Exception {
